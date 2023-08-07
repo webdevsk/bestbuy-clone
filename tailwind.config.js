@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import defaultTheme from 'tailwindcss/defaultTheme'
+import withMT from "@material-tailwind/react/utils/withMT"
 
 // imported in src/main.js
 const extendedFontFamily = {
@@ -16,7 +17,7 @@ const extendedColors = {
   'link': 'var(--link-color)',
 }
 
-export default {
+export default withMT({
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -29,5 +30,5 @@ export default {
     },
   },
   plugins: [],
-}
+})
 

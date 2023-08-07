@@ -4,9 +4,13 @@ import './index.css'
 import '@fontsource/dm-sans/400.css'
 import '@fontsource/dm-sans/500.css'
 import '@fontsource/dm-sans/700.css'
+import { ThemeProvider, Typography } from "@material-tailwind/react";
+import { theme } from './assets/bestbuyTheme'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <h1 className='text-2xl font-semibold text-accent'>Hello World</h1>
+    <ThemeProvider value={theme}>
+      <Typography variant='h1' className='text-header'>Hello world</Typography>
+    </ThemeProvider>
   </React.StrictMode>,
 )
