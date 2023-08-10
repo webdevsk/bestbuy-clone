@@ -5,6 +5,7 @@ import withMT from "@material-tailwind/react/utils/withMT"
 // imported in src/main.js
 const extendedFontFamily = {
   'sans': ['DM Sans', ...defaultTheme.fontFamily.sans],
+  'serif': ['Inter Tight Variable', ...defaultTheme.fontFamily.serif]
 }
 
 // Curated from src/index.css@line:5
@@ -24,6 +25,10 @@ export default withMT({
     "./src/**/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem'
+    },
     extend: {
       fontFamily: extendedFontFamily,
       colors: extendedColors,

@@ -1,10 +1,13 @@
 export const theme = {
     typography: {
-        defaultProps: {
-            className: 'text-body'
-        },
+        defaultProps: {},
         styles: {
             variants: {}
         }
+    },
+    button: {
+        defaultProps: {
+            className: 'rounded-sm bg-theme',
+        },
     }
 }
