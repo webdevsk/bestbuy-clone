@@ -2,11 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-    --theme-color: #0046be;
-    --background-color: #ffffff;
-    --accent-color: #fff200;
-    --header-color: #040c13;
-    --body-color: #1d252c;
-    --link-color: #0457c8;
+:root {
+  --theme-color: #0046be;
+  --background-color: #ffffff;
+  --accent-color: #fff200;
+  --header-color: #040c13;
+  --body-color: #1d252c;
+  --link-color: #0457c8;
+}
+
+@layer utilities {
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
 }
