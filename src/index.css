@@ -9,6 +9,13 @@
   --header-color: #040c13;
   --body-color: #1d252c;
   --link-color: #0457c8;
+  --section-spacing: 6rem;
+}
+
+@layer base {
+  section {
+    margin-bottom: var(--section-spacing, 0);
+  }
 }
 
 @layer utilities {
@@ -24,4 +31,21 @@
 
 ::selection {
   @apply bg-theme text-white;
+}
+
+/* Styles for pinned-product section */
+#pinned-product {
+  --swiper-pagination-color: #001e73;
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
+}
+#pinned-product .swiper-pagination-bullet:hover {
+  --swiper-pagination-bullet-inactive-color: var(--theme-color);
+  --swiper-pagination-bullet-inactive-opacity: 1;
+}
+#pinned-product .swiper-prev-shadow:has(button:not(:disabled)) {
+  box-shadow: 16px 0 30px -20px rgba(0, 0, 0, 0.5);
+}
+#pinned-product .swiper-next-shadow:has(button:not(:disabled)) {
+  box-shadow: -16px 0 30px -20px rgba(0, 0, 0, 0.5);
 }

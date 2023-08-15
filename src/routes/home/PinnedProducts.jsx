@@ -8,7 +8,10 @@ import "swiper/css/pagination"
 const PinnedProducts = () => {
   return (
     <>
-      <section className="container mt-24 rounded-lg bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6">
+      <section
+        id="pinned-product"
+        className="container rounded-lg bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6"
+      >
         <div className="grid grid-cols-[1fr_2fr] gap-4">
           <div className="flex flex-col gap-y-2">
             <svg
@@ -52,8 +55,9 @@ const PinnedProducts = () => {
           </div>
 
           <div className="grid grid-cols-[52px_minmax(0,_1fr)_52px]">
-            <div className="grid place-items-center">
+            <div className="swiper-prev-shadow grid place-items-center">
               <Button
+                ripple={false}
                 className={`swiper-btn-prev rounded-full bg-white stroke-theme p-2 opacity-70 shadow-sm hover:opacity-100 hover:shadow-none disabled:bg-transparent disabled:stroke-gray-500 disabled:opacity-100 disabled:shadow-none`}
               >
                 <svg
@@ -74,12 +78,8 @@ const PinnedProducts = () => {
 
             <div>
               <Swiper
+                // More styles at index.css@30
                 modules={[Navigation, Pagination]}
-                style={{
-                  "--swiper-pagination-color": "#001e73",
-                  "--swiper-pagination-bullet-width": "10px",
-                  "--swiper-pagination-bullet-height": "10px",
-                }}
                 navigation={{
                   prevEl: ".swiper-btn-prev",
                   nextEl: ".swiper-btn-next",
@@ -105,8 +105,9 @@ const PinnedProducts = () => {
               </Swiper>
             </div>
 
-            <div className="grid place-items-center">
+            <div className="swiper-next-shadow grid place-items-center">
               <Button
+                ripple={false}
                 className={`swiper-btn-next rounded-full bg-white stroke-theme p-2 opacity-70 shadow-sm hover:opacity-100 hover:shadow-none disabled:bg-transparent disabled:stroke-gray-500 disabled:opacity-100 disabled:shadow-none`}
               >
                 <svg
