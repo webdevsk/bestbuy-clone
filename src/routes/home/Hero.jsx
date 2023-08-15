@@ -1,49 +1,36 @@
-import { Button, Typography } from "@material-tailwind/react";
-import { useRef, useEffect } from "react";
-import { register } from "swiper/element/bundle";
+import { Button, Typography } from "@material-tailwind/react"
+import { Swiper, SwiperSlide } from "swiper/react"
 
-register();
+import "swiper/css/pagination"
+import "swiper/css"
 
 const Hero = () => {
-  const swiperElRef = useRef(null);
-
-  useEffect(() => {
-    // listen for Swiper events using addEventListener
-    swiperElRef.current.addEventListener("progress", (e) => {
-      const [swiper, progress] = e.detail;
-    });
-
-    swiperElRef.current.addEventListener("slidechange", (e) => {});
-  }, []);
-
   return (
     <>
-      <swiper-container
-        ref={swiperElRef}
-        slides-per-view="1"
-        navigation="false"
-        pagination="true"
-        autoplay-duration="5000"
-        allow-touch-move="false"
+      <Swiper
+        autoplay={true}
+        slidesPerView={1}
+        loop={true}
+        allowTouchMove={false}
+        speed={3000}
       >
-        <swiper-slide>
+        <SwiperSlide>
           <CallToAction1 />
-        </swiper-slide>
-
-        <swiper-slide>
+        </SwiperSlide>
+        <SwiperSlide>
           <CallToAction2 />
-        </swiper-slide>
-      </swiper-container>
+        </SwiperSlide>
+      </Swiper>
       <Typography>Hello</Typography>
     </>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero
 
 const CallToAction1 = () => {
   return (
-    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] xl:h-[500px] xl:min-h-fit">
+    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-4 xl:h-[500px] xl:min-h-fit">
       <div className="container">
         <div className="grid grid-cols-1 items-center gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
@@ -86,12 +73,12 @@ const CallToAction1 = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
 const CallToAction2 = () => {
   return (
-    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] xl:h-[500px] xl:min-h-fit">
+    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] py-4 xl:h-[500px] xl:min-h-fit">
       <div className="container">
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
@@ -132,5 +119,5 @@ const CallToAction2 = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
