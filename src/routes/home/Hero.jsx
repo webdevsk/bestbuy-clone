@@ -21,7 +21,6 @@ const Hero = () => {
           <CallToAction2 />
         </SwiperSlide>
       </Swiper>
-      <Typography>Hello</Typography>
     </>
   )
 }
