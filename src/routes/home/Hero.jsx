@@ -1,5 +1,5 @@
 import { Button, Typography } from "@material-tailwind/react"
-import { Swiper, SwiperSlide } from "swiper/react"
+import { Swiper, SwiperSlide, useSwiperSlide } from "swiper/react"
 
 import "swiper/css/pagination"
 import "swiper/css"
@@ -29,9 +29,15 @@ const Hero = () => {
 export default Hero
 
 const CallToAction1 = () => {
+  const swiperSlide = useSwiperSlide()
+
   return (
-    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-4 xl:h-[500px] xl:min-h-fit">
-      <div className="container">
+    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-4 xl:min-h-[500px]">
+      <div
+        className={`container transition-transform duration-[4000ms] ${
+          swiperSlide.isActive ? "xl:translate-x-0" : "xl:translate-x-24"
+        }`}
+      >
         <div className="grid grid-cols-1 items-center gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
             <Typography
@@ -77,9 +83,15 @@ const CallToAction1 = () => {
 }
 
 const CallToAction2 = () => {
+  const swiperSlide = useSwiperSlide()
+
   return (
-    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] py-4 xl:h-[500px] xl:min-h-fit">
-      <div className="container">
+    <section className="flex min-h-screen items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] py-4 xl:min-h-[500px]">
+      <div
+        className={`container transition-transform duration-[4000ms] ${
+          swiperSlide.isActive ? "xl:translate-x-0" : "xl:translate-x-24"
+        }`}
+      >
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
             <Typography
