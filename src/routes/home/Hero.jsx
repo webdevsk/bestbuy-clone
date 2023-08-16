@@ -8,11 +8,11 @@ const Hero = () => {
   return (
     <section>
       <Swiper
-        autoplay={true}
         slidesPerView={1}
-        loop={true}
+        loop
         allowTouchMove={false}
         speed={3000}
+        autoplay
       >
         <SwiperSlide>
           <CallToAction1 />
@@ -31,7 +31,7 @@ const CallToAction1 = () => {
   const swiperSlide = useSwiperSlide()
 
   return (
-    <div className="flex min-h-screen items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-4 xl:min-h-[500px]">
+    <div className="flex items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-12 xl:py-24">
       <div
         className={`container transition-transform duration-[4000ms] ${
           swiperSlide.isActive ? "xl:translate-x-0" : "xl:translate-x-24"
@@ -85,7 +85,7 @@ const CallToAction2 = () => {
   const swiperSlide = useSwiperSlide()
 
   return (
-    <div className="flex min-h-screen items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] py-4 xl:min-h-[500px]">
+    <div className="flex items-center bg-gradient-to-b from-[#0044bf] to-[#2db7d6] py-12 xl:py-24">
       <div
         className={`container transition-transform duration-[4000ms] ${
           swiperSlide.isActive ? "xl:translate-x-0" : "xl:translate-x-24"

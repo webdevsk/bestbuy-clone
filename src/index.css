@@ -33,6 +33,15 @@
   @apply bg-theme text-white;
 }
 
+/* To make slides stretch */
+.swiper-wrapper .swiper-slide {
+  height: auto;
+
+  & > * {
+    height: 100%;
+  }
+}
+
 /* Styles for pinned-product section */
 #pinned-product {
   --swiper-pagination-color: #001e73;

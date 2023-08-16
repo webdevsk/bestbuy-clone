@@ -16,7 +16,7 @@ const PinnedProducts = () => {
     <>
       <section
         id="pinned-product"
-        className="container rounded-lg bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6"
+        className="container rounded-xl bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6"
       >
         <div className="grid gap-4 2xl:grid-cols-[1fr_2fr]">
           <div className="flex flex-col gap-y-2">
@@ -109,7 +109,7 @@ const PinnedProducts = () => {
                     product.discountPercentage >= 15 && (
                       <SwiperSlide key={product.id}>
                         <div
-                          className={` grid h-[350px] grid-rows-2 rounded-lg bg-white p-4`}
+                          className={` grid grid-rows-2 gap-4 rounded-lg bg-white p-4`}
                         >
                           <ProductItem product={product} />
                         </div>
