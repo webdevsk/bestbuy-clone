@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwindcss /nesting;
 
 :root {
   --theme-color: #0046be;
@@ -9,12 +10,11 @@
   --header-color: #040c13;
   --body-color: #1d252c;
   --link-color: #0457c8;
-  --section-spacing: 6rem;
 }
 
 @layer base {
   section {
-    margin-bottom: var(--section-spacing, 0);
+    @apply mb-12 xl:mb-24;
   }
 }
 
@@ -38,14 +38,27 @@
   --swiper-pagination-color: #001e73;
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
-}
-#pinned-product .swiper-pagination-bullet:hover {
-  --swiper-pagination-bullet-inactive-color: var(--theme-color);
-  --swiper-pagination-bullet-inactive-opacity: 1;
-}
-#pinned-product .swiper-prev-shadow:has(button:not(:disabled)) {
-  box-shadow: 16px 0 30px -20px rgba(0, 0, 0, 0.5);
-}
-#pinned-product .swiper-next-shadow:has(button:not(:disabled)) {
-  box-shadow: -16px 0 30px -20px rgba(0, 0, 0, 0.5);
+
+  & .swiper-wrapper {
+    @apply pb-4 pt-8;
+  }
+
+  & .swiper-pagination-bullet:hover {
+    --swiper-pagination-bullet-inactive-color: var(--theme-color);
+    --swiper-pagination-bullet-inactive-opacity: 1;
+  }
+
+  & .swiper-prev-shadow:has(button:not(:disabled)) {
+    box-shadow: 16px 0 30px -20px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+  }
+
+  & .swiper-next-shadow:has(button:not(:disabled)) {
+    box-shadow: -16px 0 30px -20px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+  }
+
+  & .swiper-pagination {
+    position: static;
+  }
 }

@@ -1,9 +1,15 @@
 import { Button, Typography } from "@material-tailwind/react"
-import { Pagination, Navigation } from "swiper/modules"
+import { Mousewheel, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
+
+//Replace these with async api call functions
+import { response } from "../../assets/disposable"
+const { products } = response
 
 import "swiper/css"
 import "swiper/css/pagination"
+import "swiper/css/mousewheel"
+import ProductItem from "../../components/ProductItem"
 
 const PinnedProducts = () => {
   return (
@@ -12,7 +18,7 @@ const PinnedProducts = () => {
         id="pinned-product"
         className="container rounded-lg bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6"
       >
-        <div className="grid grid-cols-[1fr_2fr] gap-4">
+        <div className="grid gap-4 2xl:grid-cols-[1fr_2fr]">
           <div className="flex flex-col gap-y-2">
             <svg
               className="-mx-1 -my-5 w-24 fill-theme"
@@ -54,8 +60,8 @@ const PinnedProducts = () => {
             </Typography>
           </div>
 
-          <div className="grid grid-cols-[52px_minmax(0,_1fr)_52px]">
-            <div className="swiper-prev-shadow grid place-items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[52px_minmax(0,_1fr)_52px]">
+            <div className="swiper-prev-shadow hidden place-items-center lg:grid">
               <Button
                 ripple={false}
                 className={`swiper-btn-prev rounded-full bg-white stroke-theme p-2 opacity-70 shadow-sm hover:opacity-100 hover:shadow-none disabled:bg-transparent disabled:stroke-gray-500 disabled:opacity-100 disabled:shadow-none`}
@@ -79,33 +85,41 @@ const PinnedProducts = () => {
             <div>
               <Swiper
                 // More styles at index.css@30
-                modules={[Navigation, Pagination]}
+                modules={[Pagination, Mousewheel]}
                 navigation={{
                   prevEl: ".swiper-btn-prev",
                   nextEl: ".swiper-btn-next",
                 }}
                 pagination={{ clickable: true }}
-                slidesPerView={"auto"}
+                slidesPerView={2}
+                spaceBetween={8}
+                breakpoints={{
+                  720: {
+                    slidesPerView: 3,
+                  },
+                  960: {
+                    slidesPerView: 4,
+                    spaceBetween: 16,
+                  },
+                }}
+                mousewheel
               >
-                <SwiperSlide>
-                  <Typography className="py-24" variant="h2">
-                    Hello World
-                  </Typography>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Typography className="py-24" variant="h2">
-                    Hello World
-                  </Typography>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Typography className="py-24" variant="h2">
-                    Hello World
-                  </Typography>
-                </SwiperSlide>
+                {products.map(
+                  (product) =>
+                    product.discountPercentage >= 15 && (
+                      <SwiperSlide key={product.id}>
+                        <div
+                          className={` grid h-[350px] grid-rows-2 rounded-lg bg-white p-4`}
+                        >
+                          <ProductItem product={product} />
+                        </div>
+                      </SwiperSlide>
+                    ),
+                )}
               </Swiper>
             </div>
 
-            <div className="swiper-next-shadow grid place-items-center">
+            <div className="swiper-next-shadow hidden place-items-center lg:grid">
               <Button
                 ripple={false}
                 className={`swiper-btn-next rounded-full bg-white stroke-theme p-2 opacity-70 shadow-sm hover:opacity-100 hover:shadow-none disabled:bg-transparent disabled:stroke-gray-500 disabled:opacity-100 disabled:shadow-none`}
