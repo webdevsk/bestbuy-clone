@@ -109,9 +109,13 @@ const PinnedProducts = () => {
                     product.discountPercentage >= 15 && (
                       <SwiperSlide key={product.id}>
                         <div
-                          className={` grid grid-rows-2 gap-4 rounded-lg bg-white p-4`}
+                          className={` flex flex-col gap-4 rounded-lg bg-white p-4`}
                         >
-                          <ProductItem product={product} />
+                          <ProductItem
+                            product={product}
+                            showDiscount={true}
+                            showRating={true}
+                          />
                         </div>
                       </SwiperSlide>
                     ),

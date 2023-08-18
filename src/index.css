@@ -71,3 +71,7 @@
     position: static;
   }
 }
+
+.currency::first-letter {
+  font-size: 0.8em;
+}
