@@ -93,6 +93,7 @@ const PinnedProducts = () => {
                 pagination={{ clickable: true }}
                 slidesPerView={2}
                 spaceBetween={8}
+                mousewheel
                 breakpoints={{
                   720: {
                     slidesPerView: 3,
@@ -102,11 +103,12 @@ const PinnedProducts = () => {
                     spaceBetween: 16,
                   },
                 }}
-                mousewheel
               >
                 {products.map(
                   (product) =>
-                    product.discountPercentage >= 15 && (
+                    product.discountPercentage >= 10 &&
+                    (product.category === "smartphones" ||
+                      product.category === "laptops") && (
                       <SwiperSlide key={product.id}>
                         <div
                           className={` flex flex-col gap-4 rounded-lg bg-white p-4`}

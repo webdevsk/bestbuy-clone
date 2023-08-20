@@ -2,7 +2,7 @@ import ProductItem from "../../components/ProductItem"
 import Hero from "./Hero"
 import PinnedProducts from "./PinnedProducts"
 
-const Home = () => {
+const HomePage = () => {
   return (
     <>
       <Hero />
@@ -11,4 +11,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomePage
