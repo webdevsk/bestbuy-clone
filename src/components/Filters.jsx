@@ -93,7 +93,7 @@ const Filters = ({ products }) => {
                 <input
                   type="text"
                   placeholder="$"
-                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
+                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] placeholder:text-body focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
                   onKeyDown={(event) =>
                     !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
                   }
@@ -107,7 +107,7 @@ const Filters = ({ products }) => {
                 <input
                   type="text"
                   placeholder="$"
-                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
+                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] placeholder:text-body focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
                   onKeyDown={(event) =>
                     !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
                   }

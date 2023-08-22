@@ -22,6 +22,7 @@ const ProductItem = ({
           className={`aspect-square w-full object-contain ${imageClass ?? ""}`}
           src={product?.thumbnail}
           alt={product?.title}
+          loading="lazy"
           {...imageProps}
         />
       </div>

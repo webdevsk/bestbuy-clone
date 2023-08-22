@@ -7,7 +7,7 @@ const ProductsGallery = () => {
   return (
     <>
       <section>
-        <div className="container flex divide-x border-b xl:px-0">
+        <div className="container flex divide-x divide-[#e0e6ef] border-b border-[#e0e6ef] xl:px-0">
           <div className="hidden xl:block xl:w-1/6">
             <Filters products={products} />
           </div>
