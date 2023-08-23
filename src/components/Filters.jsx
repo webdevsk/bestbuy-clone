@@ -14,7 +14,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 
-const Icon = ({ id, open }) => {
+const Icon = ({ open }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +22,7 @@ const Icon = ({ id, open }) => {
       viewBox="0 0 24 24"
       strokeWidth={3}
       className={`${
-        id === open ? "rotate-180" : ""
+        open ? "rotate-180" : ""
       } mr-4 mt-1 h-5 w-5 stroke-gray-700 transition-transform group-hover:stroke-theme`}
     >
       <path
@@ -39,15 +39,30 @@ const createUnique = (arr, key) => [
 ]
 
 const Filters = ({ products }) => {
-  const [open, setOpen] = useState(4)
-  const handleOpen = (value) => setOpen(open === value ? 0 : value)
+  const [openObj, setOpenObj] = useState({
+    category: true,
+    // brands: true,
+    price: true,
+    rating: true,
+  })
+
+  const isOpen = (key) => key in openObj && openObj[key]
+
+  const handleOpenObj = (key) =>
+    setOpenObj((openObj) => ({
+      ...openObj,
+      [key]: key in openObj ? !openObj[key] : true,
+    }))
 
   return (
     <>
-      <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+      <Accordion
+        open={isOpen("category")}
+        icon={<Icon open={isOpen("category")} />}
+      >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
-          onClick={() => handleOpen(1)}
+          onClick={() => handleOpenObj("category")}
         >
           Category
         </AccordionHeader>
@@ -62,10 +77,13 @@ const Filters = ({ products }) => {
         </AccordionBody>
       </Accordion>
 
-      <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
+      <Accordion
+        open={isOpen("brands")}
+        icon={<Icon open={isOpen("brands")} />}
+      >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
-          onClick={() => handleOpen(2)}
+          onClick={() => handleOpenObj("brands")}
         >
           Brands
         </AccordionHeader>
@@ -80,10 +98,10 @@ const Filters = ({ products }) => {
         </AccordionBody>
       </Accordion>
 
-      <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
+      <Accordion open={isOpen("price")} icon={<Icon open={isOpen("price")} />}>
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
-          onClick={() => handleOpen(3)}
+          onClick={() => handleOpenObj("price")}
         >
           Price
         </AccordionHeader>
@@ -120,10 +138,13 @@ const Filters = ({ products }) => {
         </AccordionBody>
       </Accordion>
 
-      <Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
+      <Accordion
+        open={isOpen("rating")}
+        icon={<Icon open={isOpen("rating")} />}
+      >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
-          onClick={() => handleOpen(4)}
+          onClick={() => handleOpenObj("rating")}
         >
           Customer Rating
         </AccordionHeader>
