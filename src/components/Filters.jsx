@@ -7,10 +7,11 @@ import {
   Accordion,
   AccordionBody,
   AccordionHeader,
+  Button,
   Radio,
   Typography,
 } from "@material-tailwind/react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 
@@ -53,6 +54,16 @@ const Filters = ({ products }) => {
       ...openObj,
       [key]: key in openObj ? !openObj[key] : true,
     }))
+
+  //Disable Price filter button when no value is present
+  const priceBtnRef = useRef(null)
+  const minPriceRef = useRef(null)
+  const maxPriceRef = useRef(null)
+
+  const handlePriceBtn = () => {
+    priceBtnRef.current.disabled =
+      minPriceRef.current.value === "" && maxPriceRef.current.value === ""
+  }
 
   return (
     <>
@@ -106,34 +117,45 @@ const Filters = ({ products }) => {
           Price
         </AccordionHeader>
         <AccordionBody className="py-0 pb-4 text-body">
-          <div className="flex flex-col gap-2 pl-1 pr-4">
-            <div className="flex items-center gap-2">
-              <div className="w-1 grow">
-                <Typography>Min</Typography>
-                <input
-                  type="text"
-                  placeholder="$"
-                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] placeholder:text-body focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
-                  onKeyDown={(event) =>
-                    !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
-                  }
-                ></input>
-              </div>
-
-              <div className="pt-5">-</div>
-
-              <div className="w-1 grow">
-                <Typography>Max</Typography>
-                <input
-                  type="text"
-                  placeholder="$"
-                  className="max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] placeholder:text-body focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900"
-                  onKeyDown={(event) =>
-                    !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
-                  }
-                ></input>
-              </div>
+          <div className="flex flex-wrap items-center gap-2 pl-1 pr-4">
+            <div className="w-1 grow">
+              <Typography>Min</Typography>
+              <input
+                type="text"
+                placeholder="$"
+                className=""
+                ref={minPriceRef}
+                onChange={handlePriceBtn}
+                onKeyDown={(event) => {
+                  !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
+                }}
+              ></input>
             </div>
+
+            <div className="pt-5">-</div>
+
+            <div className="w-1 grow">
+              <Typography>Max</Typography>
+              <input
+                type="text"
+                placeholder="$"
+                className=""
+                ref={maxPriceRef}
+                onChange={handlePriceBtn}
+                onKeyDown={(event) =>
+                  !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
+                }
+              ></input>
+            </div>
+
+            <Button
+              ref={priceBtnRef}
+              size="lg"
+              disabled
+              className="mt-2 w-full bg-theme disabled:bg-blue-gray-200 disabled:text-body"
+            >
+              Apply Filters
+            </Button>
           </div>
         </AccordionBody>
       </Accordion>

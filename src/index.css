@@ -16,6 +16,11 @@
   section {
     @apply mb-12 xl:mb-24;
   }
+
+  input[type="text"],
+  select {
+    @apply max-w-full rounded-sm border border-gray-600 p-4 ring-4 ring-transparent ring-offset-1 ring-offset-transparent transition-[box-shadow] placeholder:text-body focus-visible:border-blue-900 focus-visible:outline-none focus-visible:ring-blue-100 focus-visible:ring-offset-blue-900;
+  }
 }
 
 @layer utilities {
