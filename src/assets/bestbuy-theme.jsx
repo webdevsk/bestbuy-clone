@@ -1,3 +1,5 @@
+import { radio } from "@material-tailwind/react"
+
 export const theme = {
   typography: {
     defaultProps: {},
@@ -13,7 +15,9 @@ export const theme = {
     },
   },
   button: {
-    defaultProps: {},
+    defaultProps: {
+      ripple: false,
+    },
     styles: {
       sizes: {
         sm: { className: "rounded-sm" },
@@ -22,4 +26,32 @@ export const theme = {
       },
     },
   },
-};
+  radio: {
+    defaultProps: {
+      ripple: false,
+    },
+    valid: {
+      colors: [...radio.valid.colors, "theme"],
+    },
+    styles: {
+      base: {
+        container: {
+          p: "px-3",
+        },
+        input: {
+          before: {
+            width: "before:w-8",
+            height: "before:h-8",
+          },
+        },
+      },
+      colors: {
+        theme: {
+          color: "text-theme",
+          border: "checked:border-theme",
+          before: "checked:before:bg-theme",
+        },
+      },
+    },
+  },
+}

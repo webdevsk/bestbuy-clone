@@ -7,10 +7,12 @@ import {
   Accordion,
   AccordionBody,
   AccordionHeader,
+  Radio,
   Typography,
 } from "@material-tailwind/react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import RatingBar from "./RatingBar"
 
 const Icon = ({ id, open }) => {
   return (
@@ -37,19 +39,19 @@ const createUnique = (arr, key) => [
 ]
 
 const Filters = ({ products }) => {
-  const [open, setOpen] = useState(3)
+  const [open, setOpen] = useState(4)
   const handleOpen = (value) => setOpen(open === value ? 0 : value)
 
   return (
     <>
       <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
         <AccordionHeader
-          className="text-md group border-none text-black hover:text-theme"
+          className="text-md group border-none text-body hover:text-theme"
           onClick={() => handleOpen(1)}
         >
           Category
         </AccordionHeader>
-        <AccordionBody className="py-0 pb-4 capitalize text-inherit">
+        <AccordionBody className="py-0 pb-4 capitalize text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "category").map((category) => (
               <Link to={"/" + category} key="product.id">
@@ -62,12 +64,12 @@ const Filters = ({ products }) => {
 
       <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
         <AccordionHeader
-          className="text-md group border-none text-black hover:text-theme"
+          className="text-md group border-none text-body hover:text-theme"
           onClick={() => handleOpen(2)}
         >
           Brands
         </AccordionHeader>
-        <AccordionBody className="py-0 pb-4 capitalize text-inherit">
+        <AccordionBody className="text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "brand").map((brand) => (
               <Link to={"/" + brand} key="product.id">
@@ -80,12 +82,12 @@ const Filters = ({ products }) => {
 
       <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
         <AccordionHeader
-          className="text-md group border-none text-black hover:text-theme"
+          className="text-md group border-none text-body hover:text-theme"
           onClick={() => handleOpen(3)}
         >
           Price
         </AccordionHeader>
-        <AccordionBody className="py-0 pb-4 text-inherit">
+        <AccordionBody className="py-0 pb-4 text-body">
           <div className="flex flex-col gap-2 pl-1 pr-4">
             <div className="flex items-center gap-2">
               <div className="w-1 grow">
@@ -115,6 +117,84 @@ const Filters = ({ products }) => {
               </div>
             </div>
           </div>
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
+        <AccordionHeader
+          className="text-md group border-none text-body hover:text-theme"
+          onClick={() => handleOpen(4)}
+        >
+          Customer Rating
+        </AccordionHeader>
+        <AccordionBody className="text-body">
+          <ul className="flex flex-col gap-y-2">
+            <li>
+              <Radio
+                id="showAll"
+                name="rating"
+                ripple={false}
+                color="theme"
+                defaultChecked
+                label="Show All"
+              ></Radio>
+            </li>
+
+            <li>
+              <Radio
+                id="5stars"
+                name="rating"
+                ripple={false}
+                color="theme"
+                label={
+                  <div className="inline-flex items-center gap-1">
+                    <RatingBar rating={5} />
+                    <span>5 Stars</span>
+                  </div>
+                }
+              ></Radio>
+            </li>
+
+            <li>
+              <Radio
+                id="4stars"
+                name="rating"
+                ripple={false}
+                color="theme"
+                label={
+                  <div className="inline-flex items-center gap-1">
+                    <RatingBar rating={4} />
+                    <span>4 Stars & up</span>
+                  </div>
+                }
+              ></Radio>
+            </li>
+
+            <li>
+              <Radio
+                id="3stars"
+                name="rating"
+                ripple={false}
+                color="theme"
+                label={
+                  <div className="inline-flex items-center gap-1">
+                    <RatingBar rating={3} />
+                    <span>3 Stars & up</span>
+                  </div>
+                }
+              ></Radio>
+            </li>
+
+            <li>
+              <Radio
+                id="below-3-stars"
+                name="rating"
+                ripple={false}
+                color="theme"
+                label="3 Stars & below"
+              ></Radio>
+            </li>
+          </ul>
         </AccordionBody>
       </Accordion>
     </>
