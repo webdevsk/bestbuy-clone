@@ -158,6 +158,7 @@ const Filters = ({ products }) => {
                 color="theme"
                 defaultChecked
                 label="Show All"
+                labelProps={{ className: "hover:underline" }}
               ></Radio>
             </li>
 
@@ -168,7 +169,7 @@ const Filters = ({ products }) => {
                 ripple={false}
                 color="theme"
                 label={
-                  <div className="inline-flex items-center gap-1">
+                  <div className="inline-flex items-center gap-1 hover:underline">
                     <RatingBar rating={5} />
                     <span>5 Stars</span>
                   </div>
@@ -183,7 +184,7 @@ const Filters = ({ products }) => {
                 ripple={false}
                 color="theme"
                 label={
-                  <div className="inline-flex items-center gap-1">
+                  <div className="inline-flex items-center gap-1 hover:underline">
                     <RatingBar rating={4} />
                     <span>4 Stars & up</span>
                   </div>
@@ -198,7 +199,7 @@ const Filters = ({ products }) => {
                 ripple={false}
                 color="theme"
                 label={
-                  <div className="inline-flex items-center gap-1">
+                  <div className="inline-flex items-center gap-1 hover:underline">
                     <RatingBar rating={3} />
                     <span>3 Stars & up</span>
                   </div>
@@ -213,6 +214,7 @@ const Filters = ({ products }) => {
                 ripple={false}
                 color="theme"
                 label="3 Stars & below"
+                labelProps={{ className: "hover:underline" }}
               ></Radio>
             </li>
           </ul>

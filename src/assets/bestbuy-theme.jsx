@@ -44,6 +44,10 @@ export const theme = {
             height: "before:h-8",
           },
         },
+        label: {
+          color: "text-body",
+          fontWeight: "font-normal",
+        },
       },
       colors: {
         theme: {
