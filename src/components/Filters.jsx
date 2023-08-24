@@ -77,7 +77,7 @@ const Filters = ({ products }) => {
         >
           Category
         </AccordionHeader>
-        <AccordionBody className="py-0 pb-4 capitalize text-body">
+        <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "category").map((category) => (
               <Link to={"/" + category} key="product.id">
@@ -98,7 +98,7 @@ const Filters = ({ products }) => {
         >
           Brands
         </AccordionHeader>
-        <AccordionBody className="text-body">
+        <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "brand").map((brand) => (
               <Link to={"/" + brand} key="product.id">
@@ -116,7 +116,7 @@ const Filters = ({ products }) => {
         >
           Price
         </AccordionHeader>
-        <AccordionBody className="py-0 pb-4 text-body">
+        <AccordionBody className="text-body">
           <div className="flex flex-wrap items-center gap-2 pl-1 pr-4">
             <div className="w-1 grow">
               <Typography>Min</Typography>
@@ -154,7 +154,7 @@ const Filters = ({ products }) => {
               disabled
               className="mt-2 w-full bg-theme disabled:bg-blue-gray-200 disabled:text-body"
             >
-              Apply Filters
+              Apply Price Range
             </Button>
           </div>
         </AccordionBody>

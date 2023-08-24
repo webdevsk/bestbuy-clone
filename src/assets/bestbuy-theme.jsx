@@ -1,3 +1,6 @@
+//This page contains overrides for Material-Tailwind components only
+//For font family and base html overrides, check tailwind.config.js and index.css
+
 import { radio } from "@material-tailwind/react"
 
 export const theme = {
@@ -54,6 +57,15 @@ export const theme = {
           color: "text-theme",
           border: "checked:border-theme",
           before: "checked:before:bg-theme",
+        },
+      },
+    },
+  },
+  accordion: {
+    styles: {
+      base: {
+        body: {
+          className: "pt-0",
         },
       },
     },
