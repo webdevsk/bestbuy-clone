@@ -43,7 +43,6 @@ export const theme = {
           m: "mr-2",
         },
         input: {
-          // className: "checked:circle-checked",
           w: "w-[1.2rem]",
           h: "h-[1.2rem]",
           before: {
@@ -54,6 +53,10 @@ export const theme = {
         label: {
           color: "text-body",
           fontWeight: "font-normal",
+        },
+        icon: {
+          opacity:
+            "opacity-0 peer-hover:opacity-20 peer-checked:opacity-100 peer-checked:peer-hover:opacity-100",
         },
       },
       colors: {

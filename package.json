@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@floating-ui/react-dom": "^2.0.1",
     "@fontsource-variable/inter-tight": "^5.0.9",
     "@fontsource/dm-sans": "^5.0.8",
+    "@headlessui/react": "^1.7.17",
     "@material-tailwind/react": "^2.1.0",
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "react": "^18.2.0",
