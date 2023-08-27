@@ -39,9 +39,13 @@ export const theme = {
     styles: {
       base: {
         container: {
-          p: "px-3",
+          p: "p-0",
+          m: "mr-2",
         },
         input: {
+          // className: "checked:circle-checked",
+          w: "w-[1.2rem]",
+          h: "h-[1.2rem]",
           before: {
             width: "before:w-8",
             height: "before:h-8",

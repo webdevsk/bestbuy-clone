@@ -152,7 +152,7 @@ const Filters = ({ products }) => {
               ref={priceBtnRef}
               size="lg"
               disabled
-              className="mt-2 w-full bg-theme disabled:bg-blue-gray-200 disabled:text-body"
+              className="mt-2 w-full bg-theme disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
             >
               Apply Price Range
             </Button>
@@ -171,74 +171,65 @@ const Filters = ({ products }) => {
           Customer Rating
         </AccordionHeader>
         <AccordionBody className="text-body">
-          <ul className="flex flex-col gap-y-2">
-            <li>
-              <Radio
-                id="showAll"
-                name="rating"
-                ripple={false}
-                color="theme"
-                defaultChecked
-                label="Show All"
-                labelProps={{ className: "hover:underline" }}
-              ></Radio>
-            </li>
+          <ul className="flex flex-col gap-y-2 p-2">
+            <Radio
+              id="showAll"
+              name="rating"
+              ripple={false}
+              color="theme"
+              className=""
+              defaultChecked
+              label="Show All"
+              labelProps={{ className: "hover:underline" }}
+            ></Radio>
 
-            <li>
-              <Radio
-                id="5stars"
-                name="rating"
-                ripple={false}
-                color="theme"
-                label={
-                  <div className="inline-flex items-center gap-1 hover:underline">
-                    <RatingBar rating={5} />
-                    <span>5 Stars</span>
-                  </div>
-                }
-              ></Radio>
-            </li>
+            <Radio
+              id="5stars"
+              name="rating"
+              ripple={false}
+              color="theme"
+              label={
+                <div className="inline-flex items-center gap-1 hover:underline">
+                  <RatingBar rating={5} />
+                  <span>5 Stars</span>
+                </div>
+              }
+            ></Radio>
 
-            <li>
-              <Radio
-                id="4stars"
-                name="rating"
-                ripple={false}
-                color="theme"
-                label={
-                  <div className="inline-flex items-center gap-1 hover:underline">
-                    <RatingBar rating={4} />
-                    <span>4 Stars & up</span>
-                  </div>
-                }
-              ></Radio>
-            </li>
+            <Radio
+              id="4stars"
+              name="rating"
+              ripple={false}
+              color="theme"
+              label={
+                <div className="inline-flex items-center gap-1 hover:underline">
+                  <RatingBar rating={4} />
+                  <span>4 Stars & up</span>
+                </div>
+              }
+            ></Radio>
 
-            <li>
-              <Radio
-                id="3stars"
-                name="rating"
-                ripple={false}
-                color="theme"
-                label={
-                  <div className="inline-flex items-center gap-1 hover:underline">
-                    <RatingBar rating={3} />
-                    <span>3 Stars & up</span>
-                  </div>
-                }
-              ></Radio>
-            </li>
+            <Radio
+              id="3stars"
+              name="rating"
+              ripple={false}
+              color="theme"
+              label={
+                <div className="inline-flex items-center gap-1 hover:underline">
+                  <RatingBar rating={3} />
+                  <span>3 Stars & up</span>
+                </div>
+              }
+            ></Radio>
 
-            <li>
-              <Radio
-                id="below-3-stars"
-                name="rating"
-                ripple={false}
-                color="theme"
-                label="3 Stars & below"
-                labelProps={{ className: "hover:underline" }}
-              ></Radio>
-            </li>
+            <Radio
+              id="below-3-stars"
+              name="rating"
+              ripple={false}
+              color="theme"
+              label="3 Stars & below"
+              labelProps={{ className: "hover:underline" }}
+            ></Radio>
           </ul>
         </AccordionBody>
       </Accordion>
