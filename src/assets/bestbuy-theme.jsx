@@ -14,6 +14,7 @@ export const theme = {
         h4: { fontSize: "text-base lg:text-xl" },
         h6: { fontSize: "text-sm lg:text-base" },
         paragraph: { fontSize: "text-sm lg:text-base" },
+        small: { fontSize: "text-xs lg:text-sm" },
       },
     },
   },
@@ -22,6 +23,11 @@ export const theme = {
       ripple: false,
     },
     styles: {
+      base: {
+        initial: {
+          textTransform: "",
+        },
+      },
       sizes: {
         sm: { className: "rounded-sm" },
         md: { className: "rounded-sm" },

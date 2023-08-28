@@ -16,7 +16,7 @@ const PinnedProducts = () => {
     <>
       <section
         id="pinned-product"
-        className="container rounded-xl bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6"
+        className="container bg-gradient-to-r from-gray-200 from-0% to-gray-300 to-100% py-6 xl:rounded-xl"
       >
         <div className="grid gap-4 2xl:grid-cols-[1fr_2fr]">
           <div className="flex flex-col gap-y-2">
@@ -115,7 +115,9 @@ const PinnedProducts = () => {
                         >
                           <ProductItem
                             product={product}
+                            titleVariant="small"
                             showDiscount={true}
+                            titleClass={"font-serif font-medium"}
                             showRating={true}
                           />
                         </div>

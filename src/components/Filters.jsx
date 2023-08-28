@@ -14,26 +14,7 @@ import {
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
-
-const Icon = ({ open }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={3}
-      className={`${
-        open ? "rotate-180" : ""
-      } mr-4 mt-1 h-5 w-5 stroke-gray-700 transition-transform group-hover:stroke-theme`}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-      />
-    </svg>
-  )
-}
+import IconDownLine from "./ui/IconDownLine"
 
 const createUnique = (arr, key) => [
   ...new Map(arr.map((item) => [item[key], item])).keys(),
@@ -69,7 +50,7 @@ const Filters = ({ products }) => {
     <>
       <Accordion
         open={isOpen("category")}
-        icon={<Icon open={isOpen("category")} />}
+        icon={<IconDownLine open={isOpen("category")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -90,7 +71,7 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("brands")}
-        icon={<Icon open={isOpen("brands")} />}
+        icon={<IconDownLine open={isOpen("brands")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -109,7 +90,10 @@ const Filters = ({ products }) => {
         </AccordionBody>
       </Accordion>
 
-      <Accordion open={isOpen("price")} icon={<Icon open={isOpen("price")} />}>
+      <Accordion
+        open={isOpen("price")}
+        icon={<IconDownLine open={isOpen("price")} />}
+      >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("price")}
@@ -162,7 +146,7 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("rating")}
-        icon={<Icon open={isOpen("rating")} />}
+        icon={<IconDownLine open={isOpen("rating")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"

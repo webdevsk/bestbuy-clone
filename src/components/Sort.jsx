@@ -1,6 +1,8 @@
 import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom"
 import { Listbox } from "@headlessui/react"
+import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
+import IconDownFilled from "./ui/IconDownFilled"
 
 const sortOptions = [
   {
@@ -29,10 +31,17 @@ const Sort = () => {
       <Listbox value={selected} onChange={setSelected}>
         <Listbox.Button
           ref={refs.setReference}
-          className="w-40 bg-white px-4 py-2 text-left ring-4 ring-transparent ring-offset-1 ring-offset-gray-400 transition-shadow focus-visible:outline-none aria-expanded:ring-blue-100 aria-expanded:ring-offset-blue-900"
+          className="flex w-40 items-center justify-between rounded-sm border border-gray-500 bg-white px-4 py-3 text-left ring-4 ring-transparent ring-offset-2 ring-offset-transparent transition-shadow focus-visible:outline-none aria-expanded:ring-blue-100 aria-expanded:ring-offset-blue-900"
         >
-          {selected?.label}
+          {({ open }) => (
+            <>
+              <Typography>{selected?.label}</Typography>
+
+              <IconDownFilled open={open} />
+            </>
+          )}
         </Listbox.Button>
+
         <Listbox.Options
           ref={refs.setFloating}
           style={floatingStyles}
@@ -40,11 +49,11 @@ const Sort = () => {
         >
           {sortOptions.map((option) => (
             <Listbox.Option
-              className="cursor-pointer px-4 py-2 antialiased hover:bg-gray-100"
+              className="cursor-pointer px-4 py-3 hover:bg-gray-100"
               key={option.label}
               value={option}
             >
-              {option.label}
+              <Typography>{option.label}</Typography>
             </Listbox.Option>
           ))}
         </Listbox.Options>
