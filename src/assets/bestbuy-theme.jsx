@@ -83,4 +83,32 @@ export const theme = {
       },
     },
   },
+  iconButton: {
+    defaultProps: {
+      variant: "text",
+      ripple: false,
+      size: "sm",
+      className: "hover:bg-transparent active:bg-transparent",
+    },
+    valid: {
+      colors: ["white", "theme"],
+    },
+    styles: {
+      base: {
+        textTransform: "normal-case",
+      },
+      variants: {
+        text: {
+          white: {
+            color: "text-white",
+            hover: "hover:text-accent",
+            active: "active:text-accent",
+          },
+          theme: {
+            color: "text-theme",
+          },
+        },
+      },
+    },
+  },
 }

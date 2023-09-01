@@ -38,7 +38,7 @@ const ProductItem = ({
         }`}
         {...labelProps}
       >
-        <div>
+        <div className="flex flex-col gap-y-1">
           <Link to={`/product/${product?.id}`}>
             <Typography
               className={`${titleClass} hover:underline`}
@@ -50,7 +50,7 @@ const ProductItem = ({
 
           {showRating && <RatingBar rating={product?.rating} />}
 
-          <div className="mt-2 flex flex-col justify-between">
+          <div className="flex flex-col justify-between">
             {product?.discountPercentage > 0 && showDiscount && (
               <Typography className="currency line-through" variant="h6">
                 {USDollar.format(
@@ -75,7 +75,7 @@ const ProductItem = ({
           {showAddtocart && (
             <Button
               variant=""
-              className={`mt-4 w-full bg-gray-200 text-black transition-all duration-300 hover:bg-accent`}
+              className={`mt-4 w-full bg-gray-200 text-black hover:bg-accent`}
             >
               <Typography variant="h6">Add to Cart</Typography>
             </Button>

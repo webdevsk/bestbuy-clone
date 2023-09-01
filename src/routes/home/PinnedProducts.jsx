@@ -116,9 +116,9 @@ const PinnedProducts = () => {
                           <ProductItem
                             product={product}
                             titleVariant="small"
-                            showDiscount={true}
+                            // showDiscount
                             titleClass={"font-serif font-medium"}
-                            showRating={true}
+                            showRating
                           />
                         </div>
                       </SwiperSlide>
