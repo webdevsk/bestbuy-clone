@@ -23,8 +23,8 @@ const topMiniMenu = [
 const Header = () => {
   return (
     <section className="mb-0 bg-theme py-4 text-white">
-      <div className="container flex flex-wrap gap-4">
-        <div>
+      <div className="container flex flex-wrap items-center gap-4">
+        <div className="order-1 -mt-2">
           <Link to="/" className="flex items-end gap-1">
             <img src="src/assets/images/logo.png" alt="" width="32" />
             <Typography variant="h5" className=" leading-none">
@@ -33,7 +33,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="ms-auto">
+        <div className="order-2 ms-auto lg:order-3 ">
           <div className="flex flex-wrap justify-end gap-4">
             <div className="hidden w-full flex-wrap gap-3 xl:flex">
               {topMiniMenu.map((menu) => (
@@ -89,7 +89,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div>
+        <div className="order-3 w-full lg:order-2 lg:w-96">
           <SearchBar />
         </div>
       </div>
