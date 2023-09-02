@@ -1,13 +1,14 @@
-const IconDownLine = ({ open, className }) => {
+const IconDownLine = ({ open, className = "h-5 w-5" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={3}
+      stroke="currentColor"
       className={`${className} ${
         open ? "rotate-180" : ""
-      } mr-4 mt-1 h-5 w-5 stroke-gray-700 transition-transform group-hover:stroke-theme`}
+      } mr-4 mt-1 text-inherit transition-transform`}
     >
       <path
         strokeLinecap="round"
