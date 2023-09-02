@@ -1,4 +1,3 @@
-import { IconButton } from "@material-tailwind/react"
 import { useState } from "react"
 
 const SearchBar = ({
@@ -12,10 +11,8 @@ const SearchBar = ({
   const [focus, setFocus] = useState(false)
   const [input, setInput] = useState("")
 
-  const clearInput = () => setInput("")
-
-  // const active = !focus ? false : input === "" ? false : true
-  const active = input === "" ? false : true
+  const active = !focus ? false : input === "" ? false : true
+  // const active = input === "" ? false : true
 
   return (
     <>
@@ -23,15 +20,20 @@ const SearchBar = ({
         <div className="grid w-20 place-items-center border lg:hidden">
           <button>Hello</button>
         </div>
-        <div className="absolute left-20 top-0 z-10 h-full w-[calc(100%_-_5rem)] transition-transform duration-300 hover:-translate-x-20 lg:left-0 lg:w-full">
+        <div
+          className={`${
+            focus ? "-translate-x-20 lg:-translate-x-0" : ""
+          } absolute left-20 top-0 z-10 h-full w-[calc(100%_-_5rem)] transition-transform duration-300 lg:left-0 lg:w-full`}
+        >
           <div
+            id="inputContainer"
             className={`${containerClass} relative flex h-full w-full flex-wrap gap-0 bg-white`}
           >
             <input
               {...inputProps}
+              onChange={(e) => setInput(e.currentTarget.value)}
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
-              onChange={(e) => setInput(e.currentTarget.value)}
               value={input}
               type="text"
               name={name}
@@ -43,9 +45,14 @@ const SearchBar = ({
             <div
               className={`${
                 active ? "visible z-0 -translate-x-2" : "invisible"
-              }  absolute right-8 top-1/2  -z-10 grid h-6 w-8 -translate-y-1/2 place-items-center border-e border-gray-500 transition-transform `}
+              } absolute right-8 top-1/2  -z-10 grid h-6 w-8 -translate-y-1/2 place-items-center border-e border-gray-500 transition-transform`}
             >
-              <button onClick={clearInput}>
+              <button
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  setInput("")
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -82,7 +89,7 @@ const SearchBar = ({
         </div>
         <button
           className="lg-hidden grid w-20 place-items-center border"
-          onClick={clearInput}
+          onClick={() => setFocus(false)}
         >
           Cancel
         </button>
