@@ -1,6 +1,7 @@
-import { Button, IconButton, Typography } from "@material-tailwind/react"
+import { Button, Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./ui/SearchBar"
+import { useEffect } from "react"
 
 const topMiniMenu = [
   {
@@ -21,30 +22,49 @@ const topMiniMenu = [
 ]
 
 const Header = () => {
+  // useEffect(() => {
+  //   function handleResize() {}
+  //   handleResize()
+  //   window.addEventListener("resize", handleResize)
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize)
+  //   }
+  // })
   return (
     <section className="mb-0 bg-theme py-4 text-white">
-      <div className="container flex flex-wrap items-center gap-4">
+      <div className="container flex flex-wrap items-center gap-x-4 gap-y-4">
+        <div className="hidden w-full flex-wrap justify-end gap-3 xl:flex">
+          {topMiniMenu.map((menu) => (
+            <Link key={menu.id} to={menu.link} className="hover:underline">
+              <Typography variant="small">{menu.label}</Typography>
+            </Link>
+          ))}
+        </div>
+
         <div className="order-1 -mt-2">
           <Link to="/" className="flex items-end gap-1">
-            <img src="src/assets/images/logo.png" alt="" width="32" />
-            <Typography variant="h5" className=" leading-none">
-              BestBuy
-            </Typography>
+            <img src="src/assets/images/logo.png" alt="" width="48" />
+            <div className="-mb-1">
+              <Typography
+                variant="h3"
+                className="font-serif leading-none lg:leading-none"
+              >
+                Best
+              </Typography>
+              <Typography
+                variant="h3"
+                className="font-serif leading-none lg:leading-none"
+              >
+                Buy
+              </Typography>
+            </div>
           </Link>
         </div>
 
         <div className="order-2 ms-auto lg:order-3 ">
-          <div className="flex flex-wrap justify-end gap-4">
-            <div className="hidden w-full flex-wrap gap-3 xl:flex">
-              {topMiniMenu.map((menu) => (
-                <Link key={menu.key} to={menu.link} className="hover:underline">
-                  <Typography variant="small">{menu.label}</Typography>
-                </Link>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-4">
             <Button
               variant="text"
-              size="xl"
               className="flex flex-wrap items-end gap-1 p-0 text-white hover:bg-transparent hover:text-accent active:bg-transparent"
             >
               <svg
@@ -66,7 +86,6 @@ const Header = () => {
 
             <Button
               variant="text"
-              size="xl"
               className="flex flex-wrap items-end gap-1 p-0 text-white hover:bg-transparent hover:text-accent active:bg-transparent"
             >
               <svg

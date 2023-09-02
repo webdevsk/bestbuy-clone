@@ -1,3 +1,4 @@
+import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
 
 const SearchBar = ({
@@ -12,22 +13,21 @@ const SearchBar = ({
   const [input, setInput] = useState("")
 
   const active = !focus ? false : input === "" ? false : true
-  // const active = input === "" ? false : true
 
   return (
     <>
-      <div className="relative flex h-10 flex-wrap justify-between">
-        <div className="grid w-20 place-items-center border lg:hidden">
+      <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
+        <div className="grid w-16 place-items-center lg:hidden">
           <button>Hello</button>
         </div>
         <div
           className={`${
-            focus ? "-translate-x-20 lg:-translate-x-0" : ""
-          } absolute left-20 top-0 z-10 h-full w-[calc(100%_-_5rem)] transition-transform duration-300 lg:left-0 lg:w-full`}
+            focus ? "-translate-x-16 lg:-translate-x-0" : ""
+          } absolute left-16 top-0 z-10 h-full w-[calc(100%_-_4rem)] transition-transform duration-300 lg:left-0 lg:w-full`}
         >
           <div
             id="inputContainer"
-            className={`${containerClass} relative flex h-full w-full flex-wrap gap-0 bg-white`}
+            className={`${containerClass} relative flex h-full w-full flex-wrap gap-0 rounded-sm bg-white`}
           >
             <input
               {...inputProps}
@@ -38,7 +38,7 @@ const SearchBar = ({
               type="text"
               name={name}
               id={id}
-              className={`${className} generic  w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0 focus-visible:outline-none `}
+              className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0 focus-visible:outline-none `}
               style={style}
             />
 
@@ -88,10 +88,10 @@ const SearchBar = ({
           </div>
         </div>
         <button
-          className="lg-hidden grid w-20 place-items-center border"
+          className="lg-hidden grid w-16 items-center justify-end"
           onClick={() => setFocus(false)}
         >
-          Cancel
+          <Typography variant="h6">Cancel</Typography>
         </button>
       </div>
     </>

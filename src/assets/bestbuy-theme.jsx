@@ -1,8 +1,6 @@
 //This page contains overrides for Material-Tailwind components only
 //For font family and base html overrides, check tailwind.config.js and index.css
 
-import { radio } from "@material-tailwind/react"
-
 export const theme = {
   typography: {
     defaultProps: {},
@@ -40,7 +38,7 @@ export const theme = {
       ripple: false,
     },
     valid: {
-      colors: [...radio.valid.colors, "theme"],
+      colors: ["theme"],
     },
     styles: {
       base: {

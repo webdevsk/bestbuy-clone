@@ -74,7 +74,6 @@ const ProductItem = ({
         <div>
           {showAddtocart && (
             <Button
-              variant=""
               className={`mt-4 w-full bg-gray-200 text-black hover:bg-accent`}
             >
               <Typography variant="h6">Add to Cart</Typography>

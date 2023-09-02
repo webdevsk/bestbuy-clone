@@ -61,7 +61,7 @@ const Filters = ({ products }) => {
         <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "category").map((category) => (
-              <Link to={"/" + category} key="product.id">
+              <Link to={"/" + category} key={category}>
                 <Typography className="hover:underline">{category}</Typography>
               </Link>
             ))}
@@ -82,7 +82,7 @@ const Filters = ({ products }) => {
         <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
             {createUnique(products, "brand").map((brand) => (
-              <Link to={"/" + brand} key="product.id">
+              <Link to={"/" + brand} key={brand}>
                 <Typography className="hover:underline">{brand}</Typography>
               </Link>
             ))}
