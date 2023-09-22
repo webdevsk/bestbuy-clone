@@ -50,9 +50,7 @@ const Filters = ({ products }) => {
     <>
       <Accordion
         open={isOpen("category")}
-        icon={
-          <IconDownLine className="text-gray-700" open={isOpen("category")} />
-        }
+        icon={<IconDownLine open={isOpen("category")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -73,9 +71,7 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("brands")}
-        icon={
-          <IconDownLine className="text-gray-700" open={isOpen("brands")} />
-        }
+        icon={<IconDownLine open={isOpen("brands")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -96,7 +92,7 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("price")}
-        icon={<IconDownLine className="text-gray-700" open={isOpen("price")} />}
+        icon={<IconDownLine open={isOpen("price")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -150,9 +146,7 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("rating")}
-        icon={
-          <IconDownLine className="text-gray-700" open={isOpen("rating")} />
-        }
+        icon={<IconDownLine open={isOpen("rating")} />}
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"

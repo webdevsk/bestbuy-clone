@@ -18,7 +18,12 @@ const SearchBar = ({
     <>
       <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
         <div className="grid w-16 place-items-center lg:hidden">
-          <button>Hello</button>
+          {/* Burger menu */}
+          <BurgerMenuBtn
+            onClick={() => {
+              console.log("borgir")
+            }}
+          />
         </div>
         <div
           className={`${
@@ -70,7 +75,12 @@ const SearchBar = ({
               </button>
             </div>
 
-            <button className="grid w-10 appearance-none place-items-center stroke-2 text-theme focus-visible:outline-none">
+            <button
+              className="grid w-10 appearance-none place-items-center stroke-2 text-theme focus-visible:outline-none"
+              onMouseDown={() => {
+                console.log("Search")
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -99,3 +109,23 @@ const SearchBar = ({
 }
 
 export default SearchBar
+
+const BurgerMenuBtn = (props) => (
+  <button
+    {...props}
+    className="group relative [--_stroke-height:0.2em] [--_stroke-width:1.5em]"
+  >
+    <div className="relative flex h-10 w-10 transform items-center justify-center overflow-hidden transition-all duration-200">
+      <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
+        <div className="origin-left transform rounded bg-white transition-all duration-300 group-focus:translate-x-10"></div>
+        <div className="transform rounded bg-white transition-all delay-75 duration-300 group-focus:translate-x-10"></div>
+        <div className="origin-left transform rounded bg-white transition-all delay-150 duration-300 group-focus:translate-x-10"></div>
+
+        <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 group-focus:w-12 group-focus:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
+          <div className="absolute rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:rotate-45"></div>
+          <div className="absolute -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:-rotate-45"></div>
+        </div>
+      </div>
+    </div>
+  </button>
+)
