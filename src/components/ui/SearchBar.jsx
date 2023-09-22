@@ -17,7 +17,7 @@ const SearchBar = ({
   return (
     <>
       <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
-        <div className="grid w-16 place-items-center lg:hidden">
+        <div className="flex w-10 items-center lg:hidden">
           {/* Burger menu */}
           <BurgerMenuBtn
             onClick={() => {
@@ -27,8 +27,10 @@ const SearchBar = ({
         </div>
         <div
           className={`${
-            focus ? "-translate-x-16 lg:-translate-x-0" : ""
-          } absolute left-16 top-0 z-10 h-full w-[calc(100%_-_4rem)] transition-transform duration-300 lg:left-0 lg:w-full`}
+            focus
+              ? "w-[calc(100%_-_4rem)] -translate-x-10 lg:-translate-x-0"
+              : "w-[calc(100%_-_2.5rem)]"
+          } absolute left-10 top-0 z-10 h-full  transition-all duration-300 lg:left-0 lg:w-full`}
         >
           <div
             id="inputContainer"
@@ -40,6 +42,7 @@ const SearchBar = ({
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
               value={input}
+              placeholder="Search BestBuy"
               type="text"
               name={name}
               id={id}
@@ -115,15 +118,15 @@ const BurgerMenuBtn = (props) => (
     {...props}
     className="group relative [--_stroke-height:0.2em] [--_stroke-width:1.5em]"
   >
-    <div className="relative flex h-10 w-10 transform items-center justify-center overflow-hidden transition-all duration-200">
-      <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
-        <div className="origin-left transform rounded bg-white transition-all duration-300 group-focus:translate-x-10"></div>
-        <div className="transform rounded bg-white transition-all delay-75 duration-300 group-focus:translate-x-10"></div>
-        <div className="origin-left transform rounded bg-white transition-all delay-150 duration-300 group-focus:translate-x-10"></div>
+    <div className="relative flex transform overflow-hidden transition-all duration-200">
+      <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300">
+        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 group-focus:translate-x-10"></div>
+        <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 group-focus:translate-x-10"></div>
+        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 group-focus:translate-x-10"></div>
 
         <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 group-focus:w-12 group-focus:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
-          <div className="absolute rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:rotate-45"></div>
-          <div className="absolute -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:-rotate-45"></div>
+          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:rotate-45"></div>
+          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:-rotate-45"></div>
         </div>
       </div>
     </div>
