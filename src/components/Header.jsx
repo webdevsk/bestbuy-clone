@@ -1,6 +1,6 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
-import SearchBar from "./ui/SearchBar"
+import SearchBar from "./SearchBar"
 import { useEffect, useState } from "react"
 import IconDownLine from "./ui/IconDownLine"
 
