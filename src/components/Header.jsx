@@ -3,17 +3,19 @@ import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import { useEffect, useState } from "react"
 import IconDownLine from "./ui/IconDownLine"
+import FloatingDropDownMenu from "./ui/FloatingDropDownMenu"
+import { Popover } from "@headlessui/react"
 
 const mainMenu = [
   {
     id: 1,
     label: "Shop",
-    items: [],
+    items: ["Dress", "Phones"],
   },
   {
     id: 2,
     label: "Brands",
-    items: [],
+    items: ["Apple", "Samsung"],
   },
 ]
 
@@ -142,17 +144,15 @@ const Header = () => {
             </div>
           )}
 
-          <ul className="flex flex-wrap gap-2 py-2">
+          <Popover.Group className="flex flex-wrap gap-2 py-2">
             {mainMenu.map((menu) => (
-              <button
-                key={menu.id}
-                className="group flex gap-1 hover:text-accent"
-              >
-                <Typography variant="h6">{menu.label}</Typography>
-                <IconDownLine className="h-4 w-4"></IconDownLine>
-              </button>
+              <FloatingDropDownMenu key={menu.id} buttonLabel={menu.label}>
+                {menu.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </FloatingDropDownMenu>
             ))}
-          </ul>
+          </Popover.Group>
         </div>
       </section>
     </div>
