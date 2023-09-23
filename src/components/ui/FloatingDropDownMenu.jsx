@@ -39,13 +39,11 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
       arrow({ element: arrowRef }),
     ],
   })
-  const click = useClick(context)
-  const dismiss = useDismiss(context)
-  const { isMounted, styles } = useTransitionStyles(context)
 
+  const { isMounted, styles } = useTransitionStyles(context)
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
+    useClick(context),
+    useDismiss(context),
   ])
 
   return (
@@ -67,7 +65,7 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
             style={{ ...floatingStyles, ...styles }}
           >
             <div
-              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black transition-all duration-1000`}
+              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
             >
               {children}
             </div>
