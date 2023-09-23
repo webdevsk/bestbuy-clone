@@ -1,4 +1,4 @@
-import { autoUpdate, flip, useFloating } from "@floating-ui/react-dom"
+import { autoUpdate, flip, useFloating } from "@floating-ui/react"
 import { Listbox } from "@headlessui/react"
 import { Typography } from "@material-tailwind/react"
 import { useState } from "react"

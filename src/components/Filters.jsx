@@ -15,10 +15,7 @@ import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import IconDownLine from "./ui/IconDownLine"
-
-const createUnique = (arr, key) => [
-  ...new Map(arr.map((item) => [item[key], item])).keys(),
-]
+import createUnique from "../assets/createUnique"
 
 const Filters = ({ products }) => {
   const [openObj, setOpenObj] = useState({

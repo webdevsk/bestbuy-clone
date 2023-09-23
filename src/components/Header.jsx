@@ -5,6 +5,8 @@ import { useEffect, useState } from "react"
 import IconDownLine from "./ui/IconDownLine"
 import FloatingDropDownMenu from "./ui/FloatingDropDownMenu"
 import { Popover } from "@headlessui/react"
+import createUnique from "../assets/createUnique"
+import { response } from "../assets/disposable"
 
 const mainMenu = [
   {
@@ -15,7 +17,7 @@ const mainMenu = [
   {
     id: 2,
     label: "Brands",
-    items: ["Apple", "Samsung"],
+    items: createUnique(response.products, "brand"),
   },
 ]
 
@@ -39,7 +41,6 @@ const topMiniMenu = [
 
 const Header = () => {
   const [mobile, setMobile] = useState(false)
-  console.log(mobile)
   useEffect(() => {
     function handleResize() {
       setMobile(window.outerWidth <= 960)
@@ -51,7 +52,7 @@ const Header = () => {
     }
   })
   return (
-    <div id="header">
+    <div id="header" className="relative z-50">
       <section className="mb-0 bg-theme py-4 text-white">
         <div className="container flex flex-wrap items-center gap-x-4 gap-y-4">
           <div className="hidden w-full flex-wrap justify-end gap-3 lg:flex">
@@ -144,15 +145,17 @@ const Header = () => {
             </div>
           )}
 
-          <Popover.Group className="flex flex-wrap gap-2 py-2">
+          <ul className="flex flex-wrap gap-2 py-2">
             {mainMenu.map((menu) => (
               <FloatingDropDownMenu key={menu.id} buttonLabel={menu.label}>
-                {menu.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
+                <ul>
+                  {menu.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </FloatingDropDownMenu>
             ))}
-          </Popover.Group>
+          </ul>
         </div>
       </section>
     </div>
