@@ -1,20 +1,20 @@
+import { useRef, useState } from "react"
 import IconDownLine from "./IconDownLine"
 import { Typography } from "@material-tailwind/react"
-import { useRef, useState } from "react"
 import {
+  size,
+  arrow,
+  shift,
+  offset,
+  autoUpdate,
+  FloatingArrow,
+  // FloatingPortal,
+  // FloatingOverlay,
   useClick,
+  useDismiss,
   useFloating,
   useInteractions,
-  autoUpdate,
-  useDismiss,
   useTransitionStyles,
-  arrow,
-  FloatingArrow,
-  offset,
-  size,
-  FloatingOverlay,
-  shift,
-  FloatingPortal,
 } from "@floating-ui/react"
 
 const FloatingDropDownMenu = ({ buttonLabel, children }) => {
@@ -78,13 +78,13 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
               staticOffset={"10px"}
             />
           </div>
-          <FloatingPortal>
+          {/* <FloatingPortal>
             <FloatingOverlay
               key="mainMenuOverlay"
               lockScroll
               className={`absolute z-10 bg-black/20`}
             ></FloatingOverlay>
-          </FloatingPortal>
+          </FloatingPortal> */}
         </>
       )}
     </>
