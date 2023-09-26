@@ -138,7 +138,7 @@ const Header = () => {
           </div>
         </div>
       </section>
-      <section className="mb-0 bg-[#003da6] py-2 text-white">
+      <section className="mb-0 bg-[#003da6] pt-2 text-white">
         <div className="container">
           {mobile && (
             <div className="w-full lg:w-96">
@@ -148,28 +148,22 @@ const Header = () => {
 
           <ul className="flex flex-wrap gap-2 py-2">
             {mainMenu.map((menu) => (
-              <FloatMenu key={menu.id} whenClicked autosize shift>
-                <FloatHandler>
-                  <button
-                    // {...getReferenceProps()}
-                    className="group flex gap-1 hover:text-accent focus-visible:outline-none"
-                  >
-                    <Typography variant="h6">{menu.label}</Typography>
-                    <IconDownLine
-                      // open={isOpen}
-                      className="h-4 w-4"
-                    ></IconDownLine>
-                  </button>
+              <FloatMenu key={menu.id} whenClicked autosize shift transition>
+                <FloatHandler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
+                  <Typography variant="h6">{menu.label}</Typography>
+                  <IconDownLine
+                    // open={isOpen}
+                    className="h-4 w-4"
+                  ></IconDownLine>
                 </FloatHandler>
+
                 <FloatElement>
-                  <div>
-                    <div
-                      className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
-                    >
-                      {menu.items.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </div>
+                  <div
+                    className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+                  >
+                    {menu.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </div>
                 </FloatElement>
               </FloatMenu>

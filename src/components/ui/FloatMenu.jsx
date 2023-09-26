@@ -5,6 +5,7 @@ import {
   shift,
   size,
   useClick,
+  useDismiss,
   useFloating,
   useHover,
   useInteractions,
@@ -18,53 +19,51 @@ const FloatMenu = ({
   defaultOpen = false,
   placement = "bottom-start",
   whenClicked,
-  //   offset = 0,
   whenHovered,
-  autoSize,
-  shift,
-  flip,
+  whenDismissed,
   transition,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(defaultOpen)
 
   const { refs, floatingStyles, context } = useFloating({
+    // elements: { reference: anchor, floating: anker },
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: placement,
-    // whileElementsMounted: autoUpdate,
+    whileElementsMounted: autoUpdate,
     middleware: [
-      offset(0),
-      //   size({
-      //     apply({ availableHeight, elements }) {
-      //       Object.assign(elements.floating.style, {
-      //         height: `${availableHeight}px`,
-      //       })
-      //     },
-      //   }),
-      //   shift(),
-      //   flip(),
+      offset(10),
+      size({
+        apply({ availableHeight, elements }) {
+          Object.assign(elements.floating.style, {
+            height: `${availableHeight}px`,
+          })
+        },
+      }),
+      shift(true),
+      flip(true),
     ],
   })
-  const click = useClick(context)
-  const hover = useHover(context)
 
   const { isMounted, styles } = useTransitionStyles(context)
   const { getReferenceProps, getFloatingProps } = useInteractions([
     useClick(context),
-    // hover,
+    useDismiss(context),
   ])
-  console.log(context)
+
   return React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return
     const component = {
       FloatHandler: React.cloneElement(child, {
-        ref: refs.reference,
+        ref: refs.setReference,
         ...getReferenceProps(),
       }),
       FloatElement: React.cloneElement(child, {
-        ref: refs.floating,
-        open: isMounted,
-        styles: { ...floatingStyles, ...styles },
+        ref: refs.setFloating,
+        open: transition ? isMounted : isOpen,
+        style: transition
+          ? { ...floatingStyles, ...styles }
+          : { ...floatingStyles },
         ...getFloatingProps(),
       }),
       default: child,
@@ -75,20 +74,17 @@ const FloatMenu = ({
 
 export { FloatMenu }
 
-// Component that contains the button which triggers isOpen.
-const FloatHandler = forwardRef((props, ref) =>
-  React.cloneElement(React.Children.only(props.children), {
-    ref: ref,
-  }),
-)
+// Component that triggers isOpen
+const FloatHandler = forwardRef((props, ref) => (
+  <button ref={ref} {...props}></button>
+))
+
 FloatHandler.displayName = "FloatHandler"
 export { FloatHandler }
 
-// Component that contains the element which renders when isOpen is True
+// Component that renders when isOpen is True
 const FloatElement = forwardRef(
-  (props, ref) =>
-    props.open &&
-    React.cloneElement(React.Children.only(props.children), { ref: ref }),
+  (props, ref) => props.open && <div ref={ref} {...props}></div>,
 )
 FloatElement.displayName = "FloatElement"
 export { FloatElement }
