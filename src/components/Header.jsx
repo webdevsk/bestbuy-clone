@@ -7,6 +7,7 @@ import FloatingDropDownMenu from "./ui/FloatingDropDownMenu"
 import { Popover } from "@headlessui/react"
 import createUnique from "../assets/createUnique"
 import { response } from "../assets/disposable"
+import { FloatHandler, FloatElement, FloatMenu } from "./ui/FloatMenu"
 
 const mainMenu = [
   {
@@ -147,13 +148,31 @@ const Header = () => {
 
           <ul className="flex flex-wrap gap-2 py-2">
             {mainMenu.map((menu) => (
-              <FloatingDropDownMenu key={menu.id} buttonLabel={menu.label}>
-                <ul>
-                  {menu.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </FloatingDropDownMenu>
+              <FloatMenu key={menu.id} whenClicked autosize shift>
+                <FloatHandler>
+                  <button
+                    // {...getReferenceProps()}
+                    className="group flex gap-1 hover:text-accent focus-visible:outline-none"
+                  >
+                    <Typography variant="h6">{menu.label}</Typography>
+                    <IconDownLine
+                      // open={isOpen}
+                      className="h-4 w-4"
+                    ></IconDownLine>
+                  </button>
+                </FloatHandler>
+                <FloatElement>
+                  <div>
+                    <div
+                      className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+                    >
+                      {menu.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </div>
+                  </div>
+                </FloatElement>
+              </FloatMenu>
             ))}
           </ul>
         </div>
