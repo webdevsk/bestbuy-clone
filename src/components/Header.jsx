@@ -151,7 +151,6 @@ const Header = () => {
               <FloatMenu
                 key={menu.id}
                 autoSize
-                // autoFlip
                 autoShift
                 transition
                 distance={10}
@@ -162,7 +161,7 @@ const Header = () => {
                   <Typography variant="h6">{menu.label}</Typography>
                   <IconDownLine
                     // open={isOpen}
-                    className="h-4 w-4"
+                    className="h-4 w-4 group-open:rotate-180"
                   ></IconDownLine>
                 </FloatHandler>
 

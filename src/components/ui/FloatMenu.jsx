@@ -66,6 +66,7 @@ export const FloatMenu = ({
     const component = {
       FloatHandler: React.cloneElement(child, {
         ref: refs.setReference,
+        open: isOpen,
         ...getReferenceProps(),
       }),
       FloatElement: React.cloneElement(child, {
