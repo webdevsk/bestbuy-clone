@@ -148,7 +148,16 @@ const Header = () => {
 
           <ul className="flex flex-wrap gap-2 py-2">
             {mainMenu.map((menu) => (
-              <FloatMenu key={menu.id} whenClicked autosize shift transition>
+              <FloatMenu
+                key={menu.id}
+                autoSize
+                // autoFlip
+                autoShift
+                transition
+                distance={10}
+                click
+                dismiss
+              >
                 <FloatHandler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
                   <Typography variant="h6">{menu.label}</Typography>
                   <IconDownLine
