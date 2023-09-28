@@ -1,20 +1,20 @@
+import { useRef, useState } from "react"
 import IconDownLine from "./IconDownLine"
 import { Typography } from "@material-tailwind/react"
-import { useRef, useState } from "react"
 import {
+  size,
+  arrow,
+  shift,
+  offset,
+  autoUpdate,
+  FloatingArrow,
+  // FloatingPortal,
+  // FloatingOverlay,
   useClick,
+  useDismiss,
   useFloating,
   useInteractions,
-  autoUpdate,
-  useDismiss,
   useTransitionStyles,
-  arrow,
-  FloatingArrow,
-  offset,
-  size,
-  FloatingOverlay,
-  shift,
-  FloatingPortal,
 } from "@floating-ui/react"
 
 const FloatingDropDownMenu = ({ buttonLabel, children }) => {
@@ -39,13 +39,11 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
       arrow({ element: arrowRef }),
     ],
   })
-  const click = useClick(context)
-  const dismiss = useDismiss(context)
-  const { isMounted, styles } = useTransitionStyles(context)
 
+  const { isMounted, styles } = useTransitionStyles(context)
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
+    useClick(context),
+    useDismiss(context),
   ])
 
   return (
@@ -67,7 +65,7 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
             style={{ ...floatingStyles, ...styles }}
           >
             <div
-              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black transition-all duration-1000`}
+              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
             >
               {children}
             </div>
@@ -80,13 +78,13 @@ const FloatingDropDownMenu = ({ buttonLabel, children }) => {
               staticOffset={"10px"}
             />
           </div>
-          <FloatingPortal>
+          {/* <FloatingPortal>
             <FloatingOverlay
               key="mainMenuOverlay"
               lockScroll
               className={`absolute z-10 bg-black/20`}
             ></FloatingOverlay>
-          </FloatingPortal>
+          </FloatingPortal> */}
         </>
       )}
     </>

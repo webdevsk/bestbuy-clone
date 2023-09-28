@@ -1,10 +1,13 @@
 import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
+import { FloatElement, FloatHandler, FloatMenu } from "./ui/FloatMenu"
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 
 const SearchBar = ({
   name,
   id,
   containerClass,
+  mainMenu,
   className,
   style,
   inputProps,
@@ -19,11 +22,38 @@ const SearchBar = ({
       <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
         <div className="flex w-10 items-center lg:hidden">
           {/* Burger menu */}
-          <BurgerMenuBtn
-            onClick={() => {
-              console.log("borgir")
-            }}
-          />
+          <FloatMenu
+            click
+            dismiss
+            open
+            transition
+            shift
+            offset={8}
+            size
+            arrow={{ fill: "white", width: 20, height: 10 }}
+            placement="bottom"
+          >
+            <FloatHandler className="group relative">
+              <BurgerMenuBtn />
+            </FloatHandler>
+
+            <FloatElement className="w-screen">
+              <FloatingPortal>
+                <FloatingOverlay lockScroll />
+              </FloatingPortal>
+              <ul className="h-full divide-y overflow-y-auto border border-t-transparent bg-white text-body">
+                {mainMenu?.map((menu) => (
+                  <li key={menu.id}>
+                    <button className="pointer-events-auto block p-3">
+                      <Typography variant="paragraph" className="text-base">
+                        {menu.label}
+                      </Typography>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </FloatElement>
+          </FloatMenu>
         </div>
         <div
           className={`${
@@ -114,21 +144,18 @@ const SearchBar = ({
 export default SearchBar
 
 const BurgerMenuBtn = (props) => (
-  <button
-    {...props}
-    className="group relative [--_stroke-height:0.2em] [--_stroke-width:1.5em]"
-  >
+  <div {...props} className="[--_stroke-height:0.2em] [--_stroke-width:1.5em]">
     <div className="relative flex transform overflow-hidden transition-all duration-200">
       <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300">
-        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 group-focus:translate-x-10"></div>
-        <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 group-focus:translate-x-10"></div>
-        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 group-focus:translate-x-10"></div>
+        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 group-open:translate-x-10"></div>
+        <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 group-open:translate-x-10"></div>
+        <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 group-open:translate-x-10"></div>
 
-        <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 group-focus:w-12 group-focus:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
-          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:rotate-45"></div>
-          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-focus:-rotate-45"></div>
+        <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 group-open:w-12 group-open:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
+          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-open:rotate-45"></div>
+          <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 group-open:-rotate-45"></div>
         </div>
       </div>
     </div>
-  </button>
+  </div>
 )

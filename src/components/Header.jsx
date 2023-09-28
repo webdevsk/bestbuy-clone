@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import { useEffect, useState } from "react"
 import IconDownLine from "./ui/IconDownLine"
-import FloatingDropDownMenu from "./ui/FloatingDropDownMenu"
-import { Popover } from "@headlessui/react"
 import createUnique from "../assets/createUnique"
 import { response } from "../assets/disposable"
+import { FloatHandler, FloatElement, FloatMenu } from "./ui/FloatMenu"
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 
 const mainMenu = [
   {
@@ -18,6 +18,11 @@ const mainMenu = [
     id: 2,
     label: "Brands",
     items: createUnique(response.products, "brand"),
+  },
+  {
+    id: 3,
+    label: "Categories",
+    items: createUnique(response.products, "category"),
   },
 ]
 
@@ -41,6 +46,7 @@ const topMiniMenu = [
 
 const Header = () => {
   const [mobile, setMobile] = useState(false)
+
   useEffect(() => {
     function handleResize() {
       setMobile(window.outerWidth <= 960)
@@ -141,21 +147,57 @@ const Header = () => {
         <div className="container">
           {mobile && (
             <div className="w-full lg:w-96">
-              <SearchBar />
+              <SearchBar mainMenu={mainMenu} />
             </div>
           )}
 
-          <ul className="flex flex-wrap gap-2 py-2">
-            {mainMenu.map((menu) => (
-              <FloatingDropDownMenu key={menu.id} buttonLabel={menu.label}>
-                <ul>
-                  {menu.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </FloatingDropDownMenu>
-            ))}
-          </ul>
+          {!mobile && (
+            <ul className="flex flex-wrap gap-2 py-2">
+              {mainMenu.map((menu) => (
+                <FloatMenu
+                  key={menu.id}
+                  offset={6}
+                  size
+                  shift
+                  transition
+                  click
+                  arrow={{
+                    staticOffset: 10,
+                    width: 20,
+                    height: 10,
+                    fill: "white",
+                  }}
+                  dismiss
+                  role={{ role: "menu" }}
+                >
+                  <FloatHandler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
+                    <Typography variant="h6">{menu.label}</Typography>
+                    <IconDownLine
+                      // open={isOpen}
+                      className="h-4 w-4 group-open:rotate-180"
+                    ></IconDownLine>
+                  </FloatHandler>
+
+                  <FloatElement>
+                    <div
+                      className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+                    >
+                      {menu.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </div>
+
+                    <FloatingPortal>
+                      <FloatingOverlay
+                        lockScroll
+                        className="pointer-events-none z-30 h-screen w-full bg-black/30"
+                      />
+                    </FloatingPortal>
+                  </FloatElement>
+                </FloatMenu>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>
