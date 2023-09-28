@@ -18,7 +18,14 @@ import {
   useRole,
   useTransitionStyles,
 } from "@floating-ui/react"
-import React, { forwardRef, useRef, useState } from "react"
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  useRef,
+  useState,
+  isValidElement,
+} from "react"
 
 // This is the brain of the component tree. Both FloatHandler and FloatElement has to be inside a FloatMenu for this to work
 export const FloatMenu = ({
@@ -79,20 +86,18 @@ export const FloatMenu = ({
   //Instead of calling the components directly, we loop through children, check if required components are present,
   //clone them while passing refs and other props
   //
-  console.log(isOpen)
-  console.log(isMounted)
-  return React.Children.map(children, (child) => {
-    if (!React.isValidElement(child)) return
+  return Children.map(children, (child) => {
+    if (!isValidElement(child)) return
 
     //This is just an alternative to Switch statement
     const component = {
-      FloatHandler: React.cloneElement(child, {
+      FloatHandler: cloneElement(child, {
         ref: refs.setReference,
         //Button gets raw state for styling purpose
         open: isOpen,
         ...getReferenceProps(),
       }),
-      FloatElement: React.cloneElement(child, {
+      FloatElement: cloneElement(child, {
         ref: refs.setFloating,
         //Element gets different state based on transition settings
         arrow: autoArrow,
@@ -125,10 +130,14 @@ export const FloatElement = forwardRef((props, ref) => {
   delete filteredProps.arrow
   delete filteredProps.arrowRef
   delete filteredProps.context
-
+  console.log(props.open)
   return (
     props.open && (
-      <div ref={ref} {...filteredProps}>
+      <div
+        ref={ref}
+        {...filteredProps}
+        className={`pointer-events-none [&>*]:pointer-events-auto ${filteredProps.className}`}
+      >
         {props.arrow && (
           <FloatingArrow
             ref={props.arrowRef}

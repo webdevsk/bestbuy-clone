@@ -3,11 +3,10 @@ import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import { useEffect, useState } from "react"
 import IconDownLine from "./ui/IconDownLine"
-import FloatingDropDownMenu from "./ui/FloatingDropDownMenu"
-import { Popover } from "@headlessui/react"
 import createUnique from "../assets/createUnique"
 import { response } from "../assets/disposable"
 import { FloatHandler, FloatElement, FloatMenu } from "./ui/FloatMenu"
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 
 const mainMenu = [
   {
@@ -19,6 +18,11 @@ const mainMenu = [
     id: 2,
     label: "Brands",
     items: createUnique(response.products, "brand"),
+  },
+  {
+    id: 3,
+    label: "Categories",
+    items: createUnique(response.products, "category"),
   },
 ]
 
@@ -42,6 +46,7 @@ const topMiniMenu = [
 
 const Header = () => {
   const [mobile, setMobile] = useState(false)
+
   useEffect(() => {
     function handleResize() {
       setMobile(window.outerWidth <= 960)
@@ -138,7 +143,7 @@ const Header = () => {
           </div>
         </div>
       </section>
-      <section className="mb-0 bg-[#003da6] pt-2 text-white">
+      <section className="mb-0 bg-[#003da6] py-2 text-white">
         <div className="container">
           {mobile && (
             <div className="w-full lg:w-96">
@@ -150,16 +155,18 @@ const Header = () => {
             {mainMenu.map((menu) => (
               <FloatMenu
                 key={menu.id}
+                distance={6}
                 autoSize
                 autoShift
                 transition
                 click
-                // autoArrow={{
-                //   staticOffset: 10,
-                //   width: 20,
-                //   height: 10,
-                //   fill: "white",
-                // }}
+                overlay
+                autoArrow={{
+                  staticOffset: 10,
+                  width: 20,
+                  height: 10,
+                  fill: "white",
+                }}
                 dismiss
                 role={{ role: "menu" }}
               >
@@ -179,6 +186,13 @@ const Header = () => {
                       <li key={item}>{item}</li>
                     ))}
                   </div>
+
+                  <FloatingPortal>
+                    <FloatingOverlay
+                      lockScroll
+                      className="pointer-events-none z-30 h-screen w-full bg-black/30"
+                    />
+                  </FloatingPortal>
                 </FloatElement>
               </FloatMenu>
             ))}
