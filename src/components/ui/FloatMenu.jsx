@@ -37,6 +37,7 @@ export const FloatMenu = ({
   dismiss = false,
   role = false,
   focus = false,
+  transform = true,
   autoArrow,
   autoInline,
   autoPlace,
@@ -52,6 +53,7 @@ export const FloatMenu = ({
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
+    transform: transform,
     onOpenChange: setIsOpen,
     placement: placement,
     whileElementsMounted: autoUpdate,
@@ -62,8 +64,9 @@ export const FloatMenu = ({
       autoFlip && flip(autoFlip),
       autoSize &&
         size({
-          apply({ availableHeight, elements }) {
+          apply({ availableHeight, availableWidth, elements }) {
             Object.assign(elements.floating.style, {
+              maxWidth: `${availableWidth}px`,
               height: `${availableHeight}px`,
             })
           },
@@ -130,7 +133,6 @@ export const FloatElement = forwardRef((props, ref) => {
   delete filteredProps.arrow
   delete filteredProps.arrowRef
   delete filteredProps.context
-  console.log(props.open)
   return (
     props.open && (
       <div
