@@ -30,7 +30,7 @@ export const FloatMenu = ({
   dismiss = false,
   role = false,
   focus = false,
-  autoArrow = false,
+  autoArrow,
   autoInline,
   autoPlace,
   autoShift,
@@ -49,7 +49,7 @@ export const FloatMenu = ({
     placement: placement,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(distance + autoArrow?.height ?? 0),
+      offset(distance + (autoArrow?.height ?? 0)),
       autoShift && shift(autoShift),
       autoInline && inline(autoInline),
       autoFlip && flip(autoFlip),
@@ -79,6 +79,8 @@ export const FloatMenu = ({
   //Instead of calling the components directly, we loop through children, check if required components are present,
   //clone them while passing refs and other props
   //
+  console.log(isOpen)
+  console.log(isMounted)
   return React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return
 
@@ -94,7 +96,7 @@ export const FloatMenu = ({
         ref: refs.setFloating,
         //Element gets different state based on transition settings
         arrow: autoArrow,
-        context: context,
+        context: autoArrow ? context : null,
         arrowRef: arrowRef,
         open: transition ? isMounted : isOpen,
         style: transition
@@ -118,10 +120,15 @@ FloatHandler.displayName = "FloatHandler"
 // Component that renders when isOpen is True
 //
 export const FloatElement = forwardRef((props, ref) => {
-  // const filteredProps =
+  //removing unwanted props from DOM element
+  const filteredProps = Object.assign({}, props)
+  delete filteredProps.arrow
+  delete filteredProps.arrowRef
+  delete filteredProps.context
+
   return (
     props.open && (
-      <div ref={ref} {...props}>
+      <div ref={ref} {...filteredProps}>
         {props.arrow && (
           <FloatingArrow
             ref={props.arrowRef}

@@ -154,14 +154,14 @@ const Header = () => {
                 autoShift
                 transition
                 click
-                autoArrow={{
-                  staticOffset: 10,
-                  width: 20,
-                  height: 10,
-                  fill: "white",
-                }}
+                // autoArrow={{
+                //   staticOffset: 10,
+                //   width: 20,
+                //   height: 10,
+                //   fill: "white",
+                // }}
                 dismiss
-                role="menu"
+                role={{ role: "menu" }}
               >
                 <FloatHandler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
                   <Typography variant="h6">{menu.label}</Typography>
