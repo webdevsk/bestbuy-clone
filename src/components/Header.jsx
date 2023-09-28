@@ -156,13 +156,12 @@ const Header = () => {
               {mainMenu.map((menu) => (
                 <FloatMenu
                   key={menu.id}
-                  distance={6}
-                  autoSize
-                  autoShift
+                  offset={6}
+                  size
+                  shift
                   transition
                   click
-                  overlay
-                  autoArrow={{
+                  arrow={{
                     staticOffset: 10,
                     width: 20,
                     height: 10,

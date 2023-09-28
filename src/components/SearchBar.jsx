@@ -1,7 +1,7 @@
 import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
 import { FloatElement, FloatHandler, FloatMenu } from "./ui/FloatMenu"
-import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
+import { FloatingOverlay } from "@floating-ui/react"
 
 const SearchBar = ({
   name,
@@ -27,10 +27,10 @@ const SearchBar = ({
             dismiss
             defaultOpen
             transition
-            autoShift
-            distance={8}
-            autoSize
-            autoArrow={{ fill: "white", width: 20, height: 10 }}
+            shift
+            offset={8}
+            size
+            arrow={{ fill: "white", width: 20, height: 10 }}
             placement="bottom"
           >
             <FloatHandler className="group relative">
@@ -38,9 +38,7 @@ const SearchBar = ({
             </FloatHandler>
 
             <FloatElement className="w-screen">
-              <FloatingPortal>
-                <FloatingOverlay lockScroll />
-              </FloatingPortal>
+              <FloatingOverlay lockScroll />
               <ul className="h-full overflow-y-auto border border-t-transparent bg-white p-4 text-body">
                 {mainMenu?.map((menu) => (
                   <li key={menu.id} className="dsa">
