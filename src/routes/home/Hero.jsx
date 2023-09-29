@@ -57,7 +57,7 @@ const CallToAction1 = () => {
           <div className="col-start-1 grid place-content-center xl:col-start-2 xl:row-span-3">
             <img
               className=""
-              src="src/assets/images/computing-20230803-feature-fg-bdis-computers-tablets-and-accessories-m.webp"
+              src="/images/computing-20230803-feature-fg-bdis-computers-tablets-and-accessories-m.webp"
             />
           </div>
 
@@ -104,7 +104,7 @@ const CallToAction2 = () => {
           <div className="col-start-1 grid place-content-center xl:col-start-2 xl:row-span-3">
             <img
               className=""
-              src="src/assets/images/computing-20230811-feature-bts-computers-tablets-and-accessories-m.webp"
+              src="/images/computing-20230811-feature-bts-computers-tablets-and-accessories-m.webp"
             />
           </div>
 

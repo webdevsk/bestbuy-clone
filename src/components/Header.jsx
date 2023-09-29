@@ -94,7 +94,7 @@ export default Header
 const SiteLogo = () => (
   <div className="-mt-2">
     <Link to="/" className="flex items-end gap-1">
-      <img src="src/assets/images/logo.png" alt="" width="48" />
+      <img src="/images/logo.png" alt="" width="48" />
       <div className="-mb-1">
         <Typography
           variant="h3"
