@@ -25,6 +25,7 @@ import {
   useRef,
   useState,
   isValidElement,
+  useEffect,
 } from "react"
 
 // This is the brain of the component tree. Both FloatHandler and FloatElement has to be inside a FloatMenu for this to work
@@ -120,9 +121,18 @@ export const FloatMenu = ({
 
 // Component that triggers isOpen
 //
-export const FloatHandler = forwardRef((props, ref) => (
-  <button ref={ref} {...props}></button>
-))
+export const FloatHandler = forwardRef(
+  (props, ref) =>
+    cloneElement(
+      Children.only(props.children),
+      {
+        ref: ref,
+        ...props,
+      },
+      props.children.props.children,
+    ),
+  // <button ref={ref} {...props}></button>
+)
 FloatHandler.displayName = "FloatHandler"
 
 // Component that renders when isOpen is True

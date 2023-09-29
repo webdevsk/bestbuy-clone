@@ -182,12 +182,14 @@ const MainMenuDesktop = ({ mainMenu }) => {
           dismiss
           role={{ role: "menu" }}
         >
-          <FloatHandler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
-            <Typography variant="h6">{menu.label}</Typography>
-            <IconDownLine
-              // open={isOpen}
-              className="h-4 w-4 group-open:rotate-180"
-            ></IconDownLine>
+          <FloatHandler>
+            <button className="group flex gap-1 hover:text-accent focus-visible:outline-none">
+              <Typography variant="h6">{menu.label}</Typography>
+              <IconDownLine
+                // open={isOpen}
+                className="h-4 w-4 group-open:rotate-180"
+              ></IconDownLine>
+            </button>
           </FloatHandler>
 
           <FloatElement>

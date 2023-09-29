@@ -1,6 +1,7 @@
 import { Typography } from "@material-tailwind/react"
 import { FloatElement, FloatHandler, FloatMenu } from "./ui/FloatMenu"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
+import { forwardRef } from "react"
 const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
   return (
     <FloatMenu
@@ -13,7 +14,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
       arrow={{ fill: "white", width: 20, height: 10 }}
       placement="bottom"
     >
-      <FloatHandler className="group relative">
+      <FloatHandler>
         <BurgerMenuBtn />
       </FloatHandler>
 
@@ -48,8 +49,12 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
 
 export default BurgerMenu
 
-const BurgerMenuBtn = (props) => (
-  <div {...props} className="[--_stroke-height:0.2em] [--_stroke-width:1.5em]">
+const BurgerMenuBtn = forwardRef((props, ref) => (
+  <button
+    ref={ref}
+    {...props}
+    className="group relative [--_stroke-height:0.2em] [--_stroke-width:1.5em]"
+  >
     <div className="relative flex transform overflow-hidden transition-all duration-200">
       <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300">
         <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 group-open:translate-x-10"></div>
@@ -62,5 +67,7 @@ const BurgerMenuBtn = (props) => (
         </div>
       </div>
     </div>
-  </div>
-)
+  </button>
+))
+
+BurgerMenuBtn.displayName = "BurgerMenuBtn"
