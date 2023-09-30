@@ -18,15 +18,7 @@ import {
   useRole,
   useTransitionStyles,
 } from "@floating-ui/react"
-import {
-  Children,
-  cloneElement,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-  memo,
-} from "react"
+import { useRef, useState, createContext, useContext, memo } from "react"
 
 //Context to share properties with children
 const FloatMenuContext = createContext(null)

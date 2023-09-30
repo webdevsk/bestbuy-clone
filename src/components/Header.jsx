@@ -186,7 +186,7 @@ const MainMenuDesktop = ({ mainMenu }) => {
             <Typography variant="h6">{menu.label}</Typography>
             <IconDownLine
               // open={isOpen}
-              className="h-4 w-4 group-open:rotate-180"
+              className="h-4 w-4"
             ></IconDownLine>
           </FloatMenu.Handler>
 

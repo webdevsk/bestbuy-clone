@@ -8,7 +8,7 @@ const IconDownLine = ({ open, className = "h-5 w-5" }) => {
       stroke="currentColor"
       className={`${className} ${
         open ? "rotate-180" : ""
-      } mr-4 mt-1 text-inherit transition-transform`}
+      } mr-4 mt-1 text-inherit transition-transform group-open:rotate-180`}
     >
       <path
         strokeLinecap="round"

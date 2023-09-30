@@ -4,7 +4,7 @@ const IconDownFilled = ({ open, className }) => (
     viewBox="0 0 512 512"
     stroke="currentColor"
     fill="currentColor"
-    className={`${className} h-4 w-4 transition-transform ${
+    className={`${className} h-4 w-4 transition-transform group-open:rotate-180 ${
       open && "rotate-180"
     }`}
   >

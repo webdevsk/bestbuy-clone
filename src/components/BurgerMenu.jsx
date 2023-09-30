@@ -1,7 +1,6 @@
 import { Typography } from "@material-tailwind/react"
 import FloatMenu from "./ui/FloatMenu"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
-import { forwardRef } from "react"
 const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
   return (
     <FloatMenu
@@ -11,6 +10,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
       shift
       offset={8}
       size
+      role={{ role: "menu" }}
       arrow={{ fill: "white", width: 20, height: 10 }}
       placement="bottom"
     >
@@ -20,7 +20,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
 
       <FloatMenu.Element>
         <FloatingPortal>
-          <FloatingOverlay />
+          <FloatingOverlay lockScroll />
         </FloatingPortal>
         <div className=" h-full w-full overflow-y-auto border border-t-transparent bg-gray-100 text-body">
           <ul className="divide-y">
