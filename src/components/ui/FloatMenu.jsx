@@ -21,15 +21,25 @@ import {
 import {
   Children,
   cloneElement,
-  forwardRef,
   useRef,
   useState,
-  isValidElement,
-  useEffect,
+  createContext,
+  useContext,
 } from "react"
 
+//Context to share properties with children
+const FloatMenuContext = createContext(null)
+const useFloatMenuContext = () => {
+  const context = useContext(FloatMenuContext)
+  if (!context)
+    throw new Error(
+      "FloatMenu.* components must be used inside a FloatMenu component.",
+    )
+  return context
+}
+
 // This is the brain of the component tree. Both FloatHandler and FloatElement has to be inside a FloatMenu for this to work
-export const FloatMenu = ({
+const FloatMenu = ({
   children,
   offset: distance = 0,
   flip: autoFlip,
@@ -87,79 +97,62 @@ export const FloatMenu = ({
     useRole(context, { enabled: role, ...role }),
   ])
 
-  //Instead of calling the components directly, we loop through children, check if required components are present,
-  //clone them while passing refs and other props
-  //
-  return Children.map(children, (child) => {
-    if (!isValidElement(child)) return
-
-    //This is just an alternative to Switch statement
-    const component = {
-      FloatHandler: cloneElement(child, {
-        ref: refs.setReference,
-        //Button gets raw state for styling purpose
-        open: isOpen,
-        ...getReferenceProps(),
-      }),
-      FloatElement: cloneElement(child, {
-        ref: refs.setFloating,
-        //Element gets different state based on transition settings
-        arrow: autoArrow,
-        context: autoArrow ? context : null,
-        arrowRef: arrowRef,
-        open: transition ? isMounted : isOpen,
-        style: transition
-          ? { ...floatingStyles, ...transitionStyles }
-          : { ...floatingStyles },
-        ...getFloatingProps(),
-      }),
-      default: child,
-    }
-    return component[child.type.displayName ?? "default"]
-  })
+  return (
+    <FloatMenuContext.Provider
+      value={{
+        referenceProps: {
+          open: isOpen,
+          ref: refs.setReference,
+          ...getReferenceProps(),
+        },
+        floatingProps: {
+          open: transition ? isMounted : isOpen,
+          ref: refs.setFloating,
+          style: transition
+            ? { ...floatingStyles, ...transitionStyles }
+            : { ...floatingStyles },
+          ...getFloatingProps(),
+        },
+        arrowProps: autoArrow && {
+          ref: arrowRef,
+          context: context,
+          ...autoArrow,
+        },
+      }}
+    >
+      {children}
+    </FloatMenuContext.Provider>
+  )
 }
 
 // Component that triggers isOpen
 //
-export const FloatHandler = forwardRef(
-  (props, ref) =>
-    cloneElement(
-      Children.only(props.children),
-      {
-        ref: ref,
-        ...props,
-      },
-      props.children.props.children,
-    ),
-  // <button ref={ref} {...props}></button>
-)
-FloatHandler.displayName = "FloatHandler"
+export const FloatHandler = ({ children }) => {
+  const { referenceProps } = useFloatMenuContext()
+  return cloneElement(
+    Children.only(children),
+    referenceProps,
+    children.props.children,
+  )
+}
+FloatMenu.Handler = FloatHandler
 
 // Component that renders when isOpen is True
 //
-export const FloatElement = forwardRef((props, ref) => {
-  //removing unwanted props from DOM element
-  const filteredProps = Object.assign({}, props)
-  delete filteredProps.arrow
-  delete filteredProps.arrowRef
-  delete filteredProps.context
+export const FloatElement = ({ children }) => {
+  const { floatingProps, arrowProps } = useFloatMenuContext()
+  floatingProps.className =
+    "group pointer-events-none [&>*]:pointer-events-auto"
   return (
-    props.open && (
-      <div
-        ref={ref}
-        {...filteredProps}
-        className={`pointer-events-none [&>*]:pointer-events-auto ${filteredProps.className}`}
-      >
-        {props.arrow && (
-          <FloatingArrow
-            ref={props.arrowRef}
-            context={props.context}
-            {...props.arrow}
-          />
-        )}
-        {props.children}
-      </div>
+    floatingProps.open &&
+    cloneElement(
+      Children.only(children),
+      floatingProps,
+      children.props.children,
+      arrowProps && <FloatingArrow {...arrowProps} />,
     )
   )
-})
-FloatElement.displayName = "FloatElement"
+}
+FloatMenu.Element = FloatElement
+
+export default FloatMenu

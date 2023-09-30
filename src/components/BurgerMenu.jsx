@@ -1,5 +1,5 @@
 import { Typography } from "@material-tailwind/react"
-import { FloatElement, FloatHandler, FloatMenu } from "./ui/FloatMenu"
+import FloatMenu from "./ui/FloatMenu"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { forwardRef } from "react"
 const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
@@ -14,35 +14,37 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
       arrow={{ fill: "white", width: 20, height: 10 }}
       placement="bottom"
     >
-      <FloatHandler>
+      <FloatMenu.Handler>
         <BurgerMenuBtn />
-      </FloatHandler>
+      </FloatMenu.Handler>
 
-      <FloatElement className="w-screen">
-        <FloatingPortal>
-          <FloatingOverlay lockScroll />
-        </FloatingPortal>
-        <div className=" h-full overflow-y-auto border border-t-transparent bg-gray-100 text-body">
-          <ul className="divide-y">
-            {mainMenu?.map((menu) => (
-              <li key={menu.id}>
-                <button className="pointer-events-auto block w-full bg-white p-3 text-start">
-                  <Typography className="text-base">{menu.label}</Typography>
-                </button>
-              </li>
-            ))}
-          </ul>
-          <ul>
-            {topMiniMenu?.map((menu) => (
-              <li key={menu.id}>
-                <a href="#" className="block p-3">
-                  <Typography className="text-base">{menu.label}</Typography>
-                </a>
-              </li>
-            ))}
-          </ul>
+      <FloatMenu.Element>
+        <div>
+          <FloatingPortal>
+            <FloatingOverlay />
+          </FloatingPortal>
+          <div className=" h-full w-screen overflow-y-auto border border-t-transparent bg-gray-100 text-body">
+            <ul className="divide-y">
+              {mainMenu?.map((menu) => (
+                <li key={menu.id}>
+                  <button className="pointer-events-auto block w-full bg-white p-3 text-start">
+                    <Typography className="text-base">{menu.label}</Typography>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <ul>
+              {topMiniMenu?.map((menu) => (
+                <li key={menu.id}>
+                  <a href="#" className="block p-3">
+                    <Typography className="text-base">{menu.label}</Typography>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </FloatElement>
+      </FloatMenu.Element>
     </FloatMenu>
   )
 }

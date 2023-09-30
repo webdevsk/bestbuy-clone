@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar"
 import { useEffect, useState } from "react"
 import createUnique from "../assets/createUnique"
 import { response } from "../assets/disposable"
-import { FloatElement, FloatHandler, FloatMenu } from "./ui/FloatMenu"
+import FloatMenu from "./ui/FloatMenu"
 import IconDownLine from "./ui/IconDownLine"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 
@@ -182,7 +182,7 @@ const MainMenuDesktop = ({ mainMenu }) => {
           dismiss
           role={{ role: "menu" }}
         >
-          <FloatHandler>
+          <FloatMenu.Handler>
             <button className="group flex gap-1 hover:text-accent focus-visible:outline-none">
               <Typography variant="h6">{menu.label}</Typography>
               <IconDownLine
@@ -190,24 +190,26 @@ const MainMenuDesktop = ({ mainMenu }) => {
                 className="h-4 w-4 group-open:rotate-180"
               ></IconDownLine>
             </button>
-          </FloatHandler>
+          </FloatMenu.Handler>
 
-          <FloatElement>
-            <div
-              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
-            >
-              {menu.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+          <FloatMenu.Element>
+            <div>
+              <div
+                className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+              >
+                {menu.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </div>
+
+              <FloatingPortal>
+                <FloatingOverlay
+                  lockScroll
+                  className="pointer-events-none z-30 h-screen w-full bg-black/30"
+                />
+              </FloatingPortal>
             </div>
-
-            <FloatingPortal>
-              <FloatingOverlay
-                lockScroll
-                className="pointer-events-none z-30 h-screen w-full bg-black/30"
-              />
-            </FloatingPortal>
-          </FloatElement>
+          </FloatMenu.Element>
         </FloatMenu>
       ))}
     </ul>
