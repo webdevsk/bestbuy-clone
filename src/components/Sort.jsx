@@ -33,13 +33,9 @@ const Sort = () => {
           ref={refs.setReference}
           className="flex w-40 items-center justify-between rounded-sm border border-gray-500 bg-white px-4 py-3 text-left ring-4 ring-transparent ring-offset-2 ring-offset-transparent transition-shadow focus-visible:outline-none aria-expanded:ring-blue-100 aria-expanded:ring-offset-blue-900"
         >
-          {({ open }) => (
-            <>
-              <Typography>{selected?.label}</Typography>
+          <Typography>{selected?.label}</Typography>
 
-              <IconDownFilled open={open} />
-            </>
-          )}
+          <IconDownFilled />
         </Listbox.Button>
 
         <Listbox.Options

@@ -6,7 +6,7 @@ import PinnedProducts from "./PinnedProducts"
 const HomePage = () => {
   return (
     <>
-      <Hero />
+      {/* <Hero /> */}
       <PinnedProducts />
       <ProductsGallery />
     </>

@@ -182,33 +182,29 @@ const MainMenuDesktop = ({ mainMenu }) => {
           dismiss
           role={{ role: "menu" }}
         >
-          <FloatMenu.Handler>
-            <button className="group flex gap-1 hover:text-accent focus-visible:outline-none">
-              <Typography variant="h6">{menu.label}</Typography>
-              <IconDownLine
-                // open={isOpen}
-                className="h-4 w-4 group-open:rotate-180"
-              ></IconDownLine>
-            </button>
+          <FloatMenu.Handler className="group flex gap-1 hover:text-accent focus-visible:outline-none">
+            <Typography variant="h6">{menu.label}</Typography>
+            <IconDownLine
+              // open={isOpen}
+              className="h-4 w-4 group-open:rotate-180"
+            ></IconDownLine>
           </FloatMenu.Handler>
 
           <FloatMenu.Element>
-            <div>
-              <div
-                className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
-              >
-                {menu.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </div>
-
-              <FloatingPortal>
-                <FloatingOverlay
-                  lockScroll
-                  className="pointer-events-none z-30 h-screen w-full bg-black/30"
-                />
-              </FloatingPortal>
+            <div
+              className={`max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+            >
+              {menu.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </div>
+
+            <FloatingPortal>
+              <FloatingOverlay
+                lockScroll
+                className="pointer-events-none z-30 h-screen w-full bg-black/30"
+              />
+            </FloatingPortal>
           </FloatMenu.Element>
         </FloatMenu>
       ))}
