@@ -45,7 +45,7 @@ const SearchBar = ({
               type="text"
               name={name}
               id={id}
-              className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0`}
+              className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0 focus-visible:outline-none`}
               style={style}
             />
 
