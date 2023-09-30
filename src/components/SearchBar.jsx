@@ -45,7 +45,7 @@ const SearchBar = ({
               type="text"
               name={name}
               id={id}
-              className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0 focus-visible:outline-none `}
+              className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0`}
               style={style}
             />
 
@@ -79,7 +79,7 @@ const SearchBar = ({
             </div>
 
             <button
-              className="grid w-10 appearance-none place-items-center stroke-2 text-theme focus-visible:outline-none"
+              className="grid w-10 appearance-none place-items-center stroke-2 text-theme"
               onMouseDown={() => {
                 console.log("Search")
               }}

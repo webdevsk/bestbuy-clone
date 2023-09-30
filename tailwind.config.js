@@ -1,12 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-import defaultTheme from "tailwindcss/defaultTheme"
-import withMT from "@material-tailwind/react/utils/withMT"
+import defaultTheme from "tailwindcss/defaultTheme";
+import withMT from "@material-tailwind/react/utils/withMT";
+import headlessUiPlugin from '@headlessui/tailwindcss';
 
 // imported in src/main.js
 const extendedFontFamily = {
   sans: ["DM Sans", ...defaultTheme.fontFamily.sans],
   serif: ["Inter Tight Variable", ...defaultTheme.fontFamily.serif],
-}
+};
 
 // Curated from src/index.css@line:5
 const extendedColors = {
@@ -16,7 +17,7 @@ const extendedColors = {
   header: "var(--header-color)",
   body: "var(--body-color)",
   link: "var(--link-color)",
-}
+};
 
 export default withMT({
   content: [
@@ -34,5 +35,7 @@ export default withMT({
       colors: extendedColors,
     },
   },
-  plugins: [],
-})
+  plugins: [
+    headlessUiPlugin
+  ],
+});
