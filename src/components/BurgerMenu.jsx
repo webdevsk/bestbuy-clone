@@ -33,7 +33,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
 
     document.addEventListener("click", handleClick)
     return () => document.removeEventListener("click", handleClick)
-  }, [handleShow, show])
+  }, [show])
 
   return (
     <Popover className="relative grid place-items-center">
