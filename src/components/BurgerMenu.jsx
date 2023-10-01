@@ -3,7 +3,7 @@ import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
 import { Float } from "@headlessui-float/react"
 import { Popover, Transition } from "@headlessui/react"
 import { Fragment, useEffect, useRef, useState } from "react"
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md"
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 import { Link } from "react-router-dom"
 
 const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
@@ -33,7 +33,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
 
     document.addEventListener("click", handleClick)
     return () => document.removeEventListener("click", handleClick)
-  }, [show])
+  }, [handleShow, show])
 
   return (
     <Popover className="relative grid place-items-center">
@@ -88,7 +88,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
                   >
                     <Typography className="text-base">{menu.label}</Typography>
                     {menu.items && menu.items.length !== 0 && (
-                      <MdKeyboardArrowRight className="h-5 w-5 align-middle text-body" />
+                      <HiChevronRight className="h-5 w-5 align-middle text-body" />
                     )}
                   </button>
                   {menu.items && menu.items.length !== 0 && (
@@ -106,7 +106,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
                         className="sticky top-0 flex w-full items-center gap-2 bg-inherit p-3"
                         onClick={() => setSubMenuIndex(null)}
                       >
-                        <MdKeyboardArrowLeft className="h-5 w-5 align-middle text-body" />
+                        <HiChevronLeft className="h-5 w-5 align-middle text-body" />
                         <Typography className="text-base font-semibold text-theme">
                           Back
                         </Typography>

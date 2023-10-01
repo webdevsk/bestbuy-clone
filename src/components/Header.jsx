@@ -4,10 +4,10 @@ import SearchBar from "./SearchBar"
 import { Fragment, useEffect, useState } from "react"
 import createUnique from "../assets/createUnique"
 import { response } from "../assets/disposable"
-import IconDownLine from "./ui/IconDownLine"
 import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
 import { Popover } from "@headlessui/react"
 import { Float } from "@headlessui-float/react"
+import { HiChevronDown } from "react-icons/hi"
 
 const mainMenu = [
   {
@@ -194,9 +194,11 @@ const MainMenuDesktop = ({ mainMenu }) => {
             leaveTo="scale-y-90 opacity-0"
             originClass="origin-top"
           >
-            <Popover.Button className="group flex gap-1 hover:text-accent focus-visible:outline-none">
+            <Popover.Button className="group flex items-center gap-1 hover:text-accent focus-visible:outline-none">
               <Typography variant="h6">{menu.label}</Typography>
-              <IconDownLine className="h-4 w-4"></IconDownLine>
+              <HiChevronDown
+                className={`h-5 w-5 transition ui-open:rotate-180`}
+              />
             </Popover.Button>
 
             <Popover.Panel className="pointer-events-none [&>*]:pointer-events-auto">

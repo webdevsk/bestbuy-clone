@@ -14,8 +14,8 @@ import {
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
-import IconDownLine from "./ui/IconDownLine"
 import createUnique from "../assets/createUnique"
+import { MdKeyboardArrowDown } from "react-icons/md"
 
 const Filters = ({ products }) => {
   const [openObj, setOpenObj] = useState({
@@ -47,7 +47,13 @@ const Filters = ({ products }) => {
     <>
       <Accordion
         open={isOpen("category")}
-        icon={<IconDownLine open={isOpen("category")} />}
+        icon={
+          <MdKeyboardArrowDown
+            className={`${
+              isOpen("category") && "rotate-180"
+            } h-8 w-8 transition`}
+          />
+        }
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -68,7 +74,11 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("brands")}
-        icon={<IconDownLine open={isOpen("brands")} />}
+        icon={
+          <MdKeyboardArrowDown
+            className={`${isOpen("brands") && "rotate-180"} h-8 w-8 transition`}
+          />
+        }
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -89,7 +99,11 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("price")}
-        icon={<IconDownLine open={isOpen("price")} />}
+        icon={
+          <MdKeyboardArrowDown
+            className={`${isOpen("price") && "rotate-180"} h-8 w-8 transition`}
+          />
+        }
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
@@ -143,7 +157,11 @@ const Filters = ({ products }) => {
 
       <Accordion
         open={isOpen("rating")}
-        icon={<IconDownLine open={isOpen("rating")} />}
+        icon={
+          <MdKeyboardArrowDown
+            className={`${isOpen("rating") && "rotate-180"} h-8 w-8 transition`}
+          />
+        }
       >
         <AccordionHeader
           className="text-md group border-none text-body hover:text-theme"
