@@ -11,7 +11,7 @@ const ProductsGallery = () => {
     <>
       <section>
         <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
-          <div className="hidden xl:block xl:w-1/6">
+          <div className="hidden divide-y xl:block xl:w-1/6 [&>*]:pr-3">
             <Filters products={products} />
           </div>
 

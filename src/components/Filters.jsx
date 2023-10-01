@@ -51,7 +51,7 @@ const Filters = ({ products }) => {
           <MdKeyboardArrowDown
             className={`${
               isOpen("category") && "rotate-180"
-            } h-8 w-8 transition`}
+            } h-8 w-8 text-gray-800 transition`}
           />
         }
       >
@@ -76,7 +76,9 @@ const Filters = ({ products }) => {
         open={isOpen("brands")}
         icon={
           <MdKeyboardArrowDown
-            className={`${isOpen("brands") && "rotate-180"} h-8 w-8 transition`}
+            className={`${
+              isOpen("brands") && "rotate-180"
+            } h-8 w-8 text-gray-800 transition`}
           />
         }
       >
@@ -101,7 +103,9 @@ const Filters = ({ products }) => {
         open={isOpen("price")}
         icon={
           <MdKeyboardArrowDown
-            className={`${isOpen("price") && "rotate-180"} h-8 w-8 transition`}
+            className={`${
+              isOpen("price") && "rotate-180"
+            } h-8 w-8 text-gray-800 transition`}
           />
         }
       >
@@ -112,7 +116,7 @@ const Filters = ({ products }) => {
           Price
         </AccordionHeader>
         <AccordionBody className="text-body">
-          <div className="flex flex-wrap items-center gap-2 pl-1 pr-4">
+          <div className="flex flex-wrap items-center gap-2 px-2">
             <div className="w-1 grow">
               <Typography>Min</Typography>
               <input
@@ -159,7 +163,9 @@ const Filters = ({ products }) => {
         open={isOpen("rating")}
         icon={
           <MdKeyboardArrowDown
-            className={`${isOpen("rating") && "rotate-180"} h-8 w-8 transition`}
+            className={`${
+              isOpen("rating") && "rotate-180"
+            } h-8 w-8 text-gray-800 transition`}
           />
         }
       >
@@ -170,7 +176,7 @@ const Filters = ({ products }) => {
           Customer Rating
         </AccordionHeader>
         <AccordionBody className="text-body">
-          <ul className="flex flex-col gap-y-2 p-2">
+          <ul className="flex flex-col gap-y-2 p-2 pr-0">
             <Radio
               id="showAll"
               name="rating"

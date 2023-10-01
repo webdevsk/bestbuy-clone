@@ -86,9 +86,11 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
                     className="pointer-events-auto flex w-full items-center justify-between bg-white p-3 text-start"
                     onClick={() => setSubMenuIndex(menu.id)}
                   >
-                    <Typography className="text-base">{menu.label}</Typography>
+                    <Typography className="text-base capitalize">
+                      {menu.label}
+                    </Typography>
                     {menu.items && menu.items.length !== 0 && (
-                      <HiChevronRight className="h-5 w-5 align-middle text-body" />
+                      <HiChevronRight className="h-5 w-5 align-middle text-gray-800" />
                     )}
                   </button>
                   {menu.items && menu.items.length !== 0 && (
@@ -106,14 +108,16 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
                         className="sticky top-0 flex w-full items-center gap-2 bg-inherit p-3"
                         onClick={() => setSubMenuIndex(null)}
                       >
-                        <HiChevronLeft className="h-5 w-5 align-middle text-body" />
-                        <Typography className="text-base font-semibold text-theme">
+                        <HiChevronLeft className="h-5 w-5 align-middle text-gray-800" />
+                        <Typography className="text-base font-bold text-theme">
                           Back
                         </Typography>
                       </button>
                       {menu.items.map((item) => (
                         <Link className="block p-3" key={item} to={item}>
-                          {item}
+                          <Typography className="text-base capitalize">
+                            {item}
+                          </Typography>
                         </Link>
                       ))}
                     </Transition>

@@ -195,7 +195,9 @@ const MainMenuDesktop = ({ mainMenu }) => {
             originClass="origin-top"
           >
             <Popover.Button className="group flex items-center gap-1 hover:text-accent focus-visible:outline-none">
-              <Typography variant="h6">{menu.label}</Typography>
+              <Typography variant="h6" className="capitalize">
+                {menu.label}
+              </Typography>
               <HiChevronDown
                 className={`h-5 w-5 transition ui-open:rotate-180`}
               />
@@ -207,7 +209,13 @@ const MainMenuDesktop = ({ mainMenu }) => {
                 className={`relative max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
               >
                 {menu.items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item}>
+                    <Link to={item}>
+                      <Typography className="text-base capitalize">
+                        {item}
+                      </Typography>
+                    </Link>
+                  </li>
                 ))}
               </div>
 
