@@ -75,7 +75,9 @@ const Header = () => {
           <HeaderToolBar />
         </div>
       </section>
-
+      <a href="#pinned-product" className="skip">
+        Skip to main content
+      </a>
       <section className="mb-0 bg-[#003da6] py-2 text-white">
         <div className="container">
           {mobile && (
@@ -192,7 +194,7 @@ const MainMenuDesktop = ({ mainMenu }) => {
             leaveTo="scale-y-90 opacity-0"
             originClass="origin-top"
           >
-            <Popover.Button className="group flex gap-1 hover:text-accent">
+            <Popover.Button className="group flex gap-1 hover:text-accent focus-visible:outline-none">
               <Typography variant="h6">{menu.label}</Typography>
               <IconDownLine className="h-4 w-4"></IconDownLine>
             </Popover.Button>

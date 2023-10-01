@@ -21,7 +21,7 @@ const ProductItem = ({
 
   return (
     <>
-      <Link to={`/product/${product?.id}`} className="">
+      <Link to={`/product/${product?.id}`} className="" tabIndex={-1}>
         <img
           className={`aspect-square w-full object-contain ${imageClass ?? ""}`}
           src={product?.thumbnail}
