@@ -38,7 +38,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
         originClass="origin-top"
         floatingAs={Fragment}
       >
-        <Popover.Button className="burger-menu-btn relative [--_stroke-height:0.2em] [--_stroke-width:1.5em] focus-visible:outline-none">
+        <Popover.Button className="relative [--_stroke-height:0.2em] [--_stroke-width:1.5em] focus-visible:outline-none">
           <BurgerMenuBtn />
         </Popover.Button>
 
@@ -118,13 +118,13 @@ const BurgerMenuBtn = (props) => (
     className={`${props.className} relative flex transform overflow-hidden transition-all duration-200`}
   >
     <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300">
-      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 open:translate-x-10"></div>
-      <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 open:translate-x-10"></div>
-      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 ui-open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 ui-open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 ui-open:translate-x-10"></div>
 
-      <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 open:w-12 open:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
-        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 open:rotate-45"></div>
-        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 open:-rotate-45"></div>
+      <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 ui-open:w-12 ui-open:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
+        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 ui-open:rotate-45"></div>
+        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 ui-open:-rotate-45"></div>
       </div>
     </div>
   </div>
