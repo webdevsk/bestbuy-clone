@@ -2,43 +2,18 @@ import { Typography } from "@material-tailwind/react"
 import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
 import { Float } from "@headlessui-float/react"
 import { Popover, Transition } from "@headlessui/react"
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 import { Link } from "react-router-dom"
 
 const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
-  const [show, setShow] = useState(false)
   const [subMenuIndex, setSubMenuIndex] = useState(null)
-  const popoverRef = useRef(null)
-
-  const handleShow = () => {
-    setShow(!show)
-    setSubMenuIndex(!show && null)
-  }
-
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (!show) return
-      //Looking for Outside click
-      const rect = popoverRef.current.getBoundingClientRect()
-      if (
-        e.clientX < rect.left ||
-        e.clientX > rect.right ||
-        e.clientY < rect.top ||
-        e.clientY > rect.bottom
-      ) {
-        handleShow()
-      }
-    }
-
-    document.addEventListener("click", handleClick)
-    return () => document.removeEventListener("click", handleClick)
-  }, [show])
 
   return (
     <Popover className="relative grid place-items-center">
       <Float
-        show={show}
+        portal={true}
+        onHide={() => setSubMenuIndex(null)}
         shift
         offset={16}
         arrow={0}
@@ -63,22 +38,16 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
         originClass="origin-top"
         floatingAs={Fragment}
       >
-        <Popover.Button
-          onClick={handleShow}
-          className="group relative [--_stroke-height:0.2em] [--_stroke-width:1.5em]"
-        >
+        <Popover.Button className="burger-menu-btn relative [--_stroke-height:0.2em] [--_stroke-width:1.5em] focus-visible:outline-none">
           <BurgerMenuBtn />
         </Popover.Button>
 
-        <Popover.Panel static className="pointer-events-none">
+        <Popover.Panel className="pointer-events-none">
           <Float.Arrow className="absolute h-5 w-5 rotate-45 border border-gray-200 bg-white" />
           <FloatingPortal>
             <FloatingOverlay lockScroll />
           </FloatingPortal>
-          <div
-            ref={popoverRef}
-            className="pointer-events-auto relative h-full overflow-x-hidden overflow-y-scroll  border border-t-transparent bg-gray-100 text-body"
-          >
+          <div className="pointer-events-auto relative h-full overflow-x-hidden overflow-y-scroll  border border-t-transparent bg-gray-100 text-body">
             <ul className="divide-y">
               {mainMenu?.map((menu) => (
                 <li key={menu.id}>
@@ -143,16 +112,19 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
 
 export default BurgerMenu
 
-const BurgerMenuBtn = () => (
-  <div className="relative flex transform overflow-hidden transition-all duration-200">
+const BurgerMenuBtn = (props) => (
+  <div
+    {...props}
+    className={`${props.className} relative flex transform overflow-hidden transition-all duration-200`}
+  >
     <div className="flex h-5  w-[--_stroke-width] origin-center transform flex-col gap-1 overflow-hidden transition-all duration-300">
-      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 ui-open:translate-x-10"></div>
-      <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 ui-open:translate-x-10"></div>
-      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 ui-open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all duration-300 open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] transform rounded bg-white transition-all delay-75 duration-300 open:translate-x-10"></div>
+      <div className="h-[--_stroke-height] w-[--_stroke-width] origin-left transform rounded bg-white transition-all delay-150 duration-300 open:translate-x-10"></div>
 
-      <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 ui-open:w-12 ui-open:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
-        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 ui-open:rotate-45"></div>
-        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 ui-open:-rotate-45"></div>
+      <div className="absolute top-2.5 flex w-0 -translate-x-10 transform items-center justify-between transition-all duration-500 open:w-12 open:translate-x-0 [&>*]:h-[--_stroke-height] [&>*]:w-[--_stroke-width]">
+        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] rotate-0 transform rounded bg-white transition-all delay-300 duration-500 open:rotate-45"></div>
+        <div className="absolute h-[--_stroke-height] w-[--_stroke-width] -rotate-0 transform rounded bg-white transition-all delay-300 duration-500 open:-rotate-45"></div>
       </div>
     </div>
   </div>
