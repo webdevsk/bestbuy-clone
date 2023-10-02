@@ -20,7 +20,7 @@ const ProductsGallery = () => {
               <div></div>
 
               <div className="flex items-center gap-2">
-                <Typography>Sort</Typography>
+                <Typography className="sm:max-lg:text-white">Sort</Typography>
 
                 <Sort />
               </div>
