@@ -75,8 +75,13 @@ export const theme = {
   accordion: {
     styles: {
       base: {
+        header: {
+          initial: {
+            py: "py-2 xl:py-4",
+          },
+        },
         body: {
-          className: "pt-0",
+          className: "pt-2 xl:pt-0",
         },
       },
     },

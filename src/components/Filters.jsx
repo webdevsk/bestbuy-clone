@@ -1,8 +1,3 @@
-// category
-// brand
-// price
-// rating
-
 import {
   Accordion,
   AccordionBody,
@@ -16,8 +11,10 @@ import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import createUnique from "../assets/createUnique"
 import { MdKeyboardArrowDown } from "react-icons/md"
+import { useProductsContext } from "../contexts/ProductsContext"
 
-const Filters = ({ products }) => {
+const Filters = () => {
+  const products = useProductsContext()
   const [openObj, setOpenObj] = useState({
     category: true,
     // brands: true,
@@ -26,7 +23,6 @@ const Filters = ({ products }) => {
   })
 
   const isOpen = (key) => key in openObj && openObj[key]
-
   const handleOpenObj = (key) =>
     setOpenObj((openObj) => ({
       ...openObj,
@@ -51,15 +47,15 @@ const Filters = ({ products }) => {
           <MdKeyboardArrowDown
             className={`${
               isOpen("category") && "rotate-180"
-            } h-8 w-8 text-gray-800 transition`}
+            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
           />
         }
       >
         <AccordionHeader
-          className="text-md group border-none text-body hover:text-theme"
+          className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("category")}
         >
-          Category
+          <Typography variant="h6">Category</Typography>
         </AccordionHeader>
         <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
@@ -78,15 +74,15 @@ const Filters = ({ products }) => {
           <MdKeyboardArrowDown
             className={`${
               isOpen("brands") && "rotate-180"
-            } h-8 w-8 text-gray-800 transition`}
+            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
           />
         }
       >
         <AccordionHeader
-          className="text-md group border-none text-body hover:text-theme"
+          className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("brands")}
         >
-          Brands
+          <Typography variant="h6">Brands</Typography>
         </AccordionHeader>
         <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
@@ -105,15 +101,15 @@ const Filters = ({ products }) => {
           <MdKeyboardArrowDown
             className={`${
               isOpen("price") && "rotate-180"
-            } h-8 w-8 text-gray-800 transition`}
+            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
           />
         }
       >
         <AccordionHeader
-          className="text-md group border-none text-body hover:text-theme"
+          className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("price")}
         >
-          Price
+          <Typography variant="h6">Price</Typography>
         </AccordionHeader>
         <AccordionBody className="text-body">
           <div className="flex flex-wrap items-center gap-2 px-2">
@@ -122,7 +118,7 @@ const Filters = ({ products }) => {
               <input
                 type="text"
                 placeholder="$"
-                className=""
+                className="w-full"
                 ref={minPriceRef}
                 onChange={handlePriceBtn}
                 onKeyDown={(event) => {
@@ -138,7 +134,7 @@ const Filters = ({ products }) => {
               <input
                 type="text"
                 placeholder="$"
-                className=""
+                className="w-full"
                 ref={maxPriceRef}
                 onChange={handlePriceBtn}
                 onKeyDown={(event) =>
@@ -151,9 +147,9 @@ const Filters = ({ products }) => {
               ref={priceBtnRef}
               size="lg"
               disabled
-              className="mt-2 w-full bg-theme disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+              className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
             >
-              Apply Price Range
+              <Typography variant="h6">Apply Price Range</Typography>
             </Button>
           </div>
         </AccordionBody>
@@ -165,15 +161,15 @@ const Filters = ({ products }) => {
           <MdKeyboardArrowDown
             className={`${
               isOpen("rating") && "rotate-180"
-            } h-8 w-8 text-gray-800 transition`}
+            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
           />
         }
       >
         <AccordionHeader
-          className="text-md group border-none text-body hover:text-theme"
+          className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("rating")}
         >
-          Customer Rating
+          <Typography variant="h6">Customer Rating</Typography>
         </AccordionHeader>
         <AccordionBody className="text-body">
           <ul className="flex flex-col gap-y-2 p-2 pr-0">
