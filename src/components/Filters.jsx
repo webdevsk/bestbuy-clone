@@ -9,13 +9,14 @@ import {
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
-import createUnique from "../assets/createUnique"
+import createUnique from "../hooks/createUnique"
 import { MdKeyboardArrowDown } from "react-icons/md"
 import { useProductsContext } from "../contexts/ProductsContext"
+import useLocalStorage from "../hooks/useLocalStorage"
 
 const Filters = () => {
   const products = useProductsContext()
-  const [openObj, setOpenObj] = useState({
+  const [openObj, setOpenObj] = useLocalStorage("openFilters", {
     category: true,
     // brands: true,
     price: true,
