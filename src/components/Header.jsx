@@ -8,6 +8,12 @@ import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
 import { Popover } from "@headlessui/react"
 import { Float } from "@headlessui-float/react"
 import { HiChevronDown } from "react-icons/hi"
+import MainMenuContext, {
+  useMainMenuContext,
+} from "../contexts/MainMenuContext"
+import HeaderMenuContext, {
+  useHeaderMenuContext,
+} from "../contexts/HeaderMenuContext"
 
 const mainMenu = [
   {
@@ -27,7 +33,7 @@ const mainMenu = [
   },
 ]
 
-const topMiniMenu = [
+const headerMenu = [
   {
     id: 1,
     label: "Order Status",
@@ -59,36 +65,40 @@ const Header = () => {
     }
   })
   return (
-    <div id="header" className="relative z-50">
-      <section className="mb-0 bg-theme py-4 text-white">
-        <div className="container flex flex-wrap items-center gap-x-4 gap-y-4">
-          <TopMiniMenuDesktop topMiniMenu={topMiniMenu} />
+    <MainMenuContext.Provider value={mainMenu}>
+      <HeaderMenuContext.Provider value={headerMenu}>
+        <div id="header" className="relative z-50">
+          <section className="mb-0 bg-theme py-4 text-white">
+            <div className="container flex flex-wrap items-center gap-x-4 gap-y-4">
+              <TopMiniMenuDesktop />
 
-          <SiteLogo />
+              <SiteLogo />
 
-          {!mobile && (
-            <div className="w-full lg:w-96">
-              <SearchBar />
+              {!mobile && (
+                <div className="w-full lg:w-96">
+                  <SearchBar />
+                </div>
+              )}
+
+              <HeaderToolBar />
             </div>
-          )}
-
-          <HeaderToolBar />
-        </div>
-      </section>
-      <a href="#pinned-product" className="skip">
-        Skip to main content
-      </a>
-      <section className="mb-0 bg-[#003da6] py-2 text-white">
-        <div className="container">
-          {mobile && (
-            <div className="w-full lg:w-96">
-              <SearchBar mainMenu={mainMenu} topMiniMenu={topMiniMenu} />
+          </section>
+          <a href="#pinned-product" className="skip">
+            Skip to main content
+          </a>
+          <section className="mb-0 bg-[#003da6] py-2 text-white">
+            <div className="container">
+              {mobile && (
+                <div className="w-full lg:w-96">
+                  <SearchBar />
+                </div>
+              )}
+              {!mobile && <MainMenuDesktop mainMenu={mainMenu} />}
             </div>
-          )}
-          {!mobile && <MainMenuDesktop mainMenu={mainMenu} />}
+          </section>
         </div>
-      </section>
-    </div>
+      </HeaderMenuContext.Provider>
+    </MainMenuContext.Provider>
   )
 }
 
@@ -165,7 +175,8 @@ const HeaderToolBar = () => (
   </div>
 )
 
-const MainMenuDesktop = ({ mainMenu }) => {
+const MainMenuDesktop = () => {
+  const mainMenu = useMainMenuContext()
   return (
     <Popover.Group as="ul" className="flex flex-wrap gap-2 py-2">
       {mainMenu.map((menu) => (
@@ -233,12 +244,15 @@ const MainMenuDesktop = ({ mainMenu }) => {
   )
 }
 
-const TopMiniMenuDesktop = ({ topMiniMenu }) => (
-  <div className="hidden w-full flex-wrap justify-end gap-3 lg:flex">
-    {topMiniMenu.map((menu) => (
-      <Link key={menu.id} to={menu.link} className="hover:underline">
-        <Typography variant="small">{menu.label}</Typography>
-      </Link>
-    ))}
-  </div>
-)
+const TopMiniMenuDesktop = () => {
+  const headerMenu = useHeaderMenuContext()
+  return (
+    <div className="hidden w-full flex-wrap justify-end gap-3 lg:flex">
+      {headerMenu.map((menu) => (
+        <Link key={menu.id} to={menu.link} className="hover:underline">
+          <Typography variant="small">{menu.label}</Typography>
+        </Link>
+      ))}
+    </div>
+  )
+}

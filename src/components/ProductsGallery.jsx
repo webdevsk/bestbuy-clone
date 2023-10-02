@@ -1,6 +1,5 @@
 import Filters from "./Filters"
 //Replace these with async api call functions
-import { response } from "../assets/disposable"
 import { Button, Typography } from "@material-tailwind/react"
 import Sort from "./Sort"
 import ProductItem from "./ProductItem"

@@ -5,15 +5,14 @@ import { Popover, Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 import { Link } from "react-router-dom"
+import { useMainMenuContext } from "../contexts/MainMenuContext"
+import { useHeaderMenuContext } from "../contexts/HeaderMenuContext"
 
-const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
-  const [subMenuIndex, setSubMenuIndex] = useState(null)
-
+const BurgerMenu = () => {
   return (
     <Popover className="relative grid place-items-center">
       <Float
         portal={true}
-        onHide={() => setSubMenuIndex(null)}
         shift
         offset={16}
         arrow={0}
@@ -48,61 +47,7 @@ const BurgerMenu = ({ mainMenu, topMiniMenu }) => {
             <FloatingOverlay lockScroll />
           </FloatingPortal>
           <div className="pointer-events-auto relative h-full overflow-x-hidden overflow-y-scroll  border border-t-transparent bg-gray-100 text-body">
-            <ul className="divide-y">
-              {mainMenu?.map((menu) => (
-                <li key={menu.id}>
-                  <button
-                    className="pointer-events-auto flex w-full items-center justify-between bg-white p-3 text-start"
-                    onClick={() => setSubMenuIndex(menu.id)}
-                  >
-                    <Typography className="text-base capitalize">
-                      {menu.label}
-                    </Typography>
-                    {menu.items && menu.items.length !== 0 && (
-                      <HiChevronRight className="h-5 w-5 align-middle text-gray-800" />
-                    )}
-                  </button>
-                  {menu.items && menu.items.length !== 0 && (
-                    <Transition
-                      show={subMenuIndex === menu.id}
-                      enter="transition ease-in-out duration-300 transform"
-                      enterFrom="translate-x-full"
-                      enterTo="translate-x-0"
-                      leave="transition ease-in-out duration-300 transform"
-                      leaveFrom="translate-x-0"
-                      leaveTo="translate-x-full"
-                      className="absolute inset-0 divide-y overflow-y-auto bg-white"
-                    >
-                      <button
-                        className="sticky top-0 flex w-full items-center gap-2 bg-inherit p-3"
-                        onClick={() => setSubMenuIndex(null)}
-                      >
-                        <HiChevronLeft className="h-5 w-5 align-middle text-gray-800" />
-                        <Typography className="text-base font-bold text-theme">
-                          Back
-                        </Typography>
-                      </button>
-                      {menu.items.map((item) => (
-                        <Link className="block p-3" key={item} to={item}>
-                          <Typography className="text-base capitalize">
-                            {item}
-                          </Typography>
-                        </Link>
-                      ))}
-                    </Transition>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <ul>
-              {topMiniMenu?.map((menu) => (
-                <li key={menu.id}>
-                  <a href="#" className="block p-3">
-                    <Typography className="text-base">{menu.label}</Typography>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <BurgerMenuList />
           </div>
         </Popover.Panel>
       </Float>
@@ -129,3 +74,68 @@ const BurgerMenuBtn = (props) => (
     </div>
   </div>
 )
+
+const BurgerMenuList = () => {
+  const mainMenu = useMainMenuContext()
+  const headerMenu = useHeaderMenuContext()
+  const [subMenu, setSubMenu] = useState(null)
+  return (
+    <>
+      <ul className="divide-y">
+        {mainMenu?.map((menu) => (
+          <li key={menu.id}>
+            <button
+              className="pointer-events-auto flex w-full items-center justify-between bg-white p-3 text-start"
+              onClick={() => setSubMenu(menu.id)}
+            >
+              <Typography className="text-base capitalize">
+                {menu.label}
+              </Typography>
+              {menu.items && menu.items.length !== 0 && (
+                <HiChevronRight className="h-5 w-5 align-middle text-gray-800" />
+              )}
+            </button>
+            {menu.items && menu.items.length !== 0 && (
+              <Transition
+                show={subMenu === menu.id}
+                enter="transition ease-in-out duration-300 transform"
+                enterFrom="translate-x-full"
+                enterTo="translate-x-0"
+                leave="transition ease-in-out duration-300 transform"
+                leaveFrom="translate-x-0"
+                leaveTo="translate-x-full"
+                className="absolute inset-0 divide-y overflow-y-auto bg-white"
+              >
+                <button
+                  className="sticky top-0 flex w-full items-center gap-2 bg-inherit p-3"
+                  onClick={() => setSubMenu(null)}
+                >
+                  <HiChevronLeft className="h-5 w-5 align-middle text-gray-800" />
+                  <Typography className="text-base font-bold text-theme">
+                    Back
+                  </Typography>
+                </button>
+                {menu.items.map((item) => (
+                  <Link className="block p-3" key={item} to={item}>
+                    <Typography className="text-base capitalize">
+                      {item}
+                    </Typography>
+                  </Link>
+                ))}
+              </Transition>
+            )}
+          </li>
+        ))}
+      </ul>
+      <ul>
+        {headerMenu?.map((menu) => (
+          <li key={menu.id}>
+            <a href="#" className="block p-3">
+              <Typography className="text-base">{menu.label}</Typography>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}

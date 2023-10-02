@@ -6,8 +6,6 @@ const SearchBar = ({
   name,
   id,
   containerClass,
-  mainMenu,
-  topMiniMenu,
   className,
   style,
   inputProps,
@@ -22,7 +20,7 @@ const SearchBar = ({
       <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
         <div className="flex w-10 items-center lg:hidden">
           {/* Burger menu */}
-          <BurgerMenu mainMenu={mainMenu} topMiniMenu={topMiniMenu} />
+          <BurgerMenu />
         </div>
         <div
           className={`${
