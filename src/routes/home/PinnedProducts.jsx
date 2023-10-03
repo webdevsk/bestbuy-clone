@@ -1,5 +1,5 @@
 import { Button, Typography } from "@material-tailwind/react"
-import { Mousewheel, Pagination } from "swiper/modules"
+import { FreeMode, Mousewheel, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 //Replace these with async api call functions
@@ -85,7 +85,7 @@ const PinnedProducts = () => {
             <div>
               <Swiper
                 // More styles at index.css@30
-                modules={[Pagination, Mousewheel]}
+                modules={[Pagination, Mousewheel, FreeMode]}
                 navigation={{
                   prevEl: ".swiper-btn-prev",
                   nextEl: ".swiper-btn-next",
@@ -93,7 +93,8 @@ const PinnedProducts = () => {
                 pagination={{ clickable: true }}
                 slidesPerView={2}
                 spaceBetween={8}
-                mousewheel
+                freeMode
+                mousewheel={{ forceToAxis: true }}
                 breakpoints={{
                   720: {
                     slidesPerView: 3,
@@ -112,7 +113,7 @@ const PinnedProducts = () => {
                       <SwiperSlide key={product.id}>
                         <Product
                           product={product}
-                          className={` flex flex-col gap-4 rounded-lg bg-white p-4`}
+                          className={`flex flex-col gap-4 rounded-lg bg-white p-4`}
                         >
                           <Product.Image />
                           <Product.Description>

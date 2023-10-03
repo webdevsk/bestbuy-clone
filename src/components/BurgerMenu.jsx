@@ -116,7 +116,11 @@ const BurgerMenuList = () => {
                   </Typography>
                 </button>
                 {menu.items.map((item) => (
-                  <Link className="block p-3" key={item} to={item}>
+                  <Link
+                    className="block p-3 transition-colors hover:bg-gray-100 hover:text-theme"
+                    key={item}
+                    to={item}
+                  >
                     <Typography className="text-base capitalize">
                       {item}
                     </Typography>
@@ -130,9 +134,9 @@ const BurgerMenuList = () => {
       <ul>
         {headerMenu?.map((menu) => (
           <li key={menu.id}>
-            <a href="#" className="block p-3">
+            <Link to="#" className="block p-3">
               <Typography className="text-base">{menu.label}</Typography>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

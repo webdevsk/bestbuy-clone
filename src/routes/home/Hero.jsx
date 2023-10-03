@@ -34,7 +34,7 @@ const CallToAction1 = () => {
     <div className="flex items-center bg-gradient-to-b from-[#fcc31e] to-[#f9e319] py-12 xl:py-24">
       <div
         className={`container transition-transform duration-[4000ms] ${
-          swiperSlide.isActive ? "xl:translate-x-0" : "xl:translate-x-24"
+          swiperSlide.isNext ? "xl:translate-x-24" : "xl:translate-x-0"
         }`}
       >
         <div className="grid grid-cols-1 items-center gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">

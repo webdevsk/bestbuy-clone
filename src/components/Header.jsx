@@ -217,11 +217,14 @@ const MainMenuDesktop = () => {
             <Popover.Panel className="pointer-events-none [&>*]:pointer-events-auto">
               <Float.Arrow className="absolute h-5 w-5 rotate-45 border border-gray-200 bg-white" />
               <div
-                className={`relative max-h-full w-80  overflow-y-scroll border border-t-transparent bg-white p-4 text-black`}
+                className={`relative max-h-full w-80 overflow-y-scroll border border-t-transparent bg-white py-2 text-black`}
               >
                 {menu.items.map((item) => (
                   <li key={item}>
-                    <Link to={item}>
+                    <Link
+                      to={item}
+                      className="block px-3 py-1 transition-colors hover:bg-gray-100 hover:text-theme"
+                    >
                       <Typography className="text-base capitalize">
                         {item}
                       </Typography>

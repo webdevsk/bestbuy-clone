@@ -55,7 +55,7 @@ const ProductImage = (props) => {
         alt={product?.title}
         loading="lazy"
       />
-      <div className={`absolute inset-0`}>
+      <div className={` absolute inset-0`}>
         {!isLoaded && (
           <div className="grid h-full w-full animate-pulse place-items-center bg-blue-gray-100 text-gray-700 backdrop-blur-lg">
             Loading...
