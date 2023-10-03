@@ -9,7 +9,7 @@ const { products } = response
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/mousewheel"
-import ProductItem from "../../components/ProductItem"
+import Product from "../../components/Product"
 
 const PinnedProducts = () => {
   return (
@@ -110,17 +110,21 @@ const PinnedProducts = () => {
                     (product.category === "smartphones" ||
                       product.category === "laptops") && (
                       <SwiperSlide key={product.id}>
-                        <div
+                        <Product
+                          product={product}
                           className={` flex flex-col gap-4 rounded-lg bg-white p-4`}
                         >
-                          <ProductItem
-                            product={product}
-                            titleVariant="small"
-                            // showDiscount
-                            titleClass={"font-serif font-medium"}
-                            showRating
-                          />
-                        </div>
+                          <Product.Image />
+                          <Product.Description>
+                            <Product.Label
+                              variant="small"
+                              className="font-serif font-medium"
+                            />
+                            <Product.Rating />
+                            <Product.Price />
+                            {/* <Product.Button /> */}
+                          </Product.Description>
+                        </Product>
                       </SwiperSlide>
                     ),
                 )}

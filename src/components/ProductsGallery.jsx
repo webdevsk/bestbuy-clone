@@ -2,11 +2,11 @@ import Filters from "./Filters"
 //Replace these with async api call functions
 import { Button, Typography } from "@material-tailwind/react"
 import Sort from "./Sort"
-import ProductItem from "./ProductItem"
 import { IoOptionsOutline } from "react-icons/io5"
 import { Fragment, useState } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { useProductsContext } from "../contexts/ProductsContext"
+import Product from "./Product"
 
 const ProductsGallery = () => {
   const products = useProductsContext()
@@ -28,19 +28,21 @@ const ProductsGallery = () => {
               <FilterForMobile />
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+            <div className="mt-4 grid gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
               {products.map((product) => (
-                <div
-                  key={product?.id}
+                <Product
+                  key={product.id}
+                  product={product}
                   className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 xl:gap-4"
                 >
-                  <ProductItem
-                    product={product}
-                    showDiscount
-                    showRating
-                    showAddtocart
-                  />
-                </div>
+                  <Product.Image />
+                  <Product.Description>
+                    <Product.Label />
+                    <Product.Rating />
+                    <Product.Price withDiscount />
+                    <Product.Button />
+                  </Product.Description>
+                </Product>
               ))}
             </div>
           </div>
