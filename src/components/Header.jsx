@@ -1,7 +1,7 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment } from "react"
 import createUnique from "../hooks/createUnique"
 import { response } from "../assets/disposable"
 import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
@@ -14,6 +14,7 @@ import MainMenuContext, {
 import HeaderMenuContext, {
   useHeaderMenuContext,
 } from "../contexts/HeaderMenuContext"
+import { Desktop, Mobile } from "./ui/ReactResponsive"
 
 const mainMenu = [
   {
@@ -52,18 +53,6 @@ const headerMenu = [
 ]
 
 const Header = () => {
-  const [mobile, setMobile] = useState(false)
-
-  useEffect(() => {
-    function handleResize() {
-      setMobile(window.outerWidth <= 960)
-    }
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  })
   return (
     <MainMenuContext.Provider value={mainMenu}>
       <HeaderMenuContext.Provider value={headerMenu}>
@@ -73,12 +62,11 @@ const Header = () => {
               <TopMiniMenuDesktop />
 
               <SiteLogo />
-
-              {!mobile && (
+              <Desktop>
                 <div className="w-full lg:w-96">
                   <SearchBar />
                 </div>
-              )}
+              </Desktop>
 
               <HeaderToolBar />
             </div>
@@ -88,12 +76,14 @@ const Header = () => {
           </a>
           <section className="mb-0 bg-[#003da6] py-2 text-white">
             <div className="container">
-              {mobile && (
+              <Mobile>
                 <div className="w-full lg:w-96">
                   <SearchBar />
                 </div>
-              )}
-              {!mobile && <MainMenuDesktop mainMenu={mainMenu} />}
+              </Mobile>
+              <Desktop>
+                <MainMenuDesktop />
+              </Desktop>
             </div>
           </section>
         </div>

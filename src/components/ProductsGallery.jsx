@@ -1,22 +1,25 @@
 import Filters from "./Filters"
 //Replace these with async api call functions
-import { Button, Typography } from "@material-tailwind/react"
+import { Button, Drawer, Typography } from "@material-tailwind/react"
 import Sort from "./Sort"
 import { IoOptionsOutline } from "react-icons/io5"
-import { Fragment, useState } from "react"
-import { Dialog, Transition } from "@headlessui/react"
+import { useState } from "react"
 import { useProductsContext } from "../contexts/ProductsContext"
 import Product from "./Product"
-
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
+import { IoIosClose } from "react-icons/io"
+import { Desktop, Mobile } from "./ui/ReactResponsive"
 const ProductsGallery = () => {
   const products = useProductsContext()
   return (
     <>
       <section>
         <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
-          <div className="hidden divide-y xl:block xl:w-1/6 [&>*]:pr-3">
-            <Filters />
-          </div>
+          <Desktop>
+            <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
+              <Filters />
+            </div>
+          </Desktop>
 
           <div className="w-1 grow xl:pl-6 xl:pt-6">
             <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
@@ -25,10 +28,12 @@ const ProductsGallery = () => {
 
                 <Sort />
               </div>
-              <FilterForMobile />
+              <Mobile>
+                <FilterForMobile />
+              </Mobile>
             </div>
 
-            <div className="mt-4 grid gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
               {products.map((product) => (
                 <Product
                   key={product.id}
@@ -56,69 +61,56 @@ export default ProductsGallery
 
 const FilterForMobile = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const closeModal = () => setIsOpen(false)
-  const openModal = () => setIsOpen(true)
+
   return (
-    <div className="xl:hidden">
+    <>
       <button
-        onClick={openModal}
+        onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 rounded-sm border border-theme bg-white px-9 py-3 text-theme ring-4 ring-transparent ring-offset-4 ring-offset-transparent transition hover:bg-gray-200 hover:ring-offset-blue-100"
       >
         <IoOptionsOutline className="h-5 w-5" />
         <Typography variant="h6">Filters</Typography>
       </button>
-
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/30" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-hidden">
-            <div className="flex min-h-full w-full items-end">
-              <Transition.Child
-                as={Fragment}
-                enter="transition ease-in-out duration-300 transform"
-                enterFrom="opacity-0 translate-y-full"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in-out duration-300 transform"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-full"
-              >
-                <Dialog.Panel className="w-full transform overflow-hidden rounded-t-xl bg-white p-3 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-md font-bold leading-6 text-body antialiased"
-                  >
-                    Filters
-                  </Dialog.Title>
-                  {/* Actual content */}
-                  <div className="mt-3 h-[50dvh] divide-y overflow-x-hidden overflow-y-scroll">
-                    <Filters />
-                  </div>
-
-                  <div className="mt-4">
-                    <Button
-                      size="lg"
-                      className=" w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
-                    >
-                      <Typography variant="h6">Apply</Typography>
-                    </Button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+      <Drawer
+        placement="bottom"
+        open={isOpen}
+        size={500}
+        dismiss={{ outsidePress: true }}
+        overlay={false}
+        overlayProps={{ className: "bg-black/30 inset-0 fixed" }}
+        onClose={() => setIsOpen(false)}
+        className="flex flex-col rounded-t-xl border pt-4"
+      >
+        <div className="flex h-full flex-col divide-y overflow-x-hidden overflow-y-scroll [&>*]:px-4">
+          <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl bg-white pb-4">
+            <Typography variant="h4">Filters</Typography>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="rounded-sm hover:bg-gray-100"
+            >
+              <IoIosClose className="h-6 w-6" />
+            </button>
           </div>
-        </Dialog>
-      </Transition>
-    </div>
+          <Filters />
+          <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
+            <Button
+              size="lg"
+              className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+            >
+              <Typography variant="h6">Apply</Typography>
+            </Button>
+          </div>
+        </div>
+        {isOpen && (
+          <FloatingPortal>
+            <FloatingOverlay
+              lockScroll
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-20 bg-black/30"
+            ></FloatingOverlay>
+          </FloatingPortal>
+        )}
+      </Drawer>
+    </>
   )
 }
