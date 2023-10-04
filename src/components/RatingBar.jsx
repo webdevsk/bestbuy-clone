@@ -1,6 +1,7 @@
+import { memo } from "react"
 import "./ratingBar.css"
 
-const RatingBar = ({ rating }) => (
+const RatingBar = memo(({ rating }) => (
   <div className="rating-bar relative flex w-max">
     <div
       style={{ width: `${(rating / 5) * 100 ?? 0}%` }}
@@ -25,6 +26,7 @@ const RatingBar = ({ rating }) => (
       </svg>
     ))}
   </div>
-)
+))
 
+RatingBar.displayName = "RatingBar"
 export default RatingBar
