@@ -7,7 +7,7 @@ const cartItemsSlice = createSlice({
     addToCart: (state, action) => {
       state.push({
         id: action.payload.id,
-        count: action.payload.count
+        count: 1
       });
     },
     removeFromCart: (state, action) => {
@@ -15,11 +15,14 @@ const cartItemsSlice = createSlice({
       state.splice(itemIndex, 1);
     },
     increaseCount: (state, action) => {
-      const cartItem = state.find(item => item.id === action.payload.id);
+      const cartItem = state.find(item => item.id === action.payload);
+      if (cartItem.count === 10) return state;
+
       cartItem.count += 1;
     },
     decreaseCount: (state, action) => {
-      const cartItem = state.find(item => item.id === action.payload.id);
+      const cartItem = state.find(item => item.id === action.payload);
+      if (cartItem.count === 0) return state;
       cartItem.count -= 1;
     },
     setCountByAmount: (state, action) => {

@@ -16,6 +16,10 @@ import HeaderMenuContext, {
 } from "../contexts/HeaderMenuContext"
 import { Desktop, Mobile } from "./ui/ReactResponsive"
 import { IoIosClose } from "react-icons/io"
+import CartItems from "./CartItems"
+import ProductsContext from "../contexts/ProductsContext"
+
+const { products } = response
 
 const mainMenu = [
   {
@@ -262,6 +266,7 @@ const Cart = () => {
         placement="right"
         className="flex h-[100dvh] flex-col overflow-y-auto text-body"
         overlay={false}
+        size={450}
       >
         <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl bg-white p-4 pb-4">
           <Typography variant="h4">Cart</Typography>
@@ -271,6 +276,11 @@ const Cart = () => {
           >
             <IoIosClose className="h-6 w-6" />
           </button>
+        </div>
+        <div className="flex flex-col gap-2 p-4">
+          <ProductsContext.Provider value={products}>
+            <CartItems />
+          </ProductsContext.Provider>
         </div>
       </Drawer>
       {isOpen && (

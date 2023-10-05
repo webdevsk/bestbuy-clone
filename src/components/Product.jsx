@@ -9,6 +9,8 @@ import {
 } from "react"
 import RatingBar from "./RatingBar"
 import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { addToCart } from "../features/cartItems/cartItemsSlice"
 
 //Contexts
 const ProductContext = createContext(null)
@@ -142,6 +144,7 @@ Product.Price = ProductPrice
 // Product add to cart component
 const ProductButton = forwardRef((props, ref) => {
   const product = useProductContext()
+  const dispatch = useDispatch()
   return (
     <Button
       {...props}
@@ -149,7 +152,7 @@ const ProductButton = forwardRef((props, ref) => {
       className={`${
         props.className ?? ""
       } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent`}
-      onClick={() => console.log(product)}
+      onClick={() => dispatch(addToCart(product))}
     >
       <Typography variant="h6">Add to Cart</Typography>
     </Button>
