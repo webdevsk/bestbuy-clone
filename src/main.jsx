@@ -11,13 +11,17 @@ import { theme } from "./assets/bestbuy-theme"
 import { RouterProvider } from "react-router"
 import { router } from "./router-config"
 import { register } from "swiper/element/bundle"
+import { Provider } from "react-redux"
+import store from "./app/store"
 
 register()
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider value={theme}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider value={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
 )
