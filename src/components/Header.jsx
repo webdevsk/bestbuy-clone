@@ -16,7 +16,7 @@ import HeaderMenuContext, {
 } from "../contexts/HeaderMenuContext"
 import { Desktop, Mobile } from "./ui/ReactResponsive"
 import { IoIosClose } from "react-icons/io"
-import CartItems from "./CartItems"
+import CartItems from "../features/cartItems/CartItems"
 import ProductsContext from "../contexts/ProductsContext"
 
 const { products } = response

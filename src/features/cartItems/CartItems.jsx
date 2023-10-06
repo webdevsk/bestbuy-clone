@@ -1,13 +1,9 @@
 import { Typography } from "@material-tailwind/react"
 import { useDispatch, useSelector } from "react-redux"
-import { useProductsContext } from "./../contexts/ProductsContext"
+import { useProductsContext } from "../../contexts/ProductsContext"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import {
-  decreaseCount,
-  increaseCount,
-  removeFromCart,
-} from "../features/cartItems/cartItemsSlice"
+import { decreaseCount, increaseCount, removeFromCart } from "./cartItemsSlice"
 import { useCallback } from "react"
 
 const CartItems = (props) => {
