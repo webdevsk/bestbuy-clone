@@ -1,11 +1,11 @@
 import { Button, Drawer, Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import createUnique from "../hooks/createUnique"
 import { response } from "../assets/disposable"
 import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
-import { Popover, Portal } from "@headlessui/react"
+import { Popover } from "@headlessui/react"
 import { Float } from "@headlessui-float/react"
 import { HiChevronDown } from "react-icons/hi"
 import MainMenuContext, {
@@ -58,22 +58,60 @@ const headerMenu = [
 ]
 
 const Header = () => {
+  const headerRef = useRef(null)
+  const stickyHeaderRef = useRef(null)
+
+  useEffect(() => {
+    // Amount of pixels after the floating should start
+    const distance = headerRef.current.getBoundingClientRect().height
+
+    const handleScroll = () => {
+      const height = stickyHeaderRef.current.getBoundingClientRect().height
+      //if header is visible
+      const isFloating = distance < scrollY
+
+      //Calculation:
+      // Initially hide itself completely. As in translateY: -100% or bottom: 100%
+      // (scrollY - distance) The amount scrolled minus the main header height. So initially it is 0 after scrolling past header container
+      // Keep increasing translateY as the scrollY-distance value increases. Stops at translateY: 0%. Now the sticky header is completely visible
+      const offset = -height + (scrollY - distance)
+
+      stickyHeaderRef.current.classList.toggle("floating", isFloating)
+      stickyHeaderRef.current.style.position = isFloating ? "fixed" : "absolute"
+      stickyHeaderRef.current.style.top = `${
+        isFloating && offset < 0 ? offset : 0
+      }px`
+    }
+
+    addEventListener("scroll", handleScroll)
+    return () => removeEventListener("scroll", handleScroll)
+  }, [stickyHeaderRef, headerRef])
+
   return (
     <MainMenuContext.Provider value={mainMenu}>
       <HeaderMenuContext.Provider value={headerMenu}>
-        <div id="header" className="relative z-50">
-          <section className="mb-0 bg-theme py-4 text-white">
-            <div className="container flex flex-wrap items-center gap-x-4 gap-y-4">
+        <div id="header" ref={headerRef} className="relative z-50">
+          <section className="mb-0 bg-theme text-white xl:pb-2 xl:pt-4">
+            <div className="flex flex-col">
               <TopMiniMenuDesktop />
+              {/* placeholder */}
+              <div className="relative h-16">
+                <div
+                  ref={stickyHeaderRef}
+                  className="absolute inset-x-0 grid h-16 place-items-center [&.floating]:bg-theme [&.floating]:shadow-lg [&.floating]:shadow-black/30"
+                >
+                  <div className="container flex flex-wrap items-center gap-x-4">
+                    <SiteLogo />
+                    <Desktop>
+                      <div className="w-full lg:w-96">
+                        <SearchBar />
+                      </div>
+                    </Desktop>
 
-              <SiteLogo />
-              <Desktop>
-                <div className="w-full lg:w-96">
-                  <SearchBar />
+                    <HeaderToolBar />
+                  </div>
                 </div>
-              </Desktop>
-
-              <HeaderToolBar />
+              </div>
             </div>
           </section>
           <a href="#pinned-product" className="skip">
@@ -224,7 +262,7 @@ const MainMenuDesktop = () => {
 const TopMiniMenuDesktop = () => {
   const headerMenu = useHeaderMenuContext()
   return (
-    <div className="hidden w-full flex-wrap justify-end gap-3 lg:flex">
+    <div className="container hidden flex-wrap justify-end gap-3 group-[.floating]/header:hidden lg:flex">
       {headerMenu.map((menu) => (
         <Link key={menu.id} to={menu.link} className="hover:underline">
           <Typography variant="small">{menu.label}</Typography>
@@ -286,7 +324,7 @@ const Cart = () => {
       {isOpen && (
         <FloatingPortal>
           <FloatingOverlay
-            lockScroll
+            // lockScroll
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 z-20 bg-black/30"
           ></FloatingOverlay>
