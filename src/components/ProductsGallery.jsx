@@ -3,57 +3,76 @@ import Filters from "./Filters"
 import { Button, Drawer, Typography } from "@material-tailwind/react"
 import Sort from "./Sort"
 import { IoOptionsOutline } from "react-icons/io5"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useProductsContext } from "../contexts/ProductsContext"
 import Product from "./Product"
-import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
+import { FloatingOverlay, FloatingPortal, useDismiss } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
 import { Desktop, Mobile } from "./ui/ReactResponsive"
+import { useSelector, useDispatch } from "react-redux"
+import {
+  fetchProducts,
+  selectProductsData,
+} from "../features/products/productsSlice"
+
 const ProductsGallery = () => {
-  const products = useProductsContext()
+  const status = useSelector((state) => state.products.status)
+  const { products } = useSelector(selectProductsData())
+  console.log(status)
+  console.log(products)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchProducts())
+  }, [dispatch, status])
+
+  // const products = useProductsContext()
   return (
-    <>
-      <section>
-        <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
-          <Desktop>
-            <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
-              <Filters />
-            </div>
-          </Desktop>
-
-          <div className="w-1 grow xl:pl-6 xl:pt-6">
-            <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
-              <div className="flex items-center gap-2">
-                <Typography className="hidden sm:block">Sort</Typography>
-
-                <Sort />
+    status === "success" && (
+      <>
+        <section>
+          <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
+            <Desktop>
+              <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
+                <Filters />
               </div>
-              <Mobile>
-                <FilterForMobile />
-              </Mobile>
-            </div>
+            </Desktop>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-              {products.map((product) => (
-                <Product
-                  key={product.id}
-                  product={product}
-                  className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 xl:gap-4"
-                >
-                  <Product.Image />
-                  <Product.Description>
-                    <Product.Label />
-                    <Product.Rating />
-                    <Product.Price withDiscount />
-                    <Product.Button />
-                  </Product.Description>
-                </Product>
-              ))}
+            <div className="w-1 grow xl:pl-6 xl:pt-6">
+              <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
+                <div className="flex items-center gap-2">
+                  <Typography className="hidden sm:block">Sort</Typography>
+
+                  <Sort />
+                </div>
+                <Mobile>
+                  <FilterForMobile />
+                </Mobile>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                {products.map((product) => (
+                  <Product
+                    key={product.id}
+                    product={product}
+                    className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 xl:gap-4"
+                  >
+                    <Product.Image />
+                    <Product.Description>
+                      <Product.Label />
+                      <Product.Rating />
+                      <Product.Price withDiscount />
+                      <Product.Button />
+                    </Product.Description>
+                  </Product>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </>
+    )
   )
 }
 
