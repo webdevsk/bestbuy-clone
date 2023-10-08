@@ -1,24 +1,29 @@
 import { Typography } from "@material-tailwind/react"
 import { useDispatch, useSelector } from "react-redux"
-import { useProductsContext } from "../../contexts/ProductsContext"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import { decreaseCount, increaseCount, removeFromCart } from "./cartItemsSlice"
+import {
+  decreaseCount,
+  increaseCount,
+  removeFromCart,
+  selectAllCartItems,
+  selectCartItemEntities,
+} from "./cartItemsSlice"
 import { useCallback } from "react"
+import { selectProductsEntities } from "../products/productsSlice"
 
 const CartItems = (props) => {
-  const cartItems = useSelector((state) => state.cartItems)
-  const products = useProductsContext()
+  const cartItems = useSelector((state) => selectAllCartItems(state))
+
+  console.log(cartItems)
   const dispatch = useDispatch()
 
-  const cartProducts = products.reduce((finalArr, product) => {
-    const index = cartItems.findIndex((item) => item.id === product.id)
-    if (index > -1) {
-      Object.assign(product, cartItems[index])
-      finalArr.push(product)
-    }
-    return finalArr
-  }, [])
+  const productsEntities = useSelector((state) => selectProductsEntities(state))
+
+  const cartProducts = cartItems.map(({ id, count }) => ({
+    ...productsEntities[id],
+    count: count,
+  }))
 
   const { locale = "en-US", currency = "USD" } = props
 
@@ -32,7 +37,7 @@ const CartItems = (props) => {
   )
 
   return cartProducts.map((item, index) => (
-    <div key={item.id} {...props} className={`border ${props.className ?? ""}`}>
+    <div key={item.id} {...props} className={` ${props.className ?? ""}`}>
       <div className="flex flex-wrap gap-2">
         <Link to={`/product/${item.label}`} className="block w-20">
           <img
@@ -60,7 +65,7 @@ const CartItems = (props) => {
 
             <div className="flex items-center">
               <button
-                disabled={item.count === 0}
+                disabled={item.count === 1}
                 onClick={() => dispatch(decreaseCount(item.id))}
                 className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
               >

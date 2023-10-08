@@ -4,27 +4,19 @@ import { Button, Drawer, Typography } from "@material-tailwind/react"
 import Sort from "./Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useEffect, useState } from "react"
-import { useProductsContext } from "../contexts/ProductsContext"
 import Product from "./Product"
-import { FloatingOverlay, FloatingPortal, useDismiss } from "@floating-ui/react"
+import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
 import { Desktop, Mobile } from "./ui/ReactResponsive"
 import { useSelector, useDispatch } from "react-redux"
 import {
   fetchProducts,
   selectAllProducts,
-  selectProductsByCategory,
-  selectProductsEntities,
-  selectProductsIds,
 } from "../features/products/productsSlice"
 
 const ProductsGallery = () => {
   const status = useSelector((state) => state.products.status)
-  // const products = useSelector((state) => selectProducts(state))
   const products = useSelector((state) => selectAllProducts(state))
-  console.log(useSelector((state) => selectProductsEntities(state)))
-
-  console.log(status)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -34,7 +26,7 @@ const ProductsGallery = () => {
   if (useSelector((state) => state.products.error)) {
     return <p>error</p>
   }
-  // const products = useProductsContext()
+
   return (
     status === "success" && (
       <>

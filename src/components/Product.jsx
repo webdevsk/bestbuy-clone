@@ -9,8 +9,12 @@ import {
 } from "react"
 import RatingBar from "./RatingBar"
 import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { addToCart } from "../features/cartItems/cartItemsSlice"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  addToCart,
+  selectCartItemEntities,
+  selectCartItemIds,
+} from "../features/cartItems/cartItemsSlice"
 
 //Contexts
 const ProductContext = createContext(null)
@@ -67,7 +71,7 @@ const ProductImage = (props) => {
     </div>
   )
 }
-Product.Image = ProductImage
+Product.Image = memo(ProductImage)
 
 //Product Description component
 const ProductDescription = (props) => {
@@ -80,7 +84,7 @@ const ProductDescription = (props) => {
     </div>
   )
 }
-Product.Description = ProductDescription
+Product.Description = memo(ProductDescription)
 
 //Product Label component
 const ProductLabel = (props) => {
@@ -101,7 +105,7 @@ const ProductRating = (props) => {
   const product = useProductContext()
   return <RatingBar {...props} rating={product?.rating} />
 }
-Product.Rating = ProductRating
+Product.Rating = memo(ProductRating)
 
 // Product Price component
 const ProductPrice = (props) => {
@@ -139,26 +143,28 @@ const ProductPrice = (props) => {
     </div>
   )
 }
-Product.Price = ProductPrice
+Product.Price = memo(ProductPrice)
 
 // Product add to cart component
 const ProductButton = forwardRef((props, ref) => {
   const product = useProductContext()
   const dispatch = useDispatch()
+  // const cartIds = useSelector((state) => selectCartItemIds(state))
   return (
     <Button
       {...props}
       ref={ref}
+      // disabled={cartIds.includes(product.id)}
       className={`${
         props.className ?? ""
       } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent`}
-      onClick={() => dispatch(addToCart(product))}
+      onClick={() => dispatch(addToCart(product.id))}
     >
       <Typography variant="h6">Add to Cart</Typography>
     </Button>
   )
 })
 ProductButton.displayName = "ProductButton"
-Product.Button = ProductButton
+Product.Button = memo(ProductButton)
 
 export default Product
