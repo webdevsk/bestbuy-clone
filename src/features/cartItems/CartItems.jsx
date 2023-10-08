@@ -8,7 +8,7 @@ import {
   removeFromCart,
   selectAllCartItems,
 } from "./cartItemsSlice"
-import { useCallback } from "react"
+import { memo, useCallback } from "react"
 import { selectProductsEntities } from "../products/productsSlice"
 
 const CartItems = (props) => {
@@ -90,4 +90,4 @@ const CartItems = (props) => {
   ))
 }
 
-export default CartItems
+export default memo(CartItems)
