@@ -62,7 +62,7 @@ const headerMenu = [
 const Header = () => {
   const headerRef = useRef(null)
   const stickyHeaderRef = useRef(null)
-
+  const [isSticking, setIsSticking] = useState(false)
   useEffect(() => {
     // Amount of pixels after the floating should start
     const distance = headerRef.current.getBoundingClientRect().height
@@ -78,7 +78,8 @@ const Header = () => {
       // Keep increasing translateY as the scrollY-distance value increases. Stops at translateY: 0%. Now the sticky header is completely visible
       const offset = -height + (scrollY - distance)
 
-      stickyHeaderRef.current.classList.toggle("floating", isFloating)
+      setIsSticking(isFloating)
+      headerRef.current.classList.toggle("floating", isFloating)
       stickyHeaderRef.current.style.position = isFloating ? "fixed" : "absolute"
       stickyHeaderRef.current.style.top = `${
         isFloating && offset < 0 ? offset : 0
@@ -92,7 +93,7 @@ const Header = () => {
   return (
     <MainMenuContext.Provider value={mainMenu}>
       <HeaderMenuContext.Provider value={headerMenu}>
-        <div id="header" ref={headerRef} className="relative z-50">
+        <div id="header" ref={headerRef} className="group/header relative z-50">
           <section className="mb-0 bg-theme text-white lg:pb-2 lg:pt-4">
             <div className="flex flex-col">
               <TopMiniMenuDesktop />
@@ -100,10 +101,22 @@ const Header = () => {
               <div className="relative h-16">
                 <div
                   ref={stickyHeaderRef}
-                  className="absolute inset-x-0 grid h-16 place-items-center [&.floating]:bg-theme [&.floating]:shadow-lg [&.floating]:shadow-black/30"
+                  className={`absolute inset-x-0 grid h-16 place-items-center ${
+                    isSticking ? "bg-theme shadow-lg shadow-black/30" : ""
+                  }`}
                 >
                   <div className="container flex flex-wrap items-center gap-x-4">
-                    <SiteLogo />
+                    <Desktop>
+                      <SiteLogo />
+                    </Desktop>
+                    <Mobile>
+                      {!isSticking && <SiteLogo />}
+                      {isSticking && (
+                        <div className="w-1 grow">
+                          <SearchBar />
+                        </div>
+                      )}
+                    </Mobile>
                     <Desktop>
                       <div className="w-full lg:w-96">
                         <SearchBar />
@@ -122,9 +135,13 @@ const Header = () => {
           <section className="mb-0 bg-[#003da6] py-2 text-white">
             <div className="container">
               <Mobile>
-                <div className="w-full lg:w-96">
-                  <SearchBar />
-                </div>
+                {!isSticking ? (
+                  <div className="w-full lg:w-96">
+                    <SearchBar />
+                  </div>
+                ) : (
+                  <div className="h-10"></div>
+                )}
               </Mobile>
               <Desktop>
                 <MainMenuDesktop />
@@ -163,7 +180,7 @@ const SiteLogo = () => (
 
 const HeaderToolBar = () => (
   <div className="ms-auto">
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 group-[.floating]/header:gap-2 xl:group-[.floating]/header:gap-4">
       <Button
         variant="text"
         className="flex flex-wrap items-end gap-1 p-0 text-white hover:bg-transparent hover:text-accent active:bg-transparent"
@@ -182,7 +199,12 @@ const HeaderToolBar = () => (
             d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
           />
         </svg>
-        <Typography variant="h6">Account</Typography>
+        <Typography
+          className="group-[.floating]/header:hidden xl:group-[.floating]/header:block"
+          variant="h6"
+        >
+          Account
+        </Typography>
       </Button>
       <Cart />
     </div>
@@ -264,7 +286,7 @@ const MainMenuDesktop = () => {
 const TopMiniMenuDesktop = () => {
   const headerMenu = useHeaderMenuContext()
   return (
-    <div className="container hidden flex-wrap justify-end gap-3 group-[.floating]/header:hidden lg:flex">
+    <div className="container hidden flex-wrap justify-end gap-3 lg:flex">
       {headerMenu.map((menu) => (
         <Link key={menu.id} to={menu.link} className="hover:underline">
           <Typography variant="small">{menu.label}</Typography>
@@ -301,7 +323,12 @@ const Cart = memo(() => {
           </svg>
         </BadgeCounter>
 
-        <Typography variant="h6">Cart</Typography>
+        <Typography
+          className="group-[.floating]/header:hidden xl:group-[.floating]/header:block"
+          variant="h6"
+        >
+          Cart
+        </Typography>
       </Button>
       <Drawer
         open={isOpen}
