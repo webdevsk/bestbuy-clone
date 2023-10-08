@@ -91,7 +91,7 @@ const Header = () => {
     <MainMenuContext.Provider value={mainMenu}>
       <HeaderMenuContext.Provider value={headerMenu}>
         <div id="header" ref={headerRef} className="relative z-50">
-          <section className="mb-0 bg-theme text-white xl:pb-2 xl:pt-4">
+          <section className="mb-0 bg-theme text-white lg:pb-2 lg:pt-4">
             <div className="flex flex-col">
               <TopMiniMenuDesktop />
               {/* placeholder */}

@@ -12,21 +12,24 @@ import { Desktop, Mobile } from "./ui/ReactResponsive"
 import { useSelector, useDispatch } from "react-redux"
 import {
   fetchProducts,
-  selectProductsData,
+  selectProducts,
+  selectProductsByCategory,
 } from "../features/products/productsSlice"
 
 const ProductsGallery = () => {
   const status = useSelector((state) => state.products.status)
-  const { products } = useSelector(selectProductsData())
-  console.log(status)
-  console.log(products)
+  const products = useSelector((state) => selectProducts(state))
 
+  console.log(status)
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (status === "idle") dispatch(fetchProducts())
   }, [dispatch, status])
 
+  if (useSelector((state) => state.products.error)) {
+    return <p>error</p>
+  }
   // const products = useProductsContext()
   return (
     status === "success" && (
