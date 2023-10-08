@@ -23,8 +23,8 @@ const ProductsGallery = () => {
     if (status === "idle") dispatch(fetchProducts())
   }, [dispatch, status])
 
-  if (useSelector((state) => state.products.error)) {
-    return <p>error</p>
+  if (status === "failed") {
+    return <p>Network Error</p>
   }
 
   return (

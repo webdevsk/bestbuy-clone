@@ -7,25 +7,20 @@ import {
   increaseCount,
   removeFromCart,
   selectAllCartItems,
-  selectCartItemEntities,
 } from "./cartItemsSlice"
 import { useCallback } from "react"
 import { selectProductsEntities } from "../products/productsSlice"
 
 const CartItems = (props) => {
+  const { locale = "en-US", currency = "USD" } = props
   const cartItems = useSelector((state) => selectAllCartItems(state))
-
-  console.log(cartItems)
-  const dispatch = useDispatch()
-
   const productsEntities = useSelector((state) => selectProductsEntities(state))
+  const dispatch = useDispatch()
 
   const cartProducts = cartItems.map(({ id, count }) => ({
     ...productsEntities[id],
     count: count,
   }))
-
-  const { locale = "en-US", currency = "USD" } = props
 
   const format = useCallback(
     (args) =>
@@ -36,7 +31,7 @@ const CartItems = (props) => {
     [locale, currency],
   )
 
-  return cartProducts.map((item, index) => (
+  return cartProducts.map((item) => (
     <div key={item.id} {...props} className={` ${props.className ?? ""}`}>
       <div className="flex flex-wrap gap-2">
         <Link to={`/product/${item.label}`} className="block w-20">
@@ -85,7 +80,7 @@ const CartItems = (props) => {
 
             <div className="ms-auto">
               <Typography variant="h4">
-                {format(item.price * item.count)}
+                {format(item.price * (item.count ?? 1))}
               </Typography>
             </div>
           </div>

@@ -9,12 +9,8 @@ import {
 } from "react"
 import RatingBar from "./RatingBar"
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  addToCart,
-  selectCartItemEntities,
-  selectCartItemIds,
-} from "../features/cartItems/cartItemsSlice"
+import { useDispatch } from "react-redux"
+import { addToCart } from "../features/cartItems/cartItemsSlice"
 
 //Contexts
 const ProductContext = createContext(null)
@@ -154,7 +150,6 @@ const ProductButton = forwardRef((props, ref) => {
     <Button
       {...props}
       ref={ref}
-      // disabled={cartIds.includes(product.id)}
       className={`${
         props.className ?? ""
       } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent`}

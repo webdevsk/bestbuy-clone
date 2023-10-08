@@ -33,7 +33,7 @@ const productsSlice = createSlice({
             })
     }
 })
-console.log(productsAdapter.getSelectors(state => state.products))
+
 export const {
     selectAll: selectAllProducts,
     selectById: selectProductById,
