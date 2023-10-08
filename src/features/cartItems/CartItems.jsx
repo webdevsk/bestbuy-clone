@@ -40,21 +40,21 @@ const CartItems = (props) => {
             src={item.images.at(-1)}
           />
         </Link>
-        <div className="w-1 grow">
+        <div className="flex w-1 grow flex-col gap-2">
           <div className="flex w-full items-center">
             <Typography variant="h6" className="">
               {item.title}
             </Typography>
 
             <button
-              className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-100"
+              className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200"
               onClick={() => dispatch(removeFromCart(item.id))}
             >
               <IoIosClose className="scale-150" />
             </button>
           </div>
           <div className="flex items-center gap-1">
-            <Typography variant="paragraph" className="min-w-[5rem]">
+            <Typography variant="paragraph" className="min-w-[6rem]">
               {format(item.price)}
             </Typography>
 

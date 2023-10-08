@@ -312,7 +312,7 @@ const Cart = memo(() => {
         size={450}
       >
         <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl bg-white p-4 pb-4">
-          <Typography variant="h4">Cart</Typography>
+          <Typography variant="h2">Cart</Typography>
           <button
             onClick={() => setIsOpen(false)}
             className="rounded-sm hover:bg-gray-100"
@@ -322,7 +322,7 @@ const Cart = memo(() => {
         </div>
         <div className="flex flex-col gap-2 p-4">
           <ProductsContext.Provider value={products}>
-            <CartItems />
+            <CartItems className="rounded-md bg-gray-50 p-2" />
           </ProductsContext.Provider>
         </div>
       </Drawer>
