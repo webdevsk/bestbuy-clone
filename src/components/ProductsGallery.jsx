@@ -12,13 +12,17 @@ import { Desktop, Mobile } from "./ui/ReactResponsive"
 import { useSelector, useDispatch } from "react-redux"
 import {
   fetchProducts,
-  selectProducts,
+  selectAllProducts,
   selectProductsByCategory,
+  selectProductsEntities,
+  selectProductsIds,
 } from "../features/products/productsSlice"
 
 const ProductsGallery = () => {
   const status = useSelector((state) => state.products.status)
-  const products = useSelector((state) => selectProducts(state))
+  // const products = useSelector((state) => selectProducts(state))
+  const products = useSelector((state) => selectAllProducts(state))
+  console.log(useSelector((state) => selectProductsEntities(state)))
 
   console.log(status)
   const dispatch = useDispatch()

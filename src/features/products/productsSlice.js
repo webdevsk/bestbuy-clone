@@ -1,18 +1,19 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
+
+const productsAdapter = createEntityAdapter()
+
+const initialState = productsAdapter.getInitialState({
+    status: "idle",
+    total: null,
+    skip: null,
+    limit: null,
+    error: null,
+})
 
 const productsSlice = createSlice({
     name: "products",
-    initialState: {
-        status: "idle",
-        data: {
-            products: [],
-            total: null,
-            skip: null,
-            limit: null
-        },
-        error: null,
-    },
+    initialState,
     reducers: {
     },
     extraReducers: (builder) => {
@@ -22,7 +23,9 @@ const productsSlice = createSlice({
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.status = "success"
-                state.data = action.payload
+                productsAdapter.upsertMany(state, action.payload.products)
+                delete action.payload.products
+                Object.assign(state, action.payload)
             })
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.status = "failed"
@@ -30,16 +33,23 @@ const productsSlice = createSlice({
             })
     }
 })
+console.log(productsAdapter.getSelectors(state => state.products))
+export const {
+    selectAll: selectAllProducts,
+    selectById: selectProductById,
+    selectEntities: selectProductsEntities,
+    selectIds: selectProductsIds,
+    selectTotal: selectProductsTotal
+} = productsAdapter.getSelectors(state => state.products)
 
-export const selectProducts = state => state.products.data.products
 export const selectProductsByCategory = createSelector([
-    selectProducts, (state, category) => category
+    selectAllProducts, (state, category) => category
 ],
     (products, category) => {
         console.log("selector running")
+        console.log(products)
         return products.filter(product => product.category === category)
     })
-// export const selectProductsByCategory = (state, category) = state.products.data.products.filter(product => product.category === category)
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
     const response = await axios('https://dummyjson.com/products')
