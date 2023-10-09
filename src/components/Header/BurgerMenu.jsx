@@ -5,8 +5,8 @@ import { Popover, Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 import { Link } from "react-router-dom"
-import { useMainMenuContext } from "../contexts/MainMenuContext"
-import { useHeaderMenuContext } from "../contexts/HeaderMenuContext"
+import { useMainMenuContext } from "../../contexts/MainMenuContext"
+import { useHeaderMenuContext } from "../../contexts/HeaderMenuContext"
 
 const BurgerMenu = () => {
   return (

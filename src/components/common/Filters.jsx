@@ -6,13 +6,13 @@ import {
   Radio,
   Typography,
 } from "@material-tailwind/react"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
-import createUnique from "../hooks/createUnique"
+import createUnique from "../../hooks/createUnique"
 import { MdKeyboardArrowDown } from "react-icons/md"
-import { useProductsContext } from "../contexts/ProductsContext"
-import useLocalStorage from "../hooks/useLocalStorage"
+import { useProductsContext } from "../../contexts/ProductsContext"
+import useLocalStorage from "../../hooks/useLocalStorage"
 
 const Filters = () => {
   const products = useProductsContext()

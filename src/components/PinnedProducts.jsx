@@ -3,13 +3,13 @@ import { FreeMode, Mousewheel, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 //Replace these with async api call functions
-import { response } from "../../assets/disposable"
+import { response } from "../assets/disposable"
 const { products } = response
 
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/mousewheel"
-import Product from "../../components/Product"
+import Product from "../features/products/Product"
 
 const PinnedProducts = () => {
   return (

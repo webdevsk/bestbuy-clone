@@ -10,6 +10,7 @@ import {
 } from "./cartItemsSlice"
 import { memo, useCallback, useMemo } from "react"
 import { selectProductsEntities } from "../products/productsSlice"
+import BadgeCounter from "../../components/common/BadgeCounter"
 
 const Cart = memo(({ closeDrawer }) => {
   const locale = "en-US"
@@ -46,11 +47,20 @@ const Cart = memo(({ closeDrawer }) => {
   return (
     <>
       <div className="sticky top-0 flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4">
-        <Typography variant="h2">Cart</Typography>
+        <BadgeCounter>
+          <Typography variant="h2">Cart</Typography>
+        </BadgeCounter>
         <button onClick={closeDrawer} className="rounded-sm hover:bg-gray-100">
           <IoIosClose className="h-6 w-6" />
         </button>
       </div>
+      {cartProducts.length === 0 && (
+        <div className="my-auto text-center">
+          <p className="text-2xl font-bold text-gray-400">
+            Cart is Empty ＞︿＜
+          </p>
+        </div>
+      )}
       <div className="flex flex-col gap-2 p-4">
         {cartProducts.map((item) => (
           <div key={item.id} className={`rounded-md bg-gray-50 p-2`}>
@@ -112,10 +122,12 @@ const Cart = memo(({ closeDrawer }) => {
       </div>
       <div className="sticky bottom-0 mt-auto border-t bg-white p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <Typography variant="h3">Total</Typography>
+          <Typography variant="h4">Total</Typography>
           <Typography variant="h3">{format(totalPrice)}</Typography>
         </div>
-        <Button className={` w-full bg-accent text-black hover:bg-theme`}>
+        <Button
+          className={`w-full bg-accent text-black shadow-sm transition hover:shadow-sm hover:contrast-125`}
+        >
           <Typography variant="h6">Checkout</Typography>
         </Button>
       </div>

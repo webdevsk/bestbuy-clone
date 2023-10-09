@@ -7,10 +7,10 @@ import {
   useContext,
   useState,
 } from "react"
-import RatingBar from "./RatingBar"
+import RatingBar from "../../components/common/RatingBar"
 import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { addToCart } from "../features/cartItems/cartItemsSlice"
+import { addToCart } from "../cart/cartItemsSlice"
 
 //Contexts
 const ProductContext = createContext(null)
@@ -87,7 +87,7 @@ const ProductLabel = (props) => {
   const product = useProductContext()
   return (
     <Typography
-      className={`${props.className ?? ""} group-hover:underline`}
+      className={`${props.className ?? ""} `}
       variant={props.variant ?? "paragraph"}
     >
       {product?.title}

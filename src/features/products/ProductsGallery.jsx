@@ -1,18 +1,15 @@
-import Filters from "./Filters"
+import Filters from "../../components/common/Filters"
 //Replace these with async api call functions
 import { Button, Drawer, Typography } from "@material-tailwind/react"
-import Sort from "./Sort"
+import Sort from "../../components/common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useEffect, useState } from "react"
 import Product from "./Product"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
-import { Desktop, Mobile } from "./ui/ReactResponsive"
+import { Desktop, Mobile } from "../../components/common/ReactResponsive"
 import { useSelector, useDispatch } from "react-redux"
-import {
-  fetchProducts,
-  selectAllProducts,
-} from "../features/products/productsSlice"
+import { fetchProducts, selectAllProducts } from "./productsSlice"
 
 const ProductsGallery = () => {
   const status = useSelector((state) => state.products.status)
@@ -55,7 +52,7 @@ const ProductsGallery = () => {
                   <Product
                     key={product.id}
                     product={product}
-                    className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 xl:gap-4"
+                    className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100 xl:gap-4"
                   >
                     <Product.Image />
                     <Product.Description>
