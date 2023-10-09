@@ -9,6 +9,8 @@ const initialState = productsAdapter.getInitialState({
     skip: null,
     limit: null,
     error: null,
+    categories: [],
+    brands: []
 })
 
 const productsSlice = createSlice({
@@ -24,6 +26,11 @@ const productsSlice = createSlice({
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.status = "success"
                 productsAdapter.upsertMany(state, action.payload.products)
+
+                state.categories.push(...new Map(action.payload.products.map((item) => [item["category"], item])).keys())
+
+                state.brands.push(...new Map(action.payload.products.map((item) => [item["brand"], item])).keys())
+
                 delete action.payload.products
                 Object.assign(state, action.payload)
             })
@@ -46,9 +53,16 @@ export const selectProductsByCategory = createSelector([
     selectAllProducts, (state, category) => category
 ],
     (products, category) => {
-        console.log("selector running")
-        console.log(products)
+        console.log("Category selector running")
         return products.filter(product => product.category === category)
+    })
+
+export const selectProductsByBrand = createSelector([
+    selectAllProducts, (state, brand) => brand
+],
+    (products, brand) => {
+        console.log("Brand selector running")
+        return products.filter(product => product.brand === brand)
     })
 
 export const selectExclusiveProducts = createSelector([
