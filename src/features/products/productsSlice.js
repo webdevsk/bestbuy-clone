@@ -51,6 +51,15 @@ export const selectProductsByCategory = createSelector([
         return products.filter(product => product.category === category)
     })
 
+export const selectExclusiveProducts = createSelector([
+    selectAllProducts
+], (products) => {
+    console.log("Calculating exclusive products")
+    return products.filter(product => product.discountPercentage >= 10 &&
+        (product.category === "smartphones" ||
+            product.category === "laptops"))
+})
+
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
     const response = await axios('https://dummyjson.com/products')
     return response.data

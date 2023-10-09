@@ -1,17 +1,18 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { FreeMode, Mousewheel, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
-
-//Replace these with async api call functions
-import { response } from "../assets/disposable"
-const { products } = response
-
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/mousewheel"
 import Product from "../features/products/Product"
+import { useSelector } from "react-redux"
+import { selectExclusiveProducts } from "../features/products/productsSlice"
 
 const PinnedProducts = () => {
+  const exclusiveProducts = useSelector((state) =>
+    selectExclusiveProducts(state),
+  )
+
   return (
     <>
       <section
@@ -105,30 +106,25 @@ const PinnedProducts = () => {
                   },
                 }}
               >
-                {products.map(
-                  (product) =>
-                    product.discountPercentage >= 10 &&
-                    (product.category === "smartphones" ||
-                      product.category === "laptops") && (
-                      <SwiperSlide key={product.id}>
-                        <Product
-                          product={product}
-                          className={`flex flex-col gap-4 rounded-lg bg-white p-4`}
-                        >
-                          <Product.Image />
-                          <Product.Description>
-                            <Product.Label
-                              variant="small"
-                              className="font-serif font-medium"
-                            />
-                            <Product.Rating />
-                            <Product.Price />
-                            {/* <Product.Button /> */}
-                          </Product.Description>
-                        </Product>
-                      </SwiperSlide>
-                    ),
-                )}
+                {exclusiveProducts.map((product) => (
+                  <SwiperSlide key={product.id}>
+                    <Product
+                      product={product}
+                      className={`flex flex-col gap-4 rounded-lg bg-white p-4`}
+                    >
+                      <Product.Image />
+                      <Product.Description>
+                        <Product.Label
+                          variant="small"
+                          className="font-serif font-medium"
+                        />
+                        <Product.Rating />
+                        <Product.Price />
+                        {/* <Product.Button /> */}
+                      </Product.Description>
+                    </Product>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </div>
 
