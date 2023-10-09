@@ -2,50 +2,17 @@ import { Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import { useEffect, useRef, useState } from "react"
-import createUnique from "../../hooks/createUnique"
-import { response } from "../../assets/disposable"
 import MainMenuContext from "../../contexts/MainMenuContext"
 import HeaderMenuContext from "../../contexts/HeaderMenuContext"
 import { Desktop, Mobile } from "../common/ReactResponsive"
 import { HeaderToolBar } from "./HeaderToolBar"
 import { MainMenuDesktop } from "./MainMenuDesktop"
 import { TopMiniMenuDesktop } from "./TopMiniMenuDesktop"
-
-const mainMenu = [
-  {
-    id: 1,
-    label: "Shop",
-    items: ["Dress", "Phones"],
-  },
-  {
-    id: 2,
-    label: "Brands",
-    items: createUnique(response.products, "brand"),
-  },
-  {
-    id: 3,
-    label: "Categories",
-    items: createUnique(response.products, "category"),
-  },
-]
-
-const headerMenu = [
-  {
-    id: 1,
-    label: "Order Status",
-    link: "#",
-  },
-  {
-    id: 2,
-    label: "Blog",
-    link: "#",
-  },
-  {
-    id: 3,
-    label: "Best Buy Business",
-    link: "#",
-  },
-]
+import { useSelector } from "react-redux"
+import {
+  selectProductBrands,
+  selectProductCategories,
+} from "../../features/products/productsSlice"
 
 const Header = () => {
   const headerRef = useRef(null)
@@ -77,6 +44,42 @@ const Header = () => {
     addEventListener("scroll", handleScroll)
     return () => removeEventListener("scroll", handleScroll)
   }, [stickyHeaderRef, headerRef])
+
+  const mainMenu = [
+    {
+      id: 1,
+      label: "Shop",
+      items: ["All Products", "Dress", "Phones"],
+    },
+    {
+      id: 2,
+      label: "Brands",
+      items: useSelector((state) => selectProductBrands(state)),
+    },
+    {
+      id: 3,
+      label: "Categories",
+      items: useSelector((state) => selectProductCategories(state)),
+    },
+  ]
+
+  const headerMenu = [
+    {
+      id: 1,
+      label: "Order Status",
+      link: "#",
+    },
+    {
+      id: 2,
+      label: "Blog",
+      link: "#",
+    },
+    {
+      id: 3,
+      label: "Best Buy Business",
+      link: "#",
+    },
+  ]
 
   return (
     <MainMenuContext.Provider value={mainMenu}>

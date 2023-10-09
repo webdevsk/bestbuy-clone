@@ -9,13 +9,15 @@ import {
 import { useRef } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
-import createUnique from "../../hooks/createUnique"
 import { MdKeyboardArrowDown } from "react-icons/md"
-import { useProductsContext } from "../../contexts/ProductsContext"
 import useLocalStorage from "../../hooks/useLocalStorage"
+import { useSelector } from "react-redux"
+import {
+  selectProductBrands,
+  selectProductCategories,
+} from "../../features/products/productsSlice"
 
 const Filters = () => {
-  const products = useProductsContext()
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
     category: true,
     // brands: true,
@@ -34,6 +36,9 @@ const Filters = () => {
   const priceBtnRef = useRef(null)
   const minPriceRef = useRef(null)
   const maxPriceRef = useRef(null)
+
+  const categories = useSelector((state) => selectProductCategories(state))
+  const brands = useSelector((state) => selectProductBrands(state))
 
   const handlePriceBtn = () => {
     priceBtnRef.current.disabled =
@@ -60,8 +65,8 @@ const Filters = () => {
         </AccordionHeader>
         <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
-            {createUnique(products, "category").map((category) => (
-              <Link to={"/" + category} key={category}>
+            {categories.map((category, i) => (
+              <Link to={"/" + category} key={i}>
                 <Typography className="hover:underline">{category}</Typography>
               </Link>
             ))}
@@ -87,8 +92,8 @@ const Filters = () => {
         </AccordionHeader>
         <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
-            {createUnique(products, "brand").map((brand) => (
-              <Link to={"/" + brand} key={brand}>
+            {brands.map((brand, i) => (
+              <Link to={"/" + brand} key={i}>
                 <Typography className="hover:underline">{brand}</Typography>
               </Link>
             ))}

@@ -1,5 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext } from "react"
 
 const HeaderMenuContext = createContext(null)
-export const useHeaderMenuContext = () => useContext(HeaderMenuContext)
 export default HeaderMenuContext

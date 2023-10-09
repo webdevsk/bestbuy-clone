@@ -5,7 +5,7 @@ import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
 import { Popover } from "@headlessui/react"
 import { Float } from "@headlessui-float/react"
 import { HiChevronDown } from "react-icons/hi"
-import { useMainMenuContext } from "../../contexts/MainMenuContext"
+import { useMainMenuContext } from "../../hooks/useMainMenuContext"
 
 export const MainMenuDesktop = () => {
   const mainMenu = useMainMenuContext()
@@ -51,8 +51,8 @@ export const MainMenuDesktop = () => {
               <div
                 className={`relative max-h-full w-80 overflow-y-scroll border border-t-transparent bg-white py-2 text-black`}
               >
-                {menu.items.map((item) => (
-                  <li key={item}>
+                {menu.items.map((item, i) => (
+                  <li key={i}>
                     <Link
                       to={item}
                       className="block px-3 py-1 transition-colors hover:bg-gray-100 hover:text-theme"

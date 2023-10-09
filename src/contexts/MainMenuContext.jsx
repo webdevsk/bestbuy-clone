@@ -1,5 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext } from "react"
 
 const MainMenuContext = createContext(null)
-export const useMainMenuContext = () => useContext(MainMenuContext)
 export default MainMenuContext
