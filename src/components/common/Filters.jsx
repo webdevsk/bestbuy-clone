@@ -6,7 +6,7 @@ import {
   Radio,
   Typography,
 } from "@material-tailwind/react"
-import { useRef } from "react"
+import { memo, useRef } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
@@ -17,7 +17,7 @@ import {
   selectProductCategories,
 } from "../../features/products/productsSlice"
 
-const Filters = () => {
+const Filters = memo(() => {
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
     category: true,
     // brands: true,
@@ -242,6 +242,7 @@ const Filters = () => {
       </Accordion>
     </>
   )
-}
+})
 
+Filters.displayName = "Filters"
 export default Filters

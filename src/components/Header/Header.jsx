@@ -13,11 +13,15 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/products/productsSlice"
+import { useMediaQuery } from "react-responsive"
 
 const Header = () => {
   const headerRef = useRef(null)
   const stickyHeaderRef = useRef(null)
   const [isSticking, setIsSticking] = useState(false)
+
+  const isDesktop = useMediaQuery({ minWidth: 960 })
+
   useEffect(() => {
     // Amount of pixels after the floating should start
     const distance = headerRef.current.getBoundingClientRect().height
@@ -43,7 +47,7 @@ const Header = () => {
 
     addEventListener("scroll", handleScroll)
     return () => removeEventListener("scroll", handleScroll)
-  }, [stickyHeaderRef, headerRef])
+  }, [stickyHeaderRef, headerRef, isDesktop])
 
   const mainMenu = [
     {
