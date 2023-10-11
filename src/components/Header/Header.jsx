@@ -96,7 +96,7 @@ const Header = () => {
               <div className="relative h-16">
                 <div
                   ref={stickyHeaderRef}
-                  className={`absolute inset-x-0 grid h-16 place-items-center ${
+                  className={`absolute inset-x-0 z-[9999] grid h-16 place-items-center ${
                     isSticking ? "bg-theme shadow-lg shadow-black/30" : ""
                   }`}
                 >

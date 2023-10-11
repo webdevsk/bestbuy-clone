@@ -17,22 +17,16 @@ const ProductContext = createContext(null)
 const useProductContext = () => useContext(ProductContext)
 
 const Product = memo((props) => {
-  const filteredProps = Object.assign({}, props)
-  delete filteredProps.product
-  delete filteredProps.children
-  delete filteredProps.className
+  const { product, children, className, ...filteredProps } = props
 
   return (
-    <ProductContext.Provider value={props.product}>
-      <div
-        {...filteredProps}
-        className={`group relative ${props.className ?? ""}`}
-      >
-        {props.children}
+    <ProductContext.Provider value={product}>
+      <div {...filteredProps} className={`group relative ${className ?? ""}`}>
+        {children}
         <div className="absolute inset-0 z-0">
           <Link
             className="block h-full w-full"
-            to={`/product/${props.product.id}`}
+            to={`/product/${product.id}`}
           ></Link>
         </div>
       </div>

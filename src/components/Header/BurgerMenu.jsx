@@ -1,56 +1,24 @@
 import { Typography } from "@material-tailwind/react"
-import { FloatingOverlay, FloatingPortal, size } from "@floating-ui/react"
-import { Float } from "@headlessui-float/react"
 import { Popover, Transition } from "@headlessui/react"
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
 import { Link } from "react-router-dom"
 import { useMainMenuContext } from "../../hooks/useMainMenuContext"
 import { useHeaderMenuContext } from "../../hooks/useHeaderMenuContext"
+import { HigherOrderFloat, HigherOrderPanel } from "../common/HigherOrderFloat"
 
 const BurgerMenu = () => {
   return (
     <Popover className="relative grid place-items-center">
-      <Float
-        portal={true}
-        shift
-        offset={16}
-        arrow={0}
-        placement="bottom"
-        transform={false}
-        middleware={[
-          size({
-            apply({ availableHeight, availableWidth, elements }) {
-              Object.assign(elements.floating.style, {
-                width: `${availableWidth}px`,
-                height: `${availableHeight}px`,
-              })
-            },
-          }),
-        ]}
-        enter="transition duration-200 ease-out"
-        enterFrom="opacity-0 scale-y-90"
-        enterTo="scale-y-100 opacity-100"
-        leave="transition duration-200 ease-in"
-        leaveFrom="scale-y-100 opacity-100"
-        leaveTo="scale-y-90 opacity-0"
-        originClass="origin-top"
-        floatingAs={Fragment}
-      >
+      <HigherOrderFloat placement="bottom" strategy="fixed">
         <Popover.Button className="relative [--_stroke-height:0.2em] [--_stroke-width:1.5em] focus-visible:outline-none">
           <BurgerMenuBtn />
         </Popover.Button>
 
-        <Popover.Panel className="pointer-events-none">
-          <Float.Arrow className="absolute h-5 w-5 rotate-45 border border-gray-200 bg-white" />
-          <FloatingPortal>
-            <FloatingOverlay lockScroll />
-          </FloatingPortal>
-          <div className="pointer-events-auto relative h-full overflow-x-hidden overflow-y-scroll  border border-t-transparent bg-gray-100 text-body">
-            <BurgerMenuList />
-          </div>
-        </Popover.Panel>
-      </Float>
+        <HigherOrderPanel fullHeight fullWidth lockScroll>
+          <BurgerMenuList />
+        </HigherOrderPanel>
+      </HigherOrderFloat>
     </Popover>
   )
 }
