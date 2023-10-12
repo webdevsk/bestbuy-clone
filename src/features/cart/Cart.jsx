@@ -48,7 +48,7 @@ const Cart = memo(({ closeDrawer }) => {
     <>
       <div className="sticky top-0 flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4">
         <BadgeCounter>
-          <Typography variant="h2">Cart</Typography>
+          <Typography variant="h3">Cart</Typography>
         </BadgeCounter>
         <button onClick={closeDrawer} className="rounded-sm hover:bg-gray-100">
           <IoIosClose className="h-6 w-6" />

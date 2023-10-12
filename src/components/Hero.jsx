@@ -12,7 +12,8 @@ const Hero = () => {
         loop
         allowTouchMove={false}
         speed={3000}
-        autoplay
+        //Dont autoplay in Dev
+        autoplay={import.meta.env.PROD}
       >
         <SwiperSlide>
           <CallToAction1 />
