@@ -6,7 +6,7 @@ import {
   Radio,
   Typography,
 } from "@material-tailwind/react"
-import { memo, useRef } from "react"
+import { memo, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
@@ -25,25 +25,15 @@ const Filters = memo(() => {
     rating: true,
   })
 
+  const categories = useSelector((state) => selectProductCategories(state))
+  const brands = useSelector((state) => selectProductBrands(state))
+
   const isOpen = (key) => key in openObj && openObj[key]
   const handleOpenObj = (key) =>
     setOpenObj((openObj) => ({
       ...openObj,
       [key]: key in openObj ? !openObj[key] : true,
     }))
-
-  //Disable Price filter button when no value is present
-  const priceBtnRef = useRef(null)
-  const minPriceRef = useRef(null)
-  const maxPriceRef = useRef(null)
-
-  const categories = useSelector((state) => selectProductCategories(state))
-  const brands = useSelector((state) => selectProductBrands(state))
-
-  const handlePriceBtn = () => {
-    priceBtnRef.current.disabled =
-      minPriceRef.current.value === "" && maxPriceRef.current.value === ""
-  }
 
   return (
     <>
@@ -118,46 +108,7 @@ const Filters = memo(() => {
           <Typography variant="h6">Price</Typography>
         </AccordionHeader>
         <AccordionBody className="text-body">
-          <div className="flex flex-wrap items-center gap-2 px-2">
-            <div className="w-1 grow">
-              <Typography>Min</Typography>
-              <input
-                type="text"
-                placeholder="$"
-                className="w-full"
-                ref={minPriceRef}
-                onChange={handlePriceBtn}
-                onKeyDown={(event) => {
-                  !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
-                }}
-              ></input>
-            </div>
-
-            <div className="pt-5">-</div>
-
-            <div className="w-1 grow">
-              <Typography>Max</Typography>
-              <input
-                type="text"
-                placeholder="$"
-                className="w-full"
-                ref={maxPriceRef}
-                onChange={handlePriceBtn}
-                onKeyDown={(event) =>
-                  !/[0-9]|Backspace/.test(event.key) && event.preventDefault()
-                }
-              ></input>
-            </div>
-
-            <Button
-              ref={priceBtnRef}
-              size="lg"
-              disabled
-              className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
-            >
-              <Typography variant="h6">Apply Price Range</Typography>
-            </Button>
-          </div>
+          <PriceModule />
         </AccordionBody>
       </Accordion>
 
@@ -246,3 +197,63 @@ const Filters = memo(() => {
 
 Filters.displayName = "Filters"
 export default Filters
+
+const PriceModule = () => {
+  const [input, setInput] = useState({
+    min: "",
+    max: "",
+  })
+
+  //input object values must be converted to Number inside dispatch actions in REDUX
+
+  const handleInput = ({ currentTarget: t }) => {
+    // In case DOM is altered
+    if (!(t.name in input)) return
+
+    // In case anything other than (number or nothing) is given. Only 0 to 7 digits are allowed
+    if (!/^(\d{0,7})$/.test(t.value)) return
+
+    setInput((input) => ({
+      ...input,
+      [t.name]: t.value,
+    }))
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 px-2">
+      <div className="w-1 grow">
+        <Typography>Min</Typography>
+        <input
+          type="text"
+          placeholder="$"
+          className="w-full"
+          name="min"
+          value={input.min}
+          onChange={handleInput}
+        ></input>
+      </div>
+
+      <div className="pt-5">-</div>
+
+      <div className="w-1 grow">
+        <Typography>Max</Typography>
+        <input
+          type="text"
+          placeholder="$"
+          name="max"
+          className="w-full"
+          value={input.max}
+          onChange={handleInput}
+        ></input>
+      </div>
+
+      <Button
+        size="lg"
+        disabled={input.min === "" && input.max === ""}
+        className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+      >
+        <Typography variant="h6">Apply Price Range</Typography>
+      </Button>
+    </div>
+  )
+}
