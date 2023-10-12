@@ -7,10 +7,10 @@ import {
 } from "react-icons/io"
 
 const AccountPanel = () => {
-  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
+  const { loginWithPopup, logout, user, isAuthenticated, isLoading } =
     useAuth0()
 
-  console.log(isAuthenticated, isLoading, user)
+  console.log(useAuth0())
   return (
     <div
       className={`relative max-h-full w-72 max-w-full divide-y overflow-y-auto border border-t-transparent bg-white text-black shadow-md`}
@@ -54,7 +54,7 @@ const AccountPanel = () => {
       {!isAuthenticated && (
         <button
           className="block w-full px-4 py-3 transition-colors hover:bg-gray-100"
-          onClick={() => loginWithRedirect()}
+          onClick={() => loginWithPopup()}
         >
           <Typography
             variant="paragraph"
