@@ -219,6 +219,11 @@ const PriceModule = () => {
     }))
   }
 
+  // Disable Apply button if both values are empty or when min value is equal or greater than max value
+  const isDisabled =
+    (input.min === "" && input.max === "") ||
+    parseInt(input.min) >= parseInt(input.max)
+
   return (
     <div className="flex flex-wrap items-center gap-2 px-2">
       <div className="w-1 grow">
@@ -249,7 +254,7 @@ const PriceModule = () => {
 
       <Button
         size="lg"
-        disabled={input.min === "" && input.max === ""}
+        disabled={isDisabled}
         className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
       >
         <Typography variant="h6">Apply Price Range</Typography>
