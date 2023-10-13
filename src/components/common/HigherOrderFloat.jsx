@@ -62,9 +62,7 @@ export const HigherOrderPanel = memo(
         className={` ${className ?? ""}`}
         {...filteredProps}
       >
-        <Float.Arrow
-          className={`absolute h-5 w-5 rotate-45 border border-gray-200 bg-white`}
-        />
+        <Float.Arrow className={`absolute h-5 w-5 rotate-45 bg-white`} />
 
         {overlay && (
           <FloatingPortal>
@@ -79,7 +77,7 @@ export const HigherOrderPanel = memo(
         <div
           style={{ height: height, width: width }}
           {...containerProps}
-          className={`pointer-events-auto relative overflow-y-auto overflow-x-hidden border  border-t-transparent bg-gray-100 text-body shadow-lg ${
+          className={`pointer-events-auto relative overflow-y-auto overflow-x-hidden bg-gray-100 text-body shadow-lg ${
             fullHeight ? "h-[--_spaceY]" : "max-h-[--_spaceY] rounded-sm"
           } ${fullWidth ? "w-[--_spaceX]" : "max-w-[--_spaceX] rounded-sm"} ${
             containerProps?.className ?? ""

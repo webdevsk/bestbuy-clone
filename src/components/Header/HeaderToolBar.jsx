@@ -75,7 +75,7 @@ const Account = () => {
   return (
     <Popover className="relative">
       <HigherOrderFloat offset={16} shift={{ crossAxis: true }}>
-        <Popover.Button className="flex flex-wrap items-end gap-1 p-0 text-white hover:bg-transparent hover:text-accent focus-visible:outline-none active:bg-transparent">
+        <Popover.Button className="group flex flex-wrap items-end gap-2 p-0 text-white hover:bg-transparent hover:text-accent focus-visible:outline-none active:bg-transparent">
           {isLoading && (
             <>
               <div className="aspect-square h-7 w-7 animate-pulse rounded-full bg-gray-400"></div>
@@ -112,13 +112,13 @@ const Account = () => {
             <>
               <img
                 src={user.picture ?? "images/avatar-placeholder-human.svg"}
-                className="aspect-square w-6 rounded-full"
+                className="aspect-square w-8 rounded-full border-2 border-white transition-shadow group-hover:border-accent"
               />
               <Typography
                 variant="h6"
-                className="max-w-[7rem] overflow-hidden text-ellipsis whitespace-nowrap"
+                className="max-w-[7rem] overflow-hidden text-ellipsis whitespace-nowrap group-[.floating]/header:hidden lg:group-[.floating]/header:block"
               >
-                {user.nickname ?? user.name}
+                {user.name ?? user.nickname}
               </Typography>
             </>
           )}

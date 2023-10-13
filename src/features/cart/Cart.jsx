@@ -46,7 +46,7 @@ const Cart = memo(({ closeDrawer }) => {
 
   return (
     <>
-      <div className="sticky top-0 flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4">
+      <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4 shadow">
         <BadgeCounter>
           <Typography variant="h3">Cart</Typography>
         </BadgeCounter>
@@ -84,8 +84,8 @@ const Cart = memo(({ closeDrawer }) => {
                     <IoIosClose className="scale-150" />
                   </button>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Typography variant="paragraph" className="min-w-[6rem]">
+                <div className="flex items-center justify-between gap-1">
+                  <Typography variant="paragraph" className="">
                     {format(item.price)}
                   </Typography>
 
@@ -109,7 +109,7 @@ const Cart = memo(({ closeDrawer }) => {
                     </button>
                   </div>
 
-                  <div className="ms-auto">
+                  <div className="">
                     <Typography variant="h4">
                       {format(item.price * (item.count ?? 1))}
                     </Typography>
@@ -120,7 +120,7 @@ const Cart = memo(({ closeDrawer }) => {
           </div>
         ))}
       </div>
-      <div className="sticky bottom-0 mt-auto border-t bg-white p-4">
+      <div className="sticky bottom-0 z-[1] mt-auto border-t bg-white p-4 shadow">
         <div className="mb-2 flex items-center justify-between gap-2">
           <Typography variant="h4">Total</Typography>
           <Typography variant="h3">{format(totalPrice)}</Typography>

@@ -10,10 +10,9 @@ const AccountPanel = () => {
   const { loginWithPopup, logout, user, isAuthenticated, isLoading } =
     useAuth0()
 
-  console.log(useAuth0())
   return (
     <div
-      className={`relative max-h-full w-72 max-w-full divide-y overflow-y-auto border border-t-transparent bg-white text-black shadow-md`}
+      className={`relative max-h-full w-72 max-w-full divide-y overflow-y-auto bg-white text-black shadow-md`}
     >
       {isLoading && (
         <div className="flex items-center gap-2 p-4">
@@ -39,7 +38,7 @@ const AccountPanel = () => {
             <Typography variant="h6">
               {user.name === user.email
                 ? user.nickname ?? user.name
-                : user.email}
+                : user.name ?? user.email}
             </Typography>
             <Typography className="break-all">{user.email}</Typography>
           </div>
