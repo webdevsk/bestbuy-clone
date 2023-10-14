@@ -31,7 +31,7 @@
 
 [**Explore the docs »**](https://github.com/webdevsk/bestbuy-clone)
 
-[View Demo](https://bestbuy-clone-f9d31.web.app/)
+[View Demo](https://bestbuy-clone-d99b5f.netlify.app/)
 · [Report Bug](https://github.com/webdevsk/bestbuy-clone/issues)
 · [Request Feature](https://github.com/webdevsk/bestbuy-clone/issues)
 
@@ -64,7 +64,7 @@
 
 <div align="center">
 
-[![Product snapshot](github_assets/snapshot.png)](https://bestbuy-clone-f9d31.web.app/)
+[![Product snapshot](github_assets/snapshot.png)](https://bestbuy-clone-d99b5f.netlify.app/)
 
 </div>
 <br/>
@@ -86,7 +86,7 @@
 
 ## Getting Started
 
-🌐 The site is already live at: [https://bestbuy-clone-f9d31.web.app/](https://bestbuy-clone-f9d31.web.app/)
+🌐 The site is already live at: [https://bestbuy-clone-d99b5f.netlify.app/](https://bestbuy-clone-d99b5f.netlify.app/)
 
 OR
 
