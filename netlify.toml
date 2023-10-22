@@ -1,5 +1,7 @@
 [build]
     functions = "functions"
+[dev]
+    targetPort = 3001
 [functions]
     node_bundler = "esbuild"
 [[redirects]]
