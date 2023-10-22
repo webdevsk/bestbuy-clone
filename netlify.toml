@@ -1,5 +1,5 @@
 [build]
-    functions = "functions"
+    functions = "serverless"
 [dev]
     targetPort = 3001
 [functions]
