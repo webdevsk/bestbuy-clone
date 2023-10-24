@@ -3,29 +3,23 @@ import Filters from "../../components/common/Filters"
 import { Button, Drawer, Typography } from "@material-tailwind/react"
 import Sort from "../../components/common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Product from "./Product"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
 import { Desktop, Mobile } from "../../components/common/ReactResponsive"
-import { useSelector, useDispatch } from "react-redux"
-import { fetchProducts, selectAllProducts } from "./productsSlice"
+import { useGetProductsQuery } from "../api/apiSlice"
 
 const ProductsGallery = () => {
-  const status = useSelector((state) => state.products.status)
-  const products = useSelector((state) => selectAllProducts(state))
-  const dispatch = useDispatch()
+  const { isError, isLoading, isSuccess, data } = useGetProductsQuery()
+  console.log(useGetProductsQuery())
 
-  useEffect(() => {
-    if (status === "idle") dispatch(fetchProducts())
-  }, [dispatch, status])
-
-  if (status === "failed") {
+  if (isError) {
     return <p>Network Error</p>
   }
 
   return (
-    status === "success" && (
+    isSuccess && (
       <>
         <section>
           <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
@@ -48,7 +42,7 @@ const ProductsGallery = () => {
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-                {products.map((product) => (
+                {data.products.map((product) => (
                   <Product
                     key={product.id}
                     product={product}
