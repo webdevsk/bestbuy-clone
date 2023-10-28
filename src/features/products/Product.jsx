@@ -11,6 +11,8 @@ import RatingBar from "../../components/common/RatingBar"
 import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { addToCart } from "../cart/cartItemsSlice"
+import { useAddToCartMutation } from "../api/apiSlice"
+import { useAuth0 } from "@auth0/auth0-react"
 
 //Contexts
 const ProductContext = createContext(null)
@@ -138,7 +140,18 @@ Product.Price = memo(ProductPrice)
 // Product add to cart component
 const ProductButton = forwardRef((props, ref) => {
   const product = useProductContext()
-  const dispatch = useDispatch()
+  const { isAuthenticated, user } = useAuth0()
+  const [addToCart, { isError, isLoading, isSuccess, isUninitialized }] =
+    useAddToCartMutation()
+  console.log(isSuccess)
+
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      alert("Please login first")
+      return
+    }
+    addToCart({ user: user.email, id: product.id })
+  }
   // const cartIds = useSelector((state) => selectCartItemIds(state))
   return (
     <Button
@@ -146,8 +159,12 @@ const ProductButton = forwardRef((props, ref) => {
       ref={ref}
       className={`${
         props.className ?? ""
-      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent`}
-      onClick={() => dispatch(addToCart(product.id))}
+      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent 
+      ${
+        isLoading ? "animate-pulse opacity-60" : isSuccess ? "bg-green-500" : ""
+      }`}
+      // onClick={() => dispatch(addToCart(product.id))}
+      onClick={handleAddToCart}
     >
       <Typography variant="h6">Add to Cart</Typography>
     </Button>

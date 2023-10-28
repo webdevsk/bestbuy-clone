@@ -10,6 +10,9 @@ const AccountPanel = () => {
   const { loginWithPopup, logout, user, isAuthenticated, isLoading } =
     useAuth0()
 
+  // useAuth0()
+  //   .getIdTokenClaims()
+  //   .then((data) => console.log(data))
   return (
     <div
       className={`relative max-h-full w-72 max-w-full divide-y overflow-y-auto bg-white text-black shadow-md`}

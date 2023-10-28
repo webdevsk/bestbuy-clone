@@ -12,14 +12,16 @@ import { useGetProductsQuery } from "../api/apiSlice"
 
 const ProductsGallery = () => {
   const { isError, isLoading, isSuccess, data } = useGetProductsQuery()
-  console.log(useGetProductsQuery())
 
+  if (isLoading) {
+    return <p className="animate-pulse">Loading...</p>
+  }
   if (isError) {
     return <p>Network Error</p>
   }
 
-  return (
-    isSuccess && (
+  if (isSuccess) {
+    return (
       <>
         <section>
           <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
@@ -63,7 +65,7 @@ const ProductsGallery = () => {
         </section>
       </>
     )
-  )
+  }
 }
 
 export default ProductsGallery

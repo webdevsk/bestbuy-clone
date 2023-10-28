@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export default async (req, context) => {
+export default async () => {
   try {
     const response = await axios('https://dummyjson.com/products')
     return Response.json(response.data)
