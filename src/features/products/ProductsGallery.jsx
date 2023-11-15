@@ -8,10 +8,13 @@ import Product from "./Product"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
 import { Desktop, Mobile } from "../../components/common/ReactResponsive"
-import { useGetProductsQuery } from "../api/apiSlice"
+import { useSelector } from "react-redux"
+import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
+// import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
 
 const ProductsGallery = () => {
-  const { isError, isLoading, isSuccess, data } = useGetProductsQuery()
+  const { isError, isLoading, isSuccess } = useGetProductsQuery()
+  const products = useSelector((state) => selectAllProducts(state))
 
   if (isLoading) {
     return <p className="animate-pulse">Loading...</p>
@@ -44,7 +47,7 @@ const ProductsGallery = () => {
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-                {data.products.map((product) => (
+                {products.map((product) => (
                   <Product
                     key={product.id}
                     product={product}

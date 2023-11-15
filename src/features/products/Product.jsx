@@ -23,7 +23,7 @@ const Product = memo((props) => {
 
   return (
     <ProductContext.Provider value={product}>
-      <div {...filteredProps} className={`group relative ${className ?? ""}`}>
+      <div {...filteredProps} className={`group relative ${className}`}>
         {children}
         <div className="absolute inset-0 z-0">
           <Link
@@ -143,14 +143,22 @@ const ProductButton = forwardRef((props, ref) => {
   const { isAuthenticated, user } = useAuth0()
   const [addToCart, { isError, isLoading, isSuccess, isUninitialized }] =
     useAddToCartMutation()
-  console.log(isSuccess)
+  // console.log(isSuccess)
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!isAuthenticated) {
       alert("Please login first")
       return
     }
-    addToCart({ user: user.email, id: product.id })
+    try {
+      const res = await addToCart({
+        email: user.email,
+        itemId: product.id,
+      }).unwrap()
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
   }
   // const cartIds = useSelector((state) => selectCartItemIds(state))
   return (

@@ -9,23 +9,37 @@ import {
   selectAllCartItems,
 } from "./cartItemsSlice"
 import { memo, useCallback, useMemo } from "react"
-import { selectProductsEntities } from "../products/productsSlice"
 import BadgeCounter from "../../components/common/BadgeCounter"
+import { useGetCartItemsQuery, useGetProductsQuery } from "../api/apiSlice"
+import { useAuth0 } from "@auth0/auth0-react"
 
 const Cart = memo(({ closeDrawer }) => {
   const locale = "en-US"
   const currency = "USD"
-  const cartItems = useSelector((state) => selectAllCartItems(state))
-  const productsEntities = useSelector((state) => selectProductsEntities(state))
+  const { isAuthenticated, user } = useAuth0()
+
+  const { products } = useGetProductsQuery().data ?? []
+
   const dispatch = useDispatch()
+
+  const {
+    isError,
+    isLoading,
+    isSuccess,
+    data: cartItems = [],
+  } = useGetCartItemsQuery(user?.email, {
+    skip: !isAuthenticated,
+  })
+  console.log(cartItems)
 
   const cartProducts = useMemo(() => {
     console.log("cartProducts Arr regenerated")
-    return cartItems.map(({ id, count }) => ({
-      ...productsEntities[id],
-      count: count,
+    return cartItems.map(({ itemId, quantity }) => ({
+      ...products[itemId],
+      quantity: quantity,
     }))
-  }, [cartItems, productsEntities])
+  }, [cartItems, products])
+  console.log(cartProducts)
 
   const format = useCallback(
     (args) =>
@@ -39,7 +53,7 @@ const Cart = memo(({ closeDrawer }) => {
   const totalPrice = useMemo(() => {
     console.log("TotalPrice recalculated")
     return cartProducts.reduce(
-      (total, product) => total + product.price * product.count,
+      (total, product) => total + product.price * product.quantity,
       0,
     )
   }, [cartProducts])
@@ -91,17 +105,17 @@ const Cart = memo(({ closeDrawer }) => {
 
                   <div className="flex items-center">
                     <button
-                      disabled={item.count === 1}
+                      disabled={item.quantity === 1}
                       onClick={() => dispatch(decreaseCount(item.id))}
                       className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
                     >
                       <IoIosRemove className="text-xl" />
                     </button>
                     <Typography className="min-w-[2rem] text-center">
-                      {item.count}
+                      {item.quantity}
                     </Typography>
                     <button
-                      disabled={item.count === 10}
+                      disabled={item.quantity === 10}
                       onClick={() => dispatch(increaseCount(item.id))}
                       className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
                     >
@@ -111,7 +125,7 @@ const Cart = memo(({ closeDrawer }) => {
 
                   <div className="">
                     <Typography variant="h4">
-                      {format(item.price * (item.count ?? 1))}
+                      {format(item.price * (item.quantity ?? 1))}
                     </Typography>
                   </div>
                 </div>

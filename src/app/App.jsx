@@ -13,6 +13,7 @@ const App = () => {
     if (!isAuthenticated) return
     getAccessTokenSilently({
       audience: import.meta.env.VITE_AUDIENCE,
+      scope: `openid profile email`,
     }).then((token) => dispatch(setAuthToken(token)))
   }, [dispatch, getAccessTokenSilently, isAuthenticated])
 

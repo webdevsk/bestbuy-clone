@@ -9,7 +9,7 @@ import {
 const AccountPanel = () => {
   const { loginWithPopup, logout, user, isAuthenticated, isLoading } =
     useAuth0()
-
+  console.log(user)
   // useAuth0()
   //   .getIdTokenClaims()
   //   .then((data) => console.log(data))
