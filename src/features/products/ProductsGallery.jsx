@@ -16,38 +16,53 @@ const ProductsGallery = () => {
   const { isError, isLoading, isSuccess } = useGetProductsQuery()
   const products = useSelector((state) => selectAllProducts(state))
 
-  if (isLoading) {
-    return <p className="animate-pulse">Loading...</p>
-  }
-  if (isError) {
-    return <p>Network Error</p>
-  }
+  return (
+    <>
+      <section>
+        <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
+          <Desktop>
+            <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
+              <Filters />
+            </div>
+          </Desktop>
 
-  if (isSuccess) {
-    return (
-      <>
-        <section>
-          <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
-            <Desktop>
-              <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
-                <Filters />
+          <div className="w-1 grow xl:pl-6 xl:pt-6">
+            <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
+              <div className="flex items-center gap-2">
+                <Typography className="hidden sm:block">Sort</Typography>
+
+                <Sort />
               </div>
-            </Desktop>
+              <Mobile>
+                <FilterForMobile />
+              </Mobile>
+            </div>
 
-            <div className="w-1 grow xl:pl-6 xl:pt-6">
-              <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
-                <div className="flex items-center gap-2">
-                  <Typography className="hidden sm:block">Sort</Typography>
-
-                  <Sort />
-                </div>
-                <Mobile>
-                  <FilterForMobile />
-                </Mobile>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-                {products.map((product) => (
+            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+              {isLoading &&
+                Array.from({ length: 10 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`flex animate-pulse flex-col gap-1 rounded-lg bg-gray-50 p-4 transition-colors [animation-delay:calc(500ms*var(--delay-by))] hover:bg-gray-100`}
+                    style={{
+                      "--delay-by": i,
+                    }}
+                  >
+                    <div className="aspect-square w-full bg-gray-200"></div>
+                    <div className="mt-auto h-4 w-1/2 rounded-xl bg-gray-400"></div>
+                    <div className=" h-4 w-1/3 rounded-xl bg-gray-300"></div>
+                    <div className=" h-4 w-1/4 rounded-xl bg-gray-300"></div>
+                    <div className=" h-5 w-1/3 rounded-xl bg-gray-400"></div>
+                    <div className="mt-auto h-12 w-full rounded-sm bg-gray-300"></div>
+                  </div>
+                ))}
+              {isError && (
+                <h5 className="text-center text-lg font-semibold italic text-red-500">
+                  Server error. Failed to load data.
+                </h5>
+              )}
+              {isSuccess &&
+                products.map((product) => (
                   <Product
                     key={product.id}
                     product={product}
@@ -62,13 +77,12 @@ const ProductsGallery = () => {
                     </Product.Description>
                   </Product>
                 ))}
-              </div>
             </div>
           </div>
-        </section>
-      </>
-    )
-  }
+        </div>
+      </section>
+    </>
+  )
 }
 
 export default ProductsGallery

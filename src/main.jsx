@@ -14,8 +14,12 @@ import { register } from "swiper/element/bundle"
 import { Provider } from "react-redux"
 import store from "./app/store"
 import { Auth0Provider } from "@auth0/auth0-react"
+import apiSlice from "./features/api/apiSlice"
 
 register()
+
+// Get all products
+store.dispatch(apiSlice.endpoints.getProducts.initiate())
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
