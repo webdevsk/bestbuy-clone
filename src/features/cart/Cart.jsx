@@ -1,13 +1,8 @@
 import { Button, Typography } from "@material-tailwind/react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import {
-  decreaseCount,
-  increaseCount,
-  removeFromCart,
-  selectAllCartItems,
-} from "./cartItemsSlice"
+import { decreaseCount, increaseCount, removeFromCart } from "./cartItemsSlice"
 import { memo, useCallback, useMemo } from "react"
 import BadgeCounter from "../../components/common/BadgeCounter"
 import { useGetCartItemsQuery, useGetProductsQuery } from "../api/apiSlice"

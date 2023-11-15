@@ -57,7 +57,7 @@ const ProductsGallery = () => {
                   </div>
                 ))}
               {isError && (
-                <h5 className="text-center text-lg font-semibold italic text-red-500">
+                <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-red-500">
                   Server error. Failed to load data.
                 </h5>
               )}

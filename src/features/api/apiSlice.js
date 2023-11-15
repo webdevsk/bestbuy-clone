@@ -6,6 +6,9 @@ const initialState = productsAdapter.getInitialState({
     total: null,
     skip: null,
     limit: null,
+    categories: [],
+    brands: [],
+    exclusiveProducts: []
 })
 
 const apiSlice = createApi({
@@ -23,17 +26,15 @@ const apiSlice = createApi({
     }),
     endpoints: builder => ({
         getProducts: builder.query({
-            query: () => `/products`,
-            transformResponse: response => (
-                productsAdapter.setAll(
-                    {
-                        ...initialState,
-                        total: response.total,
-                        skip: response.skip,
-                        limit: response.limit,
-                    },
-                    response.products)
-            ),
+            query: (params) => ({
+                url: `/products`,
+                params
+            }),
+
+            transformResponse: response => {
+                const { products, ...rest } = response
+                return productsAdapter.setAll({ ...initialState, ...rest }, products)
+            },
             keepUnusedDataFor: 600
         }),
         getCartItems: builder.query({
@@ -52,8 +53,8 @@ const apiSlice = createApi({
 })
 
 export const selectProductsResult = apiSlice.endpoints.getProducts.select()
-const selectProducts = createSelector(
-    selectProductsResult, productsResult => productsResult.data
+const selectProductData = createSelector(
+    selectProductsResult, productsResult => productsResult.data ?? initialState
 )
 
 export const {
@@ -62,6 +63,10 @@ export const {
     selectEntities: selectProductEntities,
     selectIds: selectProductIds,
     selectTotal: selectProductsTotal
-} = productsAdapter.getSelectors(state => selectProducts(state) ?? initialState)
+} = productsAdapter.getSelectors(state => selectProductData(state))
 export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery } = apiSlice
+
+export const selectProductBrands = createSelector(selectProductData, state => state.brands)
+export const selectProductCategories = createSelector(selectProductData, state => state.categories)
+export const selectExclusiveProducts = createSelector(selectProductData, state => state.exclusiveProducts)
 export default apiSlice

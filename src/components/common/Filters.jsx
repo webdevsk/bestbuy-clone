@@ -6,7 +6,7 @@ import {
   Radio,
   Typography,
 } from "@material-tailwind/react"
-import { memo, useRef, useState } from "react"
+import { memo, useState } from "react"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
@@ -15,7 +15,7 @@ import { useSelector } from "react-redux"
 import {
   selectProductBrands,
   selectProductCategories,
-} from "../../features/products/productsSlice"
+} from "../../features/api/apiSlice"
 
 const Filters = memo(() => {
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
@@ -27,7 +27,7 @@ const Filters = memo(() => {
 
   const categories = useSelector((state) => selectProductCategories(state))
   const brands = useSelector((state) => selectProductBrands(state))
-
+  console.log(brands)
   const isOpen = (key) => key in openObj && openObj[key]
   const handleOpenObj = (key) =>
     setOpenObj((openObj) => ({

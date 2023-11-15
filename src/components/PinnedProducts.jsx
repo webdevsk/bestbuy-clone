@@ -6,7 +6,7 @@ import "swiper/css/pagination"
 import "swiper/css/mousewheel"
 import Product from "../features/products/Product"
 import { useSelector } from "react-redux"
-import { selectExclusiveProducts } from "../features/products/productsSlice"
+import { selectExclusiveProducts } from "../features/api/apiSlice"
 
 const PinnedProducts = () => {
   const exclusiveProducts = useSelector((state) =>

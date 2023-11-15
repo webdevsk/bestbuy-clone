@@ -12,7 +12,7 @@ import { useSelector } from "react-redux"
 import {
   selectProductBrands,
   selectProductCategories,
-} from "../../features/products/productsSlice"
+} from "../../features/api/apiSlice"
 import { useMediaQuery } from "react-responsive"
 
 const Header = () => {
