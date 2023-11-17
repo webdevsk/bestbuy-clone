@@ -1,14 +1,12 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import { decreaseCount, increaseCount, removeFromCart } from "./cartItemsSlice"
-import { memo, useCallback, useMemo } from "react"
+import { memo, useCallback } from "react"
 import BadgeCounter from "../../components/common/BadgeCounter"
 import { useGetCartItemsQuery } from "../api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
 
-const Cart = memo(({ closeDrawer }) => {
-  console.log("Cart rendered")
+const Cart = memo(({ isOpen, closeDrawer }) => {
   const locale = "en-US"
   const currency = "USD"
   const { isAuthenticated, user } = useAuth0()
@@ -17,12 +15,14 @@ const Cart = memo(({ closeDrawer }) => {
     isLoading,
     isError,
     isSuccess,
+    isFetching,
     data: cartData = {
       products: [],
     },
   } = useGetCartItemsQuery(user?.email, {
-    skip: !isAuthenticated || !user,
+    skip: !isOpen || !isAuthenticated || !user,
   })
+  // Drawer from MaterialTailwind renders even when state is false
 
   const format = useCallback(
     (args) =>
@@ -52,13 +52,16 @@ const Cart = memo(({ closeDrawer }) => {
           <IoIosClose className="h-6 w-6" />
         </button>
       </div>
-      {isLoading && (
-        <div className="my-auto text-center">
-          <p className="animate-pulse text-2xl font-bold text-gray-400">
-            Fetching Cart Items...
-          </p>
-        </div>
-      )}
+
+      {isLoading &&
+        !cartData.products.length(
+          <div className="my-auto text-center">
+            <p className="animate-pulse text-2xl font-bold text-gray-400">
+              Fetching Cart Items...
+            </p>
+          </div>,
+        )}
+
       {isError && (
         <div className="my-auto text-center">
           <p className="text-2xl font-bold text-red-500">
@@ -66,73 +69,73 @@ const Cart = memo(({ closeDrawer }) => {
           </p>
         </div>
       )}
-      {isSuccess && cartData.products.length === 0 && (
+
+      {isSuccess && !cartData.products.length && (
         <div className="my-auto text-center">
           <p className="text-2xl font-bold text-gray-400">
             Cart is Empty ＞︿＜
           </p>
         </div>
       )}
-      <div className="flex flex-col gap-2 p-4">
-        {isSuccess &&
-          !!cartData.products &&
-          cartData.products.map((item) => (
-            <div key={item.id} className={`rounded-md bg-gray-50 p-2`}>
-              <div className="flex flex-wrap gap-2">
-                <Link to={`/product/${item.label}`} className="block w-20">
-                  <img
-                    className="aspect-video h-full w-full object-contain"
-                    src={item.images.at(-1)}
-                  />
-                </Link>
-                <div className="flex w-1 grow flex-col gap-2">
-                  <div className="flex w-full items-center">
-                    <Typography variant="h6" className="">
-                      {item.title}
-                    </Typography>
 
+      <div className="flex flex-col gap-2 p-4">
+        {cartData.products.map((item) => (
+          <div
+            key={item.id}
+            className={`rounded-md bg-gray-50 p-2 ${
+              isFetching ? "animate-pulse opacity-70" : ""
+            }`}
+          >
+            <div className="flex flex-wrap gap-2">
+              <Link to={`/product/${item.label}`} className="block w-20">
+                <img
+                  className="aspect-video h-full w-full object-contain"
+                  src={item.images.at(-1)}
+                />
+              </Link>
+              <div className="flex w-1 grow flex-col gap-2">
+                <div className="flex w-full items-center">
+                  <Typography variant="h6" className="">
+                    {item.title}
+                  </Typography>
+
+                  <button className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200">
+                    <IoIosClose className="scale-150" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between gap-1">
+                  <Typography variant="paragraph" className="">
+                    {format(item.price)}
+                  </Typography>
+
+                  <div className="flex items-center">
                     <button
-                      className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200"
-                      onClick={() => dispatch(removeFromCart(item.id))}
+                      disabled={item.quantity === 1}
+                      className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
                     >
-                      <IoIosClose className="scale-150" />
+                      <IoIosRemove className="text-xl" />
+                    </button>
+                    <Typography className="min-w-[2rem] text-center">
+                      {item.quantity}
+                    </Typography>
+                    <button
+                      disabled={item.quantity === 10}
+                      className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
+                    >
+                      <IoIosAdd className="text-xl" />
                     </button>
                   </div>
-                  <div className="flex items-center justify-between gap-1">
-                    <Typography variant="paragraph" className="">
-                      {format(item.price)}
+
+                  <div className="">
+                    <Typography variant="h4">
+                      {format(item.price * (item.quantity ?? 1))}
                     </Typography>
-
-                    <div className="flex items-center">
-                      <button
-                        disabled={item.quantity === 1}
-                        onClick={() => dispatch(decreaseCount(item.id))}
-                        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
-                      >
-                        <IoIosRemove className="text-xl" />
-                      </button>
-                      <Typography className="min-w-[2rem] text-center">
-                        {item.quantity}
-                      </Typography>
-                      <button
-                        disabled={item.quantity === 10}
-                        onClick={() => dispatch(increaseCount(item.id))}
-                        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
-                      >
-                        <IoIosAdd className="text-xl" />
-                      </button>
-                    </div>
-
-                    <div className="">
-                      <Typography variant="h4">
-                        {format(item.price * (item.quantity ?? 1))}
-                      </Typography>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
       <div className="sticky bottom-0 z-[1] mt-auto border-t bg-white p-4 shadow">
         <div className="mb-2 flex items-center justify-between gap-2">

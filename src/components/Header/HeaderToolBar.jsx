@@ -52,7 +52,7 @@ export const HeaderToolBar = () => {
         overlay={false}
         size={450}
       >
-        <Cart closeDrawer={() => setIsOpen(false)} />
+        <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
       </Drawer>
       {isOpen && (
         <FloatingPortal>
