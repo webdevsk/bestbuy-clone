@@ -53,7 +53,7 @@ const apiSlice = createApi({
 })
 
 export const selectProductsResult = apiSlice.endpoints.getProducts.select()
-const selectProductData = createSelector(
+const selectProductsData = createSelector(
     selectProductsResult, productsResult => productsResult.data ?? initialState
 )
 
@@ -63,10 +63,12 @@ export const {
     selectEntities: selectProductEntities,
     selectIds: selectProductIds,
     selectTotal: selectProductsTotal
-} = productsAdapter.getSelectors(state => selectProductData(state))
+} = productsAdapter.getSelectors(state => selectProductsData(state))
 export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery } = apiSlice
 
-export const selectProductBrands = createSelector(selectProductData, state => state.brands)
-export const selectProductCategories = createSelector(selectProductData, state => state.categories)
-export const selectExclusiveProducts = createSelector(selectProductData, state => state.exclusiveProducts)
+export const selectProductBrands = createSelector(selectProductsData, state => state.brands)
+export const selectProductCategories = createSelector(selectProductsData, state => state.categories)
+export const selectExclusiveProducts = createSelector(selectProductsData, state => state.exclusiveProducts)
+
+
 export default apiSlice
