@@ -37,10 +37,12 @@ const apiSlice = createApi({
             },
             keepUnusedDataFor: 600
         }),
+
         getCartItems: builder.query({
             query: (email) => `/cart/${email}`,
             providesTags: ['Cart']
         }),
+
         addToCart: builder.mutation({
             query: body => ({
                 url: "/cart",
@@ -48,7 +50,25 @@ const apiSlice = createApi({
                 body
             }),
             invalidatesTags: ['Cart']
-        })
+        }),
+
+        updateCartItem: builder.mutation({
+            query: body => ({
+                url: `/cart`,
+                method: "PATCH",
+                body
+            }),
+            invalidatesTags: ['Cart']
+        }),
+
+        deleteCartItem: builder.mutation({
+            query: body => ({
+                url: `/cart`,
+                method: "DELETE",
+                body
+            }),
+            invalidatesTags: ['Cart']
+        }),
     })
 })
 
@@ -64,11 +84,11 @@ export const {
     selectIds: selectProductIds,
     selectTotal: selectProductsTotal
 } = productsAdapter.getSelectors(state => selectProductsData(state))
-export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery } = apiSlice
 
 export const selectProductBrands = createSelector(selectProductsData, state => state.brands)
 export const selectProductCategories = createSelector(selectProductsData, state => state.categories)
 export const selectExclusiveProducts = createSelector(selectProductsData, state => state.exclusiveProducts)
 
 
+export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation } = apiSlice
 export default apiSlice

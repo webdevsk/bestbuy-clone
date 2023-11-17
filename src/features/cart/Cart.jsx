@@ -3,7 +3,10 @@ import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
 import { memo, useCallback } from "react"
 import BadgeCounter from "../../components/common/BadgeCounter"
-import { useGetCartItemsQuery } from "../api/apiSlice"
+import {
+  useGetCartItemsQuery,
+  useUpdateCartItemMutation,
+} from "../api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
 
 const Cart = memo(({ isOpen, closeDrawer }) => {
@@ -53,14 +56,13 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
         </button>
       </div>
 
-      {isLoading &&
-        !cartData.products.length(
-          <div className="my-auto text-center">
-            <p className="animate-pulse text-2xl font-bold text-gray-400">
-              Fetching Cart Items...
-            </p>
-          </div>,
-        )}
+      {isLoading && !cartData.products.length && (
+        <div className="my-auto text-center">
+          <p className="animate-pulse text-2xl font-bold text-gray-400">
+            Fetching Cart Items...
+          </p>
+        </div>
+      )}
 
       {isError && (
         <div className="my-auto text-center">
@@ -109,21 +111,11 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
                   </Typography>
 
                   <div className="flex items-center">
-                    <button
-                      disabled={item.quantity === 1}
-                      className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
-                    >
-                      <IoIosRemove className="text-xl" />
-                    </button>
-                    <Typography className="min-w-[2rem] text-center">
-                      {item.quantity}
-                    </Typography>
-                    <button
-                      disabled={item.quantity === 10}
-                      className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
-                    >
-                      <IoIosAdd className="text-xl" />
-                    </button>
+                    <CartItemMutator
+                      quantity={item.quantity}
+                      email={user.email}
+                      itemId={item.id}
+                    />
                   </div>
 
                   <div className="">
@@ -154,3 +146,62 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
 
 Cart.displayName = "Cart"
 export default Cart
+
+const CartItemMutator = ({ email, itemId, quantity }) => {
+  const [updateQuantity] = useUpdateCartItemMutation()
+
+  const minAllowed = 1
+  const maxAllowed = 10
+
+  const handleQuantity = async ({ currentTarget: t }) => {
+    const value = t.value ? parseInt(t.value) : null
+
+    if (t.name === "increment" && quantity === maxAllowed) return
+    if (t.name === "decrement" && quantity === minAllowed) return
+    if (
+      t.name === "manualInput" &&
+      (t.value < minAllowed || t.value > maxAllowed)
+    )
+      return
+
+    try {
+      await updateQuantity({
+        email,
+        itemId,
+        quantity:
+          t.name === "increment"
+            ? ++quantity
+            : t.name === "decrement"
+            ? --quantity
+            : t.name === "manualInput"
+            ? value
+            : quantity,
+      }).unwrap()
+    } catch (error) {
+      console.error("Failed to update quantity.")
+      console.error(error)
+    }
+  }
+
+  return (
+    <>
+      <button
+        disabled={quantity === 1}
+        name="decrement"
+        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
+        onClick={handleQuantity}
+      >
+        <IoIosRemove className="text-xl" />
+      </button>
+      <Typography className="min-w-[2rem] text-center">{quantity}</Typography>
+      <button
+        disabled={quantity === 10}
+        name="increment"
+        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
+        onClick={handleQuantity}
+      >
+        <IoIosAdd className="text-xl" />
+      </button>
+    </>
+  )
+}
