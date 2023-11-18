@@ -1,13 +1,13 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import { memo, useCallback, useState } from "react"
-import BadgeCounter from "../../components/common/BadgeCounter"
+import { memo, useCallback, useMemo, useState } from "react"
+import BadgeCounter from "../common/BadgeCounter"
 import {
   useDeleteCartItemsMutation,
   useGetCartItemsQuery,
   useUpdateCartItemMutation,
-} from "../api/apiSlice"
+} from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
 
 const Cart = memo(({ isOpen, closeDrawer }) => {
@@ -27,9 +27,10 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
       products: [],
     },
   } = useGetCartItemsQuery(user?.email, {
-    skip: !isOpen || !isAuthenticated || !user,
+    skip: !isAuthenticated || !user,
   })
   // Drawer from MaterialTailwind renders even when state is false
+  // add !isOpen to the skip condition if you want to delay fetch until the drawer is actually open
 
   const [deleteCartItems] = useDeleteCartItemsMutation()
 
@@ -63,20 +64,20 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
   )
 
   // Calculating total price clientside
-  // const totalPrice = useMemo(() => {
-  //   console.log("TotalPrice recalculated")
-  //   return cartData.products.reduce(
-  //     (total, product) => total + product.price * product.quantity,
-  //     0,
-  //   )
-  // }, [cartData.products])
+  const totalPrice = useMemo(() => {
+    return cartData.products.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0,
+    )
+  }, [cartData.products])
 
   return (
     <>
       <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4 shadow">
-        <BadgeCounter>
+        <div className="flex items-center">
           <Typography variant="h3">Cart</Typography>
-        </BadgeCounter>
+          <BadgeCounter>{cartData.quantity ?? 0}</BadgeCounter>
+        </div>
         <button onClick={closeDrawer} className="rounded-sm hover:bg-gray-100">
           <IoIosClose className="h-6 w-6" />
         </button>
@@ -163,7 +164,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
       <div className="sticky bottom-0 z-[1] mt-auto border-t bg-white p-4 shadow">
         <div className="mb-2 flex items-center justify-between gap-2">
           <Typography variant="h4">Total</Typography>
-          <Typography variant="h3">{format(cartData.total ?? 0)}</Typography>
+          <Typography variant="h3">{format(totalPrice ?? 0)}</Typography>
         </div>
         <Button
           className={`w-full bg-accent text-black shadow-sm transition hover:shadow-sm hover:contrast-125`}

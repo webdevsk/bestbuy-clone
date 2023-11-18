@@ -27,7 +27,6 @@ const Filters = memo(() => {
 
   const categories = useSelector((state) => selectProductCategories(state))
   const brands = useSelector((state) => selectProductBrands(state))
-  console.log(brands)
   const isOpen = (key) => key in openObj && openObj[key]
   const handleOpenObj = (key) =>
     setOpenObj((openObj) => ({

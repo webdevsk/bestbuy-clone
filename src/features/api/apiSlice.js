@@ -58,7 +58,10 @@ const apiSlice = createApi({
                 method: "PATCH",
                 body
             }),
-            invalidatesTags: ['Cart']
+            onQueryStarted: optUpdateCart((args, draft) => {
+                const product = draft.products.find(prod => prod.id === args.itemId)
+                if (product) product.quantity = args.quantity
+            })
         }),
 
         deleteCartItems: builder.mutation({
@@ -67,10 +70,29 @@ const apiSlice = createApi({
                 method: "DELETE",
                 body
             }),
-            invalidatesTags: ['Cart']
+            onQueryStarted: optUpdateCart((args, draft) => {
+                draft.products = draft.products.filter(prod => !(args.itemIds.some(id => id === prod.id)))
+                draft.quantity -= args.itemIds.length
+            })
         }),
     })
 })
+
+// Higher order function to make optimistic updates on Cart endpoints
+// If the parameters of getCartItems changes, reflect the change on updateQueryData's second parameter as well.
+function optUpdateCart(callback) {
+    return async (params, { dispatch, queryFulfilled }) => {
+        const patchResult = dispatch(
+            apiSlice.util.updateQueryData("getCartItems", params.email, draft => callback(params, draft))
+        )
+        try {
+            await queryFulfilled
+        } catch {
+            patchResult.undo()
+            // dispatch notifications here
+        }
+    }
+}
 
 export const selectProductsResult = apiSlice.endpoints.getProducts.select()
 const selectProductsData = createSelector(
@@ -91,4 +113,5 @@ export const selectExclusiveProducts = createSelector(selectProductsData, state 
 
 
 export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
+// export const useGetCartItemsState = apiSlice.endpoints.getCartItems.useQueryState
 export default apiSlice

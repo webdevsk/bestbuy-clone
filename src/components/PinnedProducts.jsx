@@ -1,12 +1,12 @@
 import { Button, Typography } from "@material-tailwind/react"
+import { useSelector } from "react-redux"
+import "swiper/css"
+import "swiper/css/mousewheel"
+import "swiper/css/pagination"
 import { FreeMode, Mousewheel, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
-import "swiper/css"
-import "swiper/css/pagination"
-import "swiper/css/mousewheel"
-import Product from "../features/products/Product"
-import { useSelector } from "react-redux"
 import { selectExclusiveProducts } from "../features/api/apiSlice"
+import Product from "./common/Product"
 
 const PinnedProducts = () => {
   const exclusiveProducts = useSelector((state) =>

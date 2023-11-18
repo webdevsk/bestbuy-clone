@@ -1,9 +1,9 @@
-import { Outlet } from "react-router"
-import Header from "../components/Header/Header"
 import { useAuth0 } from "@auth0/auth0-react"
-import { useDispatch } from "react-redux"
-import { setAuthToken } from "../features/account/authSlice"
 import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { Outlet } from "react-router"
+import { setAuthToken } from "../features/auth/authSlice"
+import Header from "./header/Header"
 
 const App = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0()

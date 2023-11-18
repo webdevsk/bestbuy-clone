@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react"
 import { Button, Typography } from "@material-tailwind/react"
 import {
   createContext,
@@ -7,12 +8,9 @@ import {
   useContext,
   useState,
 } from "react"
-import RatingBar from "../../components/common/RatingBar"
 import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { addToCart } from "../cart/cartItemsSlice"
-import { useAddToCartMutation } from "../api/apiSlice"
-import { useAuth0 } from "@auth0/auth0-react"
+import { useAddToCartMutation } from "../../features/api/apiSlice"
+import RatingBar from "./RatingBar"
 
 //Contexts
 const ProductContext = createContext(null)

@@ -1,15 +1,18 @@
-import Filters from "../../components/common/Filters"
+import Filters from "./common/Filters"
 //Replace these with async api call functions
 import { Button, Drawer, Typography } from "@material-tailwind/react"
-import Sort from "../../components/common/Sort"
+import Sort from "./common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useState } from "react"
-import Product from "./Product"
+import Product from "./common/Product"
 import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
-import { Desktop, Mobile } from "../../components/common/ReactResponsive"
+import { Desktop, Mobile } from "./common/ReactResponsive"
 import { useSelector } from "react-redux"
-import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
+import {
+  selectAllProducts,
+  useGetProductsQuery,
+} from "../features/api/apiSlice"
 // import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
 
 const ProductsGallery = () => {

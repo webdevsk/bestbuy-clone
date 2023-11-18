@@ -77,7 +77,7 @@ export const selectExclusiveProducts = createSelector([
 export const selectProductCategories = state => state.products.categories
 export const selectProductBrands = state => state.products.brands
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+export const fetchProducts = createAsyncThunk('productsGallery/fetchProducts', async () => {
     const response = await axios('https://dummyjson.com/products')
     return response.data
 })
