@@ -1,15 +1,19 @@
 import { Button, Typography } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import { memo, useCallback } from "react"
+import { memo, useCallback, useState } from "react"
 import BadgeCounter from "../../components/common/BadgeCounter"
 import {
+  useDeleteCartItemsMutation,
   useGetCartItemsQuery,
   useUpdateCartItemMutation,
 } from "../api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
 
 const Cart = memo(({ isOpen, closeDrawer }) => {
+  // mark and delete to be implemented later
+  const [selectedIds, setSelectedIds] = useState([])
+
   const locale = "en-US"
   const currency = "USD"
   const { isAuthenticated, user } = useAuth0()
@@ -26,6 +30,28 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
     skip: !isOpen || !isAuthenticated || !user,
   })
   // Drawer from MaterialTailwind renders even when state is false
+
+  const [deleteCartItems] = useDeleteCartItemsMutation()
+
+  const handleDelete = async ({ currentTarget: t }) => {
+    const value = t.value ? parseInt(t.value) : null
+    const itemIds = []
+    if (t.name === "deleteOne") itemIds.push(t.value)
+    try {
+      await deleteCartItems({
+        email: user.email,
+        itemIds:
+          t.name === "deleteOne"
+            ? [value]
+            : t.name === "deleteMany"
+            ? selectedIds
+            : [],
+        deleteAll: t.name === "deleteAll",
+      }).unwrap()
+    } catch (error) {
+      console.error("Error deleting cart items.", error)
+    }
+  }
 
   const format = useCallback(
     (args) =>
@@ -101,7 +127,12 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
                     {item.title}
                   </Typography>
 
-                  <button className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200">
+                  <button
+                    className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200"
+                    name="deleteOne"
+                    onClick={handleDelete}
+                    value={item.id}
+                  >
                     <IoIosClose className="scale-150" />
                   </button>
                 </div>

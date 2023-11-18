@@ -61,7 +61,7 @@ const apiSlice = createApi({
             invalidatesTags: ['Cart']
         }),
 
-        deleteCartItem: builder.mutation({
+        deleteCartItems: builder.mutation({
             query: body => ({
                 url: `/cart`,
                 method: "DELETE",
@@ -90,5 +90,5 @@ export const selectProductCategories = createSelector(selectProductsData, state 
 export const selectExclusiveProducts = createSelector(selectProductsData, state => state.exclusiveProducts)
 
 
-export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation } = apiSlice
+export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
 export default apiSlice
