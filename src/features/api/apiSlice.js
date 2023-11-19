@@ -53,8 +53,15 @@ const apiSlice = createApi({
             onQueryStarted: async (_, { queryFulfilled }) => {
                 await toast.promise(queryFulfilled, {
                     pending: "Adding to Cart",
-                    success: "Successfully added to Cart",
-                    error: `Failed to add to Cart.`
+                    success: {
+                        render: () => "Successfully added to Cart",
+                    },
+                    error: {
+                        render: ({ data }) => {
+                            console.log(data)
+                            return `Failed to add to Cart. ${data?.error?.status}`
+                        }
+                    }
                 })
             },
             invalidatesTags: ['Cart']
