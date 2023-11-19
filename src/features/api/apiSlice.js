@@ -50,6 +50,13 @@ const apiSlice = createApi({
                 method: "POST",
                 body
             }),
+            onQueryStarted: async (_, { queryFulfilled }) => {
+                await toast.promise(queryFulfilled, {
+                    pending: "Adding to Cart",
+                    success: "Successfully added to Cart",
+                    error: `Failed to add to Cart.`
+                })
+            },
             invalidatesTags: ['Cart']
         }),
 
@@ -90,8 +97,8 @@ function optUpdateCart(callback) {
             await queryFulfilled
         } catch (error) {
             patchResult.undo()
-            console.error(error?.message)
-            toast.error("Failed to update cart. Server Error.")
+            console.error(error)
+            toast.error(`Failed to update cart. ${error?.message}.`)
         }
     }
 }

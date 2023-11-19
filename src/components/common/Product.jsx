@@ -11,8 +11,6 @@ import {
 import { Link } from "react-router-dom"
 import { useAddToCartMutation } from "../../features/api/apiSlice"
 import RatingBar from "./RatingBar"
-import { autoBatchEnhancer } from "@reduxjs/toolkit"
-import { CgSpinner } from "react-icons/cg"
 import { toast } from "react-toastify"
 //Contexts
 const ProductContext = createContext(null)
@@ -148,17 +146,14 @@ const ProductButton = forwardRef((props, ref) => {
       toast.error("Please login first")
       return
     }
-    await toast.promise(
-      addToCart({
+    try {
+      await addToCart({
         email: user.email,
         itemId: product.id,
-      }).unwrap(),
-      {
-        pending: "Adding to Cart",
-        error: "Failed to add to Cart",
-        success: "Item added to Cart successfully",
-      },
-    )
+      }).unwrap()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -179,4 +174,3 @@ ProductButton.displayName = "ProductButton"
 Product.Button = memo(ProductButton)
 
 export default Product
-// abu.sayeed@otobi.com
