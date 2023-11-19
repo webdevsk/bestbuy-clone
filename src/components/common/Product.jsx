@@ -11,7 +11,8 @@ import {
 import { Link } from "react-router-dom"
 import { useAddToCartMutation } from "../../features/api/apiSlice"
 import RatingBar from "./RatingBar"
-
+import { autoBatchEnhancer } from "@reduxjs/toolkit"
+import { CgSpinner } from "react-icons/cg"
 //Contexts
 const ProductContext = createContext(null)
 const useProductContext = () => useContext(ProductContext)
@@ -139,9 +140,7 @@ Product.Price = memo(ProductPrice)
 const ProductButton = forwardRef((props, ref) => {
   const product = useProductContext()
   const { isAuthenticated, user } = useAuth0()
-  const [addToCart, { isError, isLoading, isSuccess, isUninitialized }] =
-    useAddToCartMutation()
-  // console.log(isSuccess)
+  const [addToCart] = useAddToCartMutation()
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -158,18 +157,14 @@ const ProductButton = forwardRef((props, ref) => {
       console.log(error)
     }
   }
-  // const cartIds = useSelector((state) => selectCartItemIds(state))
+
   return (
     <Button
       {...props}
       ref={ref}
       className={`${
         props.className ?? ""
-      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent 
-      ${
-        isLoading ? "animate-pulse opacity-60" : isSuccess ? "bg-green-500" : ""
-      }`}
-      // onClick={() => dispatch(addToCart(product.id))}
+      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent `}
       onClick={handleAddToCart}
     >
       <Typography variant="h6">Add to Cart</Typography>
@@ -180,3 +175,4 @@ ProductButton.displayName = "ProductButton"
 Product.Button = memo(ProductButton)
 
 export default Product
+// abu.sayeed@otobi.com
