@@ -13,6 +13,7 @@ import { useAddToCartMutation } from "../../features/api/apiSlice"
 import RatingBar from "./RatingBar"
 import { autoBatchEnhancer } from "@reduxjs/toolkit"
 import { CgSpinner } from "react-icons/cg"
+import { toast } from "react-toastify"
 //Contexts
 const ProductContext = createContext(null)
 const useProductContext = () => useContext(ProductContext)
@@ -140,22 +141,24 @@ Product.Price = memo(ProductPrice)
 const ProductButton = forwardRef((props, ref) => {
   const product = useProductContext()
   const { isAuthenticated, user } = useAuth0()
-  const [addToCart] = useAddToCartMutation()
+  const [addToCart, { isLoading }] = useAddToCartMutation()
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      alert("Please login first")
+      toast.error("Please login first")
       return
     }
-    try {
-      const res = await addToCart({
+    await toast.promise(
+      addToCart({
         email: user.email,
         itemId: product.id,
-      }).unwrap()
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
+      }).unwrap(),
+      {
+        pending: "Adding to Cart",
+        error: "Failed to add to Cart",
+        success: "Item added to Cart successfully",
+      },
+    )
   }
 
   return (
@@ -164,8 +167,9 @@ const ProductButton = forwardRef((props, ref) => {
       ref={ref}
       className={`${
         props.className ?? ""
-      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent `}
+      } z-[1] mt-auto bg-gray-200 text-black hover:bg-accent disabled:pointer-events-auto`}
       onClick={handleAddToCart}
+      disabled={isLoading}
     >
       <Typography variant="h6">Add to Cart</Typography>
     </Button>

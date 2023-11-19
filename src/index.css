@@ -10,6 +10,10 @@
   --header-color: #040c13;
   --body-color: #1d252c;
   --link-color: #0457c8;
+  --info-color: theme(colors.theme);
+  --success-color: theme(colors.green.500);
+  --warning-color: theme(colors.yellow.600);
+  --error-color: theme(colors.red.600);
 }
 
 @layer base {
@@ -106,4 +110,22 @@ svg {
   position: static;
   width: auto;
   height: auto;
+}
+
+/* toastify styles override */
+:root:root {
+  --toastify-color-info: theme(colors.info);
+  --toastify-color-success: theme(colors.success);
+  --toastify-color-warning: theme(colors.warning);
+  --toastify-color-error: theme(colors.error);
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-toast-min-height: 3rem;
+  --toastify-font-family: theme(fontFamily.sans);
+
+  /* //Used only for colored theme */
+  --toastify-text-color-info: theme(colors.white);
+  --toastify-text-color-success: theme(colors.white);
+  --toastify-text-color-warning: theme(colors.white);
+  --toastify-text-color-error: theme(colors.white);
 }

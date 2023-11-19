@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux"
 import { Outlet } from "react-router"
 import { setAuthToken } from "../features/auth/authSlice"
 import Header from "./header/Header"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0()
@@ -21,6 +23,18 @@ const App = () => {
     <>
       <Header />
       <Outlet />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { toast } from "react-toastify"
 
 const productsAdapter = createEntityAdapter()
 const initialState = productsAdapter.getInitialState({
@@ -87,9 +88,10 @@ function optUpdateCart(callback) {
         )
         try {
             await queryFulfilled
-        } catch {
+        } catch (error) {
             patchResult.undo()
-            // dispatch notifications here
+            console.error(error?.message)
+            toast.error("Failed to update cart. Server Error.")
         }
     }
 }
