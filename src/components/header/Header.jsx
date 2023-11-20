@@ -69,16 +69,11 @@ const Header = () => {
   const mainMenu = [
     {
       id: 1,
-      label: "Shop",
-      items: ["Men", "Women"],
-    },
-    {
-      id: 2,
       label: "Brands",
       items: useSelector((state) => selectProductBrands(state)),
     },
     {
-      id: 3,
+      id: 2,
       label: "Categories",
       items: useSelector((state) => selectProductCategories(state)),
     },
@@ -87,12 +82,12 @@ const Header = () => {
   const headerMenu = [
     {
       id: 1,
-      label: "Order Status",
-      link: "#",
+      label: "All Products",
+      link: "/shop",
     },
     {
       id: 2,
-      label: "Blog",
+      label: "Order Status",
       link: "#",
     },
     {
