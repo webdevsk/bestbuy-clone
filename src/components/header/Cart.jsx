@@ -108,7 +108,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
       )}
 
       <div className="flex flex-col gap-2 p-4">
-        {cartData.products.map((item) => (
+        {cartData.products?.map((item) => (
           <div
             key={item.id}
             className={`rounded-md bg-gray-50 p-2 ${

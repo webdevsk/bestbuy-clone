@@ -33,9 +33,10 @@ const Header = () => {
 
       //Calculation:
       // Initially hide itself completely. As in translateY: -100% or bottom: 100%
-      // (scrollY - distance) The amount scrolled minus the main header height. So initially it is 0 after scrolling past header container
+      // headerOffset is the amount scrolled minus the main header height. So initially it is 0 after scrolling past header container
       // Keep increasing translateY as the scrollY-distance value increases. Stops at translateY: 0%. Now the sticky header is completely visible
-      const offset = -height + (scrollY - distance)
+      const headerOffset = scrollY - distance
+      const offset = -height + headerOffset
 
       setIsSticking(isFloating)
       headerRef.current.classList.toggle("floating", isFloating)
@@ -43,6 +44,22 @@ const Header = () => {
       stickyHeaderRef.current.style.top = `${
         isFloating && offset < 0 ? offset : 0
       }px`
+
+      // huge impact on performance
+      // document.documentElement.style.setProperty(
+      //   "--sticky-header-visible",
+      //   (!isFloating
+      //     ? 0
+      //     : headerOffset > height
+      //     ? height
+      //     : scrollY - distance) + "px",
+      // )
+
+      document.documentElement.classList.toggle("sticking", isFloating)
+      document.documentElement.style.setProperty(
+        "--sticky-header-height",
+        (isFloating ? height : 0) + "px",
+      )
     }
 
     addEventListener("scroll", handleScroll)
@@ -53,7 +70,7 @@ const Header = () => {
     {
       id: 1,
       label: "Shop",
-      items: ["All Products", "Dress", "Phones"],
+      items: ["Men", "Women"],
     },
     {
       id: 2,

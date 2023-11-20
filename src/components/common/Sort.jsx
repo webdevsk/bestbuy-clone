@@ -31,7 +31,7 @@ const Sort = () => {
         </Listbox.Button>
 
         <Listbox.Options className="z-10 w-full divide-y-2 border-2 bg-white">
-          {sortOptions.map((option) => (
+          {sortOptions?.map((option) => (
             <Listbox.Option
               className="cursor-pointer px-4 py-3 hover:bg-gray-100"
               key={option.label}

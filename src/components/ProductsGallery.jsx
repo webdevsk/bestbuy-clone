@@ -24,8 +24,10 @@ const ProductsGallery = () => {
       <section>
         <div className="container flex divide-[#e0e6ef] border-[#e0e6ef] xl:divide-x xl:border-b xl:px-0">
           <Desktop>
-            <div className=" divide-y xl:w-1/6 [&>*]:pr-3">
-              <Filters />
+            <div className=" relative divide-y xl:w-1/6 [&>*]:pr-3">
+              <div className="sticky bottom-0">
+                <Filters />
+              </div>
             </div>
           </Desktop>
 

@@ -106,7 +106,7 @@ const PinnedProducts = () => {
                   },
                 }}
               >
-                {exclusiveProducts.map((product) => (
+                {exclusiveProducts?.map((product) => (
                   <SwiperSlide key={product.id}>
                     <Product
                       product={product}

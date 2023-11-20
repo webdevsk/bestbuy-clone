@@ -54,7 +54,7 @@ const Filters = memo(() => {
         </AccordionHeader>
         <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
-            {categories.map((category, i) => (
+            {categories?.map((category, i) => (
               <Link to={"/" + category} key={i}>
                 <Typography className="hover:underline">{category}</Typography>
               </Link>
@@ -81,7 +81,7 @@ const Filters = memo(() => {
         </AccordionHeader>
         <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
-            {brands.map((brand, i) => (
+            {brands?.map((brand, i) => (
               <Link to={"/" + brand} key={i}>
                 <Typography className="hover:underline">{brand}</Typography>
               </Link>

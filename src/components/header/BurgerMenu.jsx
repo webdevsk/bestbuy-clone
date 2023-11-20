@@ -83,7 +83,7 @@ const BurgerMenuList = () => {
                     Back
                   </Typography>
                 </button>
-                {menu.items.map((item) => (
+                {menu.items?.map((item) => (
                   <Link
                     className="block p-3 transition-colors hover:bg-gray-100 hover:text-theme"
                     key={item}
