@@ -38,19 +38,25 @@ const apiSlice = createApi({
             },
 
             onQueryStarted: async (_, { queryFulfilled }) => {
-                await toast.promise(queryFulfilled, {
-                    pending: {
-                        render: () => `Please wait patiently while the server boots up. As it is hosted on a "Free tier" deployment service`,
-                        type: toast.TYPE.INFO,
-                        delay: 10000
-                    },
-                    error: {
-                        render: ({ data }) => {
-                            console.log(data)
-                            return `Uh oh! Server won't wake up. ${data?.error?.status}`
-                        }
-                    }
-                })
+                // If pending duration is too long, a toast appears informing the viewer
+                // The toast and timer gets cleared when promise succeeds or fails
+                let toastId = null
+                const timerId = setTimeout(() => {
+                    toastId = toast(`Please wait patiently while the server boots up. As it is hosted on a "Free tier" deployment service`, { autoClose: false, type: toast.TYPE.INFO })
+                }, 3000)
+
+                try {
+                    await queryFulfilled
+                    clearTimeout(timerId)
+                    if (toastId) toast.dismiss(toastId)
+                } catch (error) {
+                    clearTimeout(timerId)
+                    if (toastId) toast.update(toastId, {
+                        render: `Uh oh! The Server won't wake up. Please try again later`,
+                        type: toast.TYPE.ERROR,
+                        autoClose: false
+                    })
+                }
             },
             keepUnusedDataFor: 600
         }),
