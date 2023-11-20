@@ -50,6 +50,7 @@ const apiSlice = createApi({
                     clearTimeout(timerId)
                     if (toastId) toast.dismiss(toastId)
                 } catch (error) {
+                    console.error(error)
                     clearTimeout(timerId)
                     if (toastId) toast.update(toastId, {
                         render: `Uh oh! The Server won't wake up. Please try again later`,
