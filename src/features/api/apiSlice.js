@@ -36,6 +36,22 @@ const apiSlice = createApi({
                 const { products, ...rest } = response
                 return productsAdapter.setAll({ ...initialState, ...rest }, products)
             },
+
+            onQueryStarted: async (_, { queryFulfilled }) => {
+                await toast.promise(queryFulfilled, {
+                    pending: {
+                        render: () => `Please wait patiently while the server boots up. As it is hosted on a "Free tier" deployment service`,
+                        type: toast.TYPE.INFO,
+                        delay: 10000
+                    },
+                    error: {
+                        render: ({ data }) => {
+                            console.log(data)
+                            return `Uh oh! Server won't wake up. ${data?.error?.status}`
+                        }
+                    }
+                })
+            },
             keepUnusedDataFor: 600
         }),
 
