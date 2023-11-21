@@ -17,6 +17,7 @@ const extendedColors = {
   header: "var(--header-color)",
   body: "var(--body-color)",
   link: "var(--link-color)",
+  "link-hover": "var(--link-hover-color)",
   info: "var(--info-color)",
   success: "var(--success-color)",
   warning: "var(--warning-color)",
