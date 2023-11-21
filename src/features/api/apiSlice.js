@@ -62,6 +62,11 @@ const apiSlice = createApi({
             keepUnusedDataFor: 600
         }),
 
+        getProduct: builder.query({
+            query: (id) => `/products/${id}`,
+            // providesTags: (id) => 
+        }),
+
         getCartItems: builder.query({
             query: (email) => `/cart/${email}`,
             providesTags: ['Cart']
@@ -151,6 +156,6 @@ export const selectProductCategories = createSelector(selectProductsData, state 
 export const selectExclusiveProducts = createSelector(selectProductsData, state => state.exclusiveProducts)
 
 
-export const { useGetProductsQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
+export const { useGetProductsQuery, useGetProductQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
 // export const useGetCartItemsState = apiSlice.endpoints.getCartItems.useQueryState
 export default apiSlice
