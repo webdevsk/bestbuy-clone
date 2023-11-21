@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { useGetProductQuery } from "../features/api/apiSlice"
 import { useParams } from "react-router-dom"
 
@@ -22,9 +21,7 @@ const ProductPage = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Typography variant="h2" className="font-medium">
-            {product.title}
-          </Typography>
+          <h2>{product.title}</h2>
 
           <div className="flex"></div>
         </div>

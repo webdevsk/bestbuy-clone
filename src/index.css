@@ -9,8 +9,8 @@
   --accent-color: #fff200;
   --header-color: #040c13;
   --body-color: #1d252c;
-  --link-color: #0457c8;
-  --link-hover-color: #0456c89e;
+  --link-color: inherit;
+  --link-hover-color: inherit;
   --info-color: theme(colors.theme);
   --success-color: theme(colors.green.500);
   --warning-color: theme(colors.yellow.600);
@@ -23,7 +23,7 @@
   }
 
   h1 {
-    @apply text-3xl font-semibold xl:text-4xl;
+    @apply text-3xl font-semibold xl:text-5xl;
   }
   h2 {
     @apply text-2xl font-semibold xl:text-3xl;
@@ -48,7 +48,7 @@
     @apply text-xs font-semibold xl:text-sm;
   }
   a {
-    @apply hover:text-link-hover cursor-pointer text-sm font-semibold text-link transition-colors duration-150 xl:text-base;
+    @apply cursor-pointer text-sm font-semibold text-link transition-colors duration-150 hover:text-link-hover xl:text-base;
   }
 
   section {

@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
 import { useSelector } from "react-redux"
 import "swiper/css"
 import "swiper/css/mousewheel"
@@ -51,14 +51,12 @@ const PinnedProducts = () => {
               </g>
             </svg>
 
-            <Typography variant="h2">
-              Explore new tech for work, school, and play.
-            </Typography>
+            <h2>Explore new tech for work, school, and play.</h2>
 
-            <Typography>
+            <p>
               Shop the latest and greatest tech for your best work and virtual
               adventures yet.
-            </Typography>
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[52px_minmax(0,_1fr)_52px]">
