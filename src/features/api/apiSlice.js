@@ -3,32 +3,26 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { toast } from "react-toastify"
 
 const productsAdapter = createEntityAdapter()
-const initialState = productsAdapter.getInitialState({
-    total: null,
-    skip: null,
-    limit: null,
-    categories: [],
-    brands: [],
-    exclusiveProducts: []
-})
+const initialState = productsAdapter.getInitialState()
 
 const apiSlice = createApi({
     reducerPath: "api",
     tagTypes: ['Cart'],
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_SERVER_URL,
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState().auth.token
-            if (token) {
-                headers.set("authorization", `Bearer ${token}`)
-            }
-            return headers
-        }
+        baseUrl: import.meta.VITE_SERVER_URL,
+        // prepareHeaders: (headers, { getState }) => {
+        //     const token = getState().auth.token
+        //     if (token) {
+        //         headers.set("authorization", `Bearer ${token}`)
+        //     }
+        //     return headers
+        // }
     }),
     endpoints: builder => ({
         getProducts: builder.query({
+
             query: (params) => ({
-                url: `/products`,
+                url: `https://dummyjson.com/products`,
                 params
             }),
 
@@ -37,34 +31,16 @@ const apiSlice = createApi({
                 return productsAdapter.setAll({ ...initialState, ...rest }, products)
             },
 
-            onQueryStarted: async (_, { queryFulfilled }) => {
-                // If pending duration is too long, a toast appears informing the viewer
-                // The toast and timer gets cleared when promise succeeds or fails
-                let toastId = null
-                const timerId = setTimeout(() => {
-                    toastId = toast(`Please wait patiently while the server boots up. As it is hosted on a "Free tier" deployment service`, { autoClose: false, type: toast.TYPE.INFO })
-                }, 3000)
-
-                try {
-                    await queryFulfilled
-                    clearTimeout(timerId)
-                    if (toastId) toast.dismiss(toastId)
-                } catch (error) {
-                    console.error(error)
-                    clearTimeout(timerId)
-                    if (toastId) toast.update(toastId, {
-                        render: `Uh oh! The Server won't wake up. Please try again later`,
-                        type: toast.TYPE.ERROR,
-                        autoClose: false
-                    })
-                }
-            },
             keepUnusedDataFor: 600
         }),
 
         getProduct: builder.query({
-            query: (id) => `/products/${id}`,
+            query: (id) => `https://dummyjson.com/products/${id}`,
             // providesTags: (id) => 
+        }),
+
+        getCategories: builder.query({
+            query: () => "https://dummyjson.com/products/categories"
         }),
 
         getCartItems: builder.query({
@@ -138,6 +114,11 @@ function optUpdateCart(callback) {
     }
 }
 
+export const selectProductCategories = createSelector(
+    apiSlice.endpoints.getCategories.select(),
+    categoriesResult => categoriesResult.data ?? []
+)
+
 export const selectProductsResult = apiSlice.endpoints.getProducts.select()
 const selectProductsData = createSelector(
     selectProductsResult, productsResult => productsResult.data ?? initialState
@@ -151,11 +132,18 @@ export const {
     selectTotal: selectProductsTotal
 } = productsAdapter.getSelectors(state => selectProductsData(state))
 
-export const selectProductBrands = createSelector(selectProductsData, state => state.brands)
-export const selectProductCategories = createSelector(selectProductsData, state => state.categories)
-export const selectExclusiveProducts = createSelector(selectProductsData, state => state.exclusiveProducts)
+export const selectProductBrands = createSelector(
+    selectAllProducts,
+    products => [...new Set(products.map(item => item.brand))]
+)
 
+export const selectExclusiveProducts = createSelector(
+    selectAllProducts,
+    products => products.filter(product =>
+        product.discountPercentage >= 10 && ["smartphones", "laptops"].some(cat => product.category === cat)
+    )
+)
 
-export const { useGetProductsQuery, useGetProductQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
+export const { useGetProductsQuery, useGetProductQuery, useGetCategoriesQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
 // export const useGetCartItemsState = apiSlice.endpoints.getCartItems.useQueryState
 export default apiSlice

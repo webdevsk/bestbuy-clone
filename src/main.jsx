@@ -20,6 +20,7 @@ register()
 
 // Get all products
 store.dispatch(apiSlice.endpoints.getProducts.initiate())
+store.dispatch(apiSlice.endpoints.getCategories.initiate())
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
