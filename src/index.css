@@ -7,8 +7,8 @@
   --theme-color: #0046be;
   --background-color: #ffffff;
   --accent-color: #fff200;
-  --header-color: #040c13;
   --body-color: #1d252c;
+  --important-color: theme(colors.red.900);
   --link-color: inherit;
   --link-hover-color: inherit;
   --info-color: theme(colors.theme);
@@ -38,11 +38,11 @@
     @apply text-base font-bold xl:text-lg;
   }
   h6 {
-    @apply text-sm font-bold xl:text-base;
+    @apply text-sm font-extrabold xl:text-base;
   }
   p,
   span {
-    @apply text-sm xl:text-base;
+    @apply text-sm font-medium xl:text-base;
   }
   small {
     @apply text-xs font-semibold xl:text-sm;

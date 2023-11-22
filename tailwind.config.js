@@ -16,6 +16,7 @@ const extendedColors = {
   accent: "var(--accent-color)",
   header: "var(--header-color)",
   body: "var(--body-color)",
+  important: "var(--important-color)",
   link: "var(--link-color)",
   "link-hover": "var(--link-hover-color)",
   info: "var(--info-color)",
