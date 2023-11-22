@@ -145,5 +145,4 @@ export const selectExclusiveProducts = createSelector(
 )
 
 export const { useGetProductsQuery, useGetProductQuery, useGetCategoriesQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
-// export const useGetCartItemsState = apiSlice.endpoints.getCartItems.useQueryState
 export default apiSlice
