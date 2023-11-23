@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
-export default async (event, context) => {
+export default async (event) => {
     // const body = await event.json()
     const { email } = await event.json()
     console.log("getCartItems/", email)

@@ -9,7 +9,7 @@ const apiSlice = createApi({
     reducerPath: "api",
     tagTypes: ['Cart'],
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.VITE_SERVER_URL,
+        baseUrl: "/.netlify/functions/",
         prepareHeaders: (headers) => {
             headers.set("Content-Type", "application/json")
             return headers
@@ -49,7 +49,7 @@ const apiSlice = createApi({
 
         getCartItems: builder.query({
             query: (body) => ({
-                url: `/.netlify/functions/getCartItems`,
+                url: `/getCartItems`,
                 method: "POST",
                 body
             }),
