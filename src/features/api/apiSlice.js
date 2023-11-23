@@ -48,17 +48,17 @@ const apiSlice = createApi({
         }),
 
         getCartItems: builder.query({
-            query: (body) => ({
+            query: (email) => ({
                 url: `/getCartItems`,
                 method: "POST",
-                body
+                body: { email }
             }),
             providesTags: ['Cart']
         }),
 
         addToCart: builder.mutation({
             query: body => ({
-                url: "/cart",
+                url: "/updateCartItems",
                 method: "POST",
                 body
             }),
@@ -81,8 +81,8 @@ const apiSlice = createApi({
 
         updateCartItem: builder.mutation({
             query: body => ({
-                url: `/cart`,
-                method: "PATCH",
+                url: `/updateCartItems`,
+                method: "POST",
                 body
             }),
             onQueryStarted: optUpdateCart((args, draft) => {

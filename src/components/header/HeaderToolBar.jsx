@@ -14,12 +14,9 @@ export const HeaderToolBar = () => {
     isLoading,
     isFetching,
     data: cartData = { products: [], quantity: 0 },
-  } = useGetCartItemsQuery(
-    { email: user?.email },
-    {
-      skip: !isAuthenticated || !user,
-    },
-  )
+  } = useGetCartItemsQuery(user?.email, {
+    skip: !isAuthenticated || !user,
+  })
   return (
     <>
       <div className="ms-auto">

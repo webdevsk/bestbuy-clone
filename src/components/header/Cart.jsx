@@ -26,12 +26,9 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
     data: cartData = {
       products: [],
     },
-  } = useGetCartItemsQuery(
-    { email: user?.email },
-    {
-      skip: !isAuthenticated || !user,
-    },
-  )
+  } = useGetCartItemsQuery(user?.email, {
+    skip: !isAuthenticated || !user,
+  })
   // Drawer from MaterialTailwind renders even when state is false
   // add !isOpen to the skip condition if you want to delay fetch until the drawer is actually open
 
