@@ -10,6 +10,10 @@ const apiSlice = createApi({
     tagTypes: ['Cart'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.VITE_SERVER_URL,
+        prepareHeaders: (headers) => {
+            headers.set("Content-Type", "application/json")
+            return headers
+        },
         // prepareHeaders: (headers, { getState }) => {
         //     const token = getState().auth.token
         //     if (token) {
@@ -21,7 +25,7 @@ const apiSlice = createApi({
     endpoints: builder => ({
         getProducts: builder.query({
 
-            query: (params) => ({
+            query: (params = { limit: 0 }) => ({
                 url: `https://dummyjson.com/products`,
                 params
             }),
@@ -44,7 +48,11 @@ const apiSlice = createApi({
         }),
 
         getCartItems: builder.query({
-            query: (email) => `/cart/${email}`,
+            query: (body) => ({
+                url: `/.netlify/functions/getCartItems`,
+                method: "POST",
+                body
+            }),
             providesTags: ['Cart']
         }),
 
