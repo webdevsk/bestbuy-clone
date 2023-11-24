@@ -16,7 +16,6 @@ export const HeaderToolBar = () => {
     data: cartData = { products: [], quantity: 0 },
   } = useGetCartItemsQuery(user?.email, {
     skip: !isAuthenticated || !user,
-    refetchOnMountOrArgChange: false,
   })
   return (
     <>
