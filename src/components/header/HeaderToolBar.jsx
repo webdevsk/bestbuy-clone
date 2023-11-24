@@ -16,6 +16,7 @@ export const HeaderToolBar = () => {
     data: cartData = { products: [], quantity: 0 },
   } = useGetCartItemsQuery(user?.email, {
     skip: !isAuthenticated || !user,
+    refetchOnMountOrArgChange: false,
   })
   return (
     <>
@@ -66,7 +67,9 @@ export const HeaderToolBar = () => {
         overlay={false}
         size={450}
       >
-        <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
+        {isOpen && (
+          <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
+        )}
       </Drawer>
       {isOpen && (
         <FloatingPortal>
