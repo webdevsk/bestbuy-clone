@@ -1,13 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
-export default async (event) => {
-    // const body = await event.json()
-    const { email } = await event.json()
-    console.log("getCartItems/", email)
-
-    if (!email) return Response.json({ message: "Email not provided" }, { status: 400 })
-
+const getCartFromPrisma = async (email) => {
     try {
         const result = await prisma.user.upsert({
             where: { email },
@@ -22,14 +16,34 @@ export default async (event) => {
             update: {},
             create: { email }
         })
+        return result.cart
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getAllProducts = async () => {
+    try {
 
         const productsData = await fetch('https://dummyjson.com/products?limit=0')
         const { products } = await productsData.json()
+        return products
+    } catch (error) {
+        console.log(error)
+    }
+}
+export default async (event) => {
+    const { email } = await event.json()
+    console.log("getCartItems/", email)
+    if (!email) return Response.json({ message: "Email not provided" }, { status: 400 })
 
-        const populatedCartProducts = result.cart.map(({ itemId, quantity }) => ({
+    try {
+        const [cart, products] = await Promise.all([getCartFromPrisma(email), getAllProducts()])
+        const populatedCartProducts = cart.map(({ itemId, quantity }) => ({
             ...products.find(prod => prod.id === itemId),
             quantity
         }))
+
         return Response.json({
             products: populatedCartProducts,
             quantity: populatedCartProducts.length
