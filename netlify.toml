@@ -1,6 +1,9 @@
+[build]
+    functions = "serverless/"
 [dev]
     targetPort = 3000
 [functions]
+    directory = "serverless/"
     node_bundler = "esbuild"
 [[redirects]]
     from = "/*"

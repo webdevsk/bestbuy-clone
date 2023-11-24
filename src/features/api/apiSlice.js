@@ -82,7 +82,7 @@ const apiSlice = createApi({
         updateCartItem: builder.mutation({
             query: body => ({
                 url: `/updateCartItems`,
-                method: "POST",
+                method: "PATCH",
                 body
             }),
             onQueryStarted: optUpdateCart((args, draft) => {
@@ -93,7 +93,7 @@ const apiSlice = createApi({
 
         deleteCartItems: builder.mutation({
             query: body => ({
-                url: `/cart`,
+                url: `/removeCartItems`,
                 method: "DELETE",
                 body
             }),
