@@ -1,11 +1,27 @@
-import { Button, Drawer, Typography } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
 import { useState } from "react"
-import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import Cart from "./Cart"
 import BadgeCounter from "../common/BadgeCounter"
 import { Account } from "./Account"
 import { useGetCartItemsQuery } from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Dialog } from "@headlessui/react"
+
+const backdropVariants = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0, transition: { delay: 0.3 } },
+}
+const drawerVariants = {
+  visible: {
+    transform: "translate(0%)",
+    transition: { delay: 0.3, duration: 0.3, ease: "easeOut" },
+  },
+  hidden: {
+    transform: "translate(100%)",
+    transition: { duration: 0.2, ease: "easeIn" },
+  },
+}
 
 export const HeaderToolBar = () => {
   const { isAuthenticated, user } = useAuth0()
@@ -49,36 +65,44 @@ export const HeaderToolBar = () => {
               {cartData.quantity}
             </BadgeCounter>
 
-            <Typography
-              className="group-[.floating]/header:hidden lg:group-[.floating]/header:block"
-              variant="h6"
-            >
+            <h6 className="group-[.floating]/header:hidden lg:group-[.floating]/header:block">
               Cart
-            </Typography>
+            </h6>
           </Button>
         </div>
       </div>
-      <Drawer
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        placement="right"
-        className="flex h-[100dvh] flex-col overflow-y-auto text-body"
-        overlay={false}
-        size={450}
-      >
+      <AnimatePresence>
         {isOpen && (
-          <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
+          <Dialog
+            static
+            as={motion.div}
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+          >
+            <Dialog.Backdrop
+              as={motion.div}
+              aria-hidden="true"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-50 bg-black/30"
+            />
+
+            <Dialog.Panel
+              as={motion.div}
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="fixed right-0 top-0 z-[9999] flex h-screen w-[28rem] max-w-[100dvw] flex-col overflow-y-auto bg-white text-body"
+            >
+              <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
+            </Dialog.Panel>
+          </Dialog>
         )}
-      </Drawer>
-      {isOpen && (
-        <FloatingPortal>
-          <FloatingOverlay
-            // lockScroll
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 z-20 bg-black/30"
-          ></FloatingOverlay>
-        </FloatingPortal>
-      )}
+      </AnimatePresence>
     </>
   )
 }
