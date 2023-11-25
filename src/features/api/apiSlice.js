@@ -152,5 +152,14 @@ export const selectExclusiveProducts = createSelector(
     )
 )
 
-export const { useGetProductsQuery, useGetProductQuery, useGetCategoriesQuery, useAddToCartMutation, useGetCartItemsQuery, useUpdateCartItemMutation, useDeleteCartItemsMutation } = apiSlice
+export const {
+    useGetProductsQuery,
+    useGetProductQuery,
+    useGetCategoriesQuery,
+    useGetCartItemsQuery,
+    useAddToCartMutation,
+    useUpdateCartItemMutation,
+    useDeleteCartItemsMutation
+} = apiSlice
+
 export default apiSlice
