@@ -1,6 +1,7 @@
 import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
 import BurgerMenu from "./BurgerMenu"
+import { motion } from "framer-motion"
 
 const SearchBar = ({
   name,
@@ -17,7 +18,10 @@ const SearchBar = ({
 
   return (
     <>
-      <div className="relative flex h-10 flex-wrap justify-between lg:h-12">
+      <motion.div
+        layoutId="search-bar"
+        className="relative flex h-10 flex-wrap justify-between lg:h-12"
+      >
         <div className="flex w-10 items-center lg:hidden">
           {/* Burger menu */}
           <BurgerMenu />
@@ -104,7 +108,7 @@ const SearchBar = ({
         >
           <Typography variant="h6">Cancel</Typography>
         </button>
-      </div>
+      </motion.div>
     </>
   )
 }

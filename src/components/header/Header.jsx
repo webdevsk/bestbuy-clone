@@ -1,7 +1,7 @@
 import { Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import MainMenuContext from "../../contexts/MainMenuContext"
 import HeaderMenuContext from "../../contexts/HeaderMenuContext"
 import { Desktop, Mobile } from "../common/ReactResponsive"
@@ -15,26 +15,24 @@ import {
 } from "../../features/api/apiSlice"
 import { useMediaQuery } from "react-responsive"
 import {
+  AnimatePresence,
   motion,
-  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
-  useVelocity,
 } from "framer-motion"
 
 const Header = () => {
   const [isSticking, setIsSticking] = useState(false)
   const isDesktop = useMediaQuery({ minWidth: 960 })
+  const { scrollY } = useScroll()
 
   const headerRef = useRef(null)
   const stickyHeaderRef = useRef(null)
   const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 0
   const stickyHeaderHeight =
     stickyHeaderRef.current?.getBoundingClientRect().height ?? 0
-
-  const { scrollY } = useScroll()
 
   const scrollPastHeader = useTransform(() =>
     Math.max(scrollY.get() - headerHeight, 0),
@@ -45,6 +43,7 @@ const Header = () => {
     [0, stickyHeaderHeight],
     [-stickyHeaderHeight, 0],
   )
+
   const stickyHeaderSpringY = useSpring(stickyHeaderY, {
     mass: 0.3,
   })
@@ -110,12 +109,14 @@ const Header = () => {
                       <SiteLogo />
                     </Desktop>
                     <Mobile>
-                      {!isSticking && <SiteLogo />}
-                      {isSticking && (
-                        <div className="w-1 grow">
-                          <SearchBar />
-                        </div>
-                      )}
+                      <AnimatePresence>
+                        {!isSticking && <SiteLogo />}
+                        {isSticking && (
+                          <div className="w-1 grow">
+                            <SearchBar />
+                          </div>
+                        )}
+                      </AnimatePresence>
                     </Mobile>
                     <Desktop>
                       <div className="w-full lg:w-96">
@@ -135,13 +136,15 @@ const Header = () => {
           <section className="mb-0 bg-[#003da6] py-2 text-white">
             <div className="container">
               <Mobile>
-                {!isSticking ? (
-                  <div className="w-full lg:w-96">
-                    <SearchBar />
-                  </div>
-                ) : (
-                  <div className="h-10"></div>
-                )}
+                <AnimatePresence>
+                  {!isSticking ? (
+                    <div className="w-full lg:w-96">
+                      <SearchBar />
+                    </div>
+                  ) : (
+                    <div className="h-10"></div>
+                  )}
+                </AnimatePresence>
               </Mobile>
               <Desktop>
                 <MainMenuDesktop />
@@ -157,7 +160,12 @@ const Header = () => {
 export default Header
 
 const SiteLogo = () => (
-  <div className="-mt-2">
+  <motion.div
+    initial={{ x: "-100%" }}
+    animate={{ x: "0%" }}
+    transition={{ type: "spring", mass: 0.1 }}
+    className="-mt-2"
+  >
     <Link to="/" className="flex items-end gap-1">
       <img src="/images/logo.png" alt="" width="48" />
       <div className="-mb-1">
@@ -175,5 +183,5 @@ const SiteLogo = () => (
         </Typography>
       </div>
     </Link>
-  </div>
+  </motion.div>
 )
