@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { Popover } from "@headlessui/react"
 import { HigherOrderFloat, HigherOrderPanel } from "../common/HigherOrderFloat"
 import { useAuth0 } from "@auth0/auth0-react"
@@ -40,12 +39,7 @@ export const Account = () => {
                   d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <Typography
-                className={isSticking ? "hidden lg:block" : ""}
-                variant="h6"
-              >
-                Account
-              </Typography>
+              <h6 className={isSticking ? "hidden lg:block" : ""}>Account</h6>
             </>
           )}
           {isAuthenticated && user && (
@@ -54,14 +48,13 @@ export const Account = () => {
                 src={user.picture ?? "images/avatar-placeholder-human.svg"}
                 className="aspect-square w-8 rounded-full border-2 border-white transition-shadow group-hover:border-accent"
               />
-              <Typography
-                variant="h6"
+              <h6
                 className={`max-w-[7rem] overflow-hidden text-ellipsis whitespace-nowrap ${
                   isSticking ? "hidden lg:block " : ""
                 }`}
               >
                 {user.name ?? user.nickname}
-              </Typography>
+              </h6>
             </>
           )}
         </Popover.Button>
@@ -86,10 +79,10 @@ const AccountPanel = () => {
           <div className="aspect-square w-12 animate-pulse rounded-full bg-gray-400" />
 
           <div className="w-1 grow">
-            <Typography variant="h6"></Typography>
+            <h6></h6>
             <div className="mb-2 h-5 animate-pulse rounded-sm bg-gray-400"></div>
             <div className="h-5 animate-pulse rounded-sm bg-gray-400"></div>
-            <Typography className="break-all"></Typography>
+            <p className="break-all"></p>
           </div>
         </div>
       )}
@@ -102,33 +95,30 @@ const AccountPanel = () => {
           />
 
           <div className="w-1 grow">
-            <Typography variant="h6">
+            <h6>
               {user.name === user.email
                 ? user.nickname ?? user.name
                 : user.name ?? user.email}
-            </Typography>
-            <Typography className="break-all">{user.email}</Typography>
+            </h6>
+            <p className="break-all">{user.email}</p>
           </div>
         </div>
       )}
       {!isAuthenticated && (
-        <Typography variant="small" className="px-4 py-1">
+        <small className="px-4 py-1">
           <IoIosInformationCircleOutline className="inline" /> Login to store
           cart information.
-        </Typography>
+        </small>
       )}
       {!isAuthenticated && (
         <button
           className="block w-full px-4 py-3 transition-colors hover:bg-gray-100"
           onClick={() => loginWithPopup()}
         >
-          <Typography
-            variant="paragraph"
-            className="flex items-center gap-2 uppercase"
-          >
+          <p className="flex items-center gap-2 uppercase">
             <IoIosLogIn className="text-xl" />
             Log in
-          </Typography>
+          </p>
         </button>
       )}
       {isAuthenticated && (
@@ -138,13 +128,10 @@ const AccountPanel = () => {
             logout({ logoutParams: { returnTo: window.location.origin } })
           }
         >
-          <Typography
-            variant="paragraph"
-            className="flex items-center gap-2 uppercase"
-          >
+          <p className="flex items-center gap-2 uppercase">
             <IoIosLogOut className="text-xl" />
             Log Out
-          </Typography>
+          </p>
         </button>
       )}
     </div>

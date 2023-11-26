@@ -40,8 +40,7 @@
   h6 {
     @apply text-sm font-extrabold xl:text-base;
   }
-  p,
-  span {
+  p {
     @apply text-sm font-medium xl:text-base;
   }
   small {

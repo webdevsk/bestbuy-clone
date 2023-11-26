@@ -4,7 +4,6 @@ import {
   AccordionHeader,
   Button,
   Radio,
-  Typography,
 } from "@material-tailwind/react"
 import { memo, useState } from "react"
 import { Link } from "react-router-dom"
@@ -50,13 +49,13 @@ const Filters = memo(() => {
           className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("category")}
         >
-          <Typography variant="h6">Category</Typography>
+          <h6>Category</h6>
         </AccordionHeader>
         <AccordionBody className="capitalize text-body">
           <ul className="flex flex-col gap-2">
             {categories?.map((category, i) => (
               <Link to={"/" + category} key={i}>
-                <Typography className="hover:underline">{category}</Typography>
+                <p className="hover:underline">{category}</p>
               </Link>
             ))}
           </ul>
@@ -77,13 +76,13 @@ const Filters = memo(() => {
           className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("brands")}
         >
-          <Typography variant="h6">Brands</Typography>
+          <h6>Brands</h6>
         </AccordionHeader>
         <AccordionBody className=" text-body">
           <ul className="flex flex-col gap-2">
             {brands?.map((brand, i) => (
               <Link to={"/" + brand} key={i}>
-                <Typography className="hover:underline">{brand}</Typography>
+                <p className="hover:underline">{brand}</p>
               </Link>
             ))}
           </ul>
@@ -104,7 +103,7 @@ const Filters = memo(() => {
           className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("price")}
         >
-          <Typography variant="h6">Price</Typography>
+          <h6>Price</h6>
         </AccordionHeader>
         <AccordionBody className="text-body">
           <PriceModule />
@@ -125,7 +124,7 @@ const Filters = memo(() => {
           className="group border-none text-body hover:text-theme"
           onClick={() => handleOpenObj("rating")}
         >
-          <Typography variant="h6">Customer Rating</Typography>
+          <h6>Customer Rating</h6>
         </AccordionHeader>
         <AccordionBody className="text-body">
           <ul className="flex flex-col gap-y-2 p-2 pr-0">
@@ -226,7 +225,7 @@ const PriceModule = () => {
   return (
     <div className="flex flex-wrap items-center gap-2 px-2">
       <div className="w-1 grow">
-        <Typography>Min</Typography>
+        <p>Min</p>
         <input
           type="text"
           placeholder="$"
@@ -240,7 +239,7 @@ const PriceModule = () => {
       <div className="pt-5">-</div>
 
       <div className="w-1 grow">
-        <Typography>Max</Typography>
+        <p>Max</p>
         <input
           type="text"
           placeholder="$"
@@ -256,7 +255,7 @@ const PriceModule = () => {
         disabled={isDisabled}
         className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
       >
-        <Typography variant="h6">Apply Price Range</Typography>
+        <h6>Apply Price Range</h6>
       </Button>
     </div>
   )

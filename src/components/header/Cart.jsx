@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
 import { memo, useCallback, useMemo, useState } from "react"
@@ -75,7 +75,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
     <>
       <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4 shadow">
         <div className="flex items-center">
-          <Typography variant="h3">Cart</Typography>
+          <h3>Cart</h3>
           <BadgeCounter>{cartData.quantity ?? 0}</BadgeCounter>
         </div>
         <button onClick={closeDrawer} className="rounded-sm hover:bg-gray-100">
@@ -124,9 +124,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
               </Link>
               <div className="flex w-1 grow flex-col gap-2">
                 <div className="flex w-full items-center">
-                  <Typography variant="h6" className="">
-                    {item.title}
-                  </Typography>
+                  <h6 className="">{item.title}</h6>
 
                   <button
                     className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200"
@@ -138,9 +136,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
                   </button>
                 </div>
                 <div className="flex items-center justify-between gap-1">
-                  <Typography variant="paragraph" className="">
-                    {format(item.price)}
-                  </Typography>
+                  <p className="">{format(item.price)}</p>
 
                   <div className="flex items-center">
                     <CartItemMutator
@@ -151,9 +147,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
                   </div>
 
                   <div className="">
-                    <Typography variant="h4">
-                      {format(item.price * (item.quantity ?? 1))}
-                    </Typography>
+                    <h4>{format(item.price * (item.quantity ?? 1))}</h4>
                   </div>
                 </div>
               </div>
@@ -163,13 +157,13 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
       </div>
       <div className="sticky bottom-0 z-[1] mt-auto border-t bg-white p-4 shadow">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <Typography variant="h4">Total</Typography>
-          <Typography variant="h3">{format(totalPrice ?? 0)}</Typography>
+          <h4>Total</h4>
+          <h3>{format(totalPrice ?? 0)}</h3>
         </div>
         <Button
           className={`w-full bg-accent text-black shadow-sm transition hover:shadow-sm hover:contrast-125`}
         >
-          <Typography variant="h6">Checkout</Typography>
+          <h6>Checkout</h6>
         </Button>
       </div>
     </>
@@ -225,7 +219,7 @@ const CartItemMutator = ({ email, itemId, quantity }) => {
       >
         <IoIosRemove className="text-xl" />
       </button>
-      <Typography className="min-w-[2rem] text-center">{quantity}</Typography>
+      <p className="min-w-[2rem] text-center">{quantity}</p>
       <button
         disabled={quantity === 10}
         name="increment"

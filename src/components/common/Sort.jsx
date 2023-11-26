@@ -1,5 +1,4 @@
 import { Listbox } from "@headlessui/react"
-import { Typography } from "@material-tailwind/react"
 import { Fragment, useState } from "react"
 import { Float } from "@headlessui-float/react"
 import { GoTriangleDown } from "react-icons/go"
@@ -25,7 +24,7 @@ const Sort = () => {
     <Listbox value={selected} onChange={setSelected}>
       <Float as="div" className="relative" flip floatingAs={Fragment}>
         <Listbox.Button className="flex w-44 items-center justify-between rounded-sm border border-gray-500 bg-white px-4 py-3 text-left ring-4 ring-transparent ring-offset-2 ring-offset-transparent transition-shadow aria-expanded:ring-blue-100 aria-expanded:ring-offset-blue-900">
-          <Typography>{selected?.label}</Typography>
+          <p>{selected?.label}</p>
 
           <GoTriangleDown className="h-5 w-5 transition ui-open:rotate-180" />
         </Listbox.Button>
@@ -37,7 +36,7 @@ const Sort = () => {
               key={option.label}
               value={option}
             >
-              <Typography>{option.label}</Typography>
+              <p>{option.label}</p>
             </Listbox.Option>
           ))}
         </Listbox.Options>

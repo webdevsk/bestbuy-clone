@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { useState } from "react"
 import BurgerMenu from "./BurgerMenu"
 import { motion } from "framer-motion"
@@ -101,7 +100,7 @@ const SearchBar = (props) => {
           className="lg-hidden grid w-16 items-center justify-end"
           onClick={() => setFocus(false)}
         >
-          <Typography variant="h6">Cancel</Typography>
+          <h6>Cancel</h6>
         </button>
       </motion.div>
     </>

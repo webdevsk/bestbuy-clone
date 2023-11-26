@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { Popover, Transition } from "@headlessui/react"
 import { useState } from "react"
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi"
@@ -56,9 +55,7 @@ const BurgerMenuList = () => {
               className="pointer-events-auto flex w-full items-center justify-between bg-white p-3 text-start"
               onClick={() => setSubMenu(menu.id)}
             >
-              <Typography className="text-base capitalize">
-                {menu.label}
-              </Typography>
+              <p className="text-base capitalize">{menu.label}</p>
               {menu.items && menu.items.length !== 0 && (
                 <HiChevronRight className="h-5 w-5 align-middle text-gray-800" />
               )}
@@ -79,9 +76,7 @@ const BurgerMenuList = () => {
                   onClick={() => setSubMenu(null)}
                 >
                   <HiChevronLeft className="h-5 w-5 align-middle text-gray-800" />
-                  <Typography className="text-base font-bold text-theme">
-                    Back
-                  </Typography>
+                  <p className="text-base font-bold text-theme">Back</p>
                 </button>
                 {menu.items?.map((item) => (
                   <Link
@@ -89,9 +84,7 @@ const BurgerMenuList = () => {
                     key={item}
                     to={item}
                   >
-                    <Typography className="text-base capitalize">
-                      {item}
-                    </Typography>
+                    <p className="text-base capitalize">{item}</p>
                   </Link>
                 ))}
               </Transition>
@@ -103,7 +96,7 @@ const BurgerMenuList = () => {
         {headerMenu?.map((menu) => (
           <li key={menu.id}>
             <Link to="#" className="block p-3">
-              <Typography className="text-base">{menu.label}</Typography>
+              <p className="text-base">{menu.label}</p>
             </Link>
           </li>
         ))}

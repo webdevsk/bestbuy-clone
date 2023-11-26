@@ -112,10 +112,7 @@ const PinnedProducts = () => {
                     >
                       <Product.Image />
                       <Product.Description>
-                        <Product.Label
-                          variant="small"
-                          className="font-serif font-medium"
-                        />
+                        <Product.Label className="font-serif text-sm font-medium" />
                         <Product.Rating />
                         <Product.Price />
                         {/* <Product.Button /> */}

@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react"
-import { Button, Typography } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
 import {
   createContext,
   forwardRef,
@@ -79,14 +79,7 @@ Product.Description = memo(ProductDescription)
 //Product Label component
 const ProductLabel = (props) => {
   const product = useProductContext()
-  return (
-    <Typography
-      className={`${props.className ?? ""} `}
-      variant={props.variant ?? "paragraph"}
-    >
-      {product?.title}
-    </Typography>
-  )
+  return <p className={`${props.className ?? ""} `}>{product?.title}</p>
 }
 Product.Label = ProductLabel
 
@@ -115,13 +108,12 @@ const ProductPrice = (props) => {
   return (
     <div className="flex flex-col justify-between">
       {props.withDiscount && product?.discountPercentage > 0 && (
-        <Typography className="currency line-through" variant="h6">
+        <h6 className="currency line-through">
           {format(product?.price / (1 - product?.discountPercentage / 100))}
-        </Typography>
+        </h6>
       )}
 
-      <Typography
-        variant="h4"
+      <h4
         className={`currency ${
           product?.discountPercentage > 0 &&
           props.withDiscount &&
@@ -129,7 +121,7 @@ const ProductPrice = (props) => {
         }`}
       >
         {format(product?.price)}
-      </Typography>
+      </h4>
     </div>
   )
 }
@@ -166,7 +158,7 @@ const ProductButton = forwardRef((props, ref) => {
       onClick={handleAddToCart}
       disabled={isLoading}
     >
-      <Typography variant="h6">Add to Cart</Typography>
+      <h6>Add to Cart</h6>
     </Button>
   )
 })

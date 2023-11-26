@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
 import { useRef, useState } from "react"
@@ -13,7 +12,6 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/api/apiSlice"
-import { useMediaQuery } from "react-responsive"
 import {
   AnimatePresence,
   motion,
@@ -26,7 +24,6 @@ import StickyHeaderContext from "../../contexts/StickyHeaderContext"
 
 const Header = () => {
   const [isSticking, setIsSticking] = useState(false)
-  const isDesktop = useMediaQuery({ minWidth: 960 })
   const { scrollY } = useScroll()
 
   const headerRef = useRef(null)
@@ -136,9 +133,11 @@ const Header = () => {
                 </div>
               </div>
             </section>
+
             <a href="#pinned-product" className="skip">
               Skip to main content
             </a>
+
             <section className="mb-0 bg-[#003da6] py-2 text-white">
               <div className="container">
                 <Mobile>
@@ -176,18 +175,8 @@ const SiteLogo = () => (
     <Link to="/" className="flex items-end gap-1">
       <img src="/images/logo.png" alt="" width="48" />
       <div className="-mb-1">
-        <Typography
-          variant="h3"
-          className="font-serif leading-none lg:leading-none"
-        >
-          Best
-        </Typography>
-        <Typography
-          variant="h3"
-          className="font-serif leading-none lg:leading-none"
-        >
-          Buy
-        </Typography>
+        <h3 className="font-serif leading-none lg:leading-none">Best</h3>
+        <h3 className="font-serif leading-none lg:leading-none">Buy</h3>
       </div>
     </Link>
   </motion.div>

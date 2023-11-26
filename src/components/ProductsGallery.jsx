@@ -1,6 +1,6 @@
 import Filters from "./common/Filters"
 //Replace these with async api call functions
-import { Button, Drawer, Typography } from "@material-tailwind/react"
+import { Button, Drawer } from "@material-tailwind/react"
 import Sort from "./common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useState } from "react"
@@ -34,7 +34,7 @@ const ProductsGallery = () => {
           <div className="w-1 grow xl:pl-6 xl:pt-6">
             <div className="flex justify-between rounded-md bg-gray-100 p-4 xl:justify-end">
               <div className="flex items-center gap-2">
-                <Typography className="hidden sm:block">Sort</Typography>
+                <p className="hidden sm:block">Sort</p>
 
                 <Sort />
               </div>
@@ -102,7 +102,7 @@ const FilterForMobile = () => {
         className="flex items-center gap-2 rounded-sm border border-theme bg-white px-9 py-3 text-theme ring-4 ring-transparent ring-offset-4 ring-offset-transparent transition hover:bg-gray-200 hover:ring-offset-blue-100"
       >
         <IoOptionsOutline className="h-5 w-5" />
-        <Typography variant="h6">Filters</Typography>
+        <h6>Filters</h6>
       </button>
       <Drawer
         placement="bottom"
@@ -116,7 +116,7 @@ const FilterForMobile = () => {
       >
         <div className="flex h-full flex-col divide-y overflow-x-hidden overflow-y-scroll [&>*]:px-4">
           <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl bg-white pb-4">
-            <Typography variant="h4">Filters</Typography>
+            <h4>Filters</h4>
             <button
               onClick={() => setIsOpen(false)}
               className="rounded-sm hover:bg-gray-100"
@@ -130,7 +130,7 @@ const FilterForMobile = () => {
               size="lg"
               className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
             >
-              <Typography variant="h6">Apply</Typography>
+              <h6>Apply</h6>
             </Button>
           </div>
         </div>

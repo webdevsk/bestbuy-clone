@@ -1,4 +1,3 @@
-import { Typography } from "@material-tailwind/react"
 import { Link } from "react-router-dom"
 import { Popover } from "@headlessui/react"
 import { HiChevronDown } from "react-icons/hi"
@@ -13,9 +12,7 @@ export const MainMenuDesktop = () => {
         <Popover className="relative" key={menu.id}>
           <HigherOrderFloat placement="bottom-start">
             <Popover.Button className="group flex items-center gap-1 hover:text-accent focus-visible:outline-none">
-              <Typography variant="h6" className="capitalize">
-                {menu.label}
-              </Typography>
+              <h6 className="capitalize">{menu.label}</h6>
               <HiChevronDown
                 className={`h-5 w-5 transition ui-open:rotate-180`}
               />
@@ -31,9 +28,7 @@ export const MainMenuDesktop = () => {
                     to={item}
                     className="block px-3 py-2 transition-colors hover:bg-gray-200 hover:text-theme"
                   >
-                    <Typography className="text-base capitalize">
-                      {item}
-                    </Typography>
+                    <p className="text-base capitalize">{item}</p>
                   </Link>
                 </li>
               ))}

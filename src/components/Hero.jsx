@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react"
+import { Button } from "@material-tailwind/react"
 import { Swiper, SwiperSlide, useSwiperSlide } from "swiper/react"
 
 import "swiper/css/pagination"
@@ -40,19 +40,13 @@ const CallToAction1 = () => {
       >
         <div className="grid grid-cols-1 items-center gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
-            <Typography
-              variant="h2"
-              className="leading-0 text-center font-serif font-bold text-theme xl:text-left"
-            >
+            <h2 className="leading-0 text-center font-serif font-bold text-theme xl:text-left">
               Boxing Day
-            </Typography>
+            </h2>
 
-            <Typography
-              variant="h2"
-              className="leading-0 text-center font-serif font-bold xl:text-left"
-            >
+            <h2 className="leading-0 text-center font-serif font-bold xl:text-left">
               in Summer
-            </Typography>
+            </h2>
           </div>
 
           <div className="col-start-1 grid place-content-center xl:col-start-2 xl:row-span-3">
@@ -63,13 +57,10 @@ const CallToAction1 = () => {
           </div>
 
           <div className="col-start-1">
-            <Typography
-              variant="h2"
-              className="leading-0 text-center font-serif xl:text-left"
-            >
+            <h2 className="leading-0 text-center font-serif xl:text-left">
               Get hot summer deals on select computers, tablets, accessories,
               and more.
-            </Typography>
+            </h2>
           </div>
           <div className="col-start-1 text-center xl:text-left">
             <Button size="lg" className="bg-theme">
@@ -94,12 +85,9 @@ const CallToAction2 = () => {
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 xl:grid-cols-2 xl:gap-y-4">
           <div className="col-start-1">
-            <Typography
-              variant="h2"
-              className="leading-0 text-center font-serif font-bold text-white xl:text-left"
-            >
+            <h2 className="leading-0 text-center font-serif font-bold text-white xl:text-left">
               Back to <span className="text-accent">School</span>
-            </Typography>
+            </h2>
           </div>
 
           <div className="col-start-1 grid place-content-center xl:col-start-2 xl:row-span-3">
@@ -110,18 +98,12 @@ const CallToAction2 = () => {
           </div>
 
           <div className="col-start-1">
-            <Typography
-              variant="h2"
-              className="leading-0 text-center font-serif text-white xl:text-left"
-            >
+            <h2 className="leading-0 text-center font-serif text-white xl:text-left">
               Save big on select computers and productivity essentials.
-            </Typography>
-            <Typography
-              className="mt-6 text-center font-serif text-white xl:text-left"
-              variant="h6"
-            >
+            </h2>
+            <h6 className="mt-6 text-center font-serif text-white xl:text-left">
               Pack the latest gear and start your year off right.
-            </Typography>
+            </h6>
           </div>
           <div className="col-start-1 text-center xl:text-left">
             <Button className="bg-white text-theme" size="lg">
