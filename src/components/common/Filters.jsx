@@ -3,9 +3,9 @@ import {
   AccordionBody,
   AccordionHeader,
   Button,
-  Radio,
 } from "@material-tailwind/react"
 import { memo, useState } from "react"
+import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
 import { Link } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
@@ -15,6 +15,8 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/api/apiSlice"
+import { RadioGroup } from "@headlessui/react"
+import { ratingFilters } from "../../assets/filtersDB"
 
 const Filters = memo(() => {
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
@@ -127,66 +129,7 @@ const Filters = memo(() => {
           <h6>Customer Rating</h6>
         </AccordionHeader>
         <AccordionBody className="text-body">
-          <ul className="flex flex-col gap-y-2 p-2 pr-0">
-            <Radio
-              id="showAll"
-              name="rating"
-              ripple={false}
-              color="theme"
-              className=""
-              defaultChecked
-              label="Show All"
-              labelProps={{ className: "hover:underline" }}
-            ></Radio>
-
-            <Radio
-              id="5stars"
-              name="rating"
-              ripple={false}
-              color="theme"
-              label={
-                <div className="inline-flex items-center gap-1 hover:underline">
-                  <RatingBar rating={5} />
-                  <span>5 Stars</span>
-                </div>
-              }
-            ></Radio>
-
-            <Radio
-              id="4stars"
-              name="rating"
-              ripple={false}
-              color="theme"
-              label={
-                <div className="inline-flex items-center gap-1 hover:underline">
-                  <RatingBar rating={4} />
-                  <span>4 Stars & up</span>
-                </div>
-              }
-            ></Radio>
-
-            <Radio
-              id="3stars"
-              name="rating"
-              ripple={false}
-              color="theme"
-              label={
-                <div className="inline-flex items-center gap-1 hover:underline">
-                  <RatingBar rating={3} />
-                  <span>3 Stars & up</span>
-                </div>
-              }
-            ></Radio>
-
-            <Radio
-              id="below-3-stars"
-              name="rating"
-              ripple={false}
-              color="theme"
-              label="3 Stars & below"
-              labelProps={{ className: "hover:underline" }}
-            ></Radio>
-          </ul>
+          <RatingModule className="p-2 pr-0" />
         </AccordionBody>
       </Accordion>
     </>
@@ -258,5 +201,51 @@ const PriceModule = () => {
         <h6>Apply Price Range</h6>
       </Button>
     </div>
+  )
+}
+
+const RatingModule = (props) => {
+  const { className, ...rest } = props
+  const [rating, setRating] = useState(ratingFilters[0].value)
+
+  const radioClasses = (checked) =>
+    `${
+      checked
+        ? "opacity-100 drop-shadow-xl"
+        : "opacity-30 group-hover:opacity-50"
+    } text-2xl text-theme`
+
+  return (
+    <RadioGroup
+      name="rated"
+      alue={rating}
+      onChange={setRating}
+      className={`flex flex-col gap-2 ${className ?? ""}`}
+      {...rest}
+    >
+      <RadioGroup.Label className="hidden">Customer Rating</RadioGroup.Label>
+      {ratingFilters?.map((option) => (
+        <RadioGroup.Option
+          key={option.id}
+          value={option.value}
+          className={`group
+        inline-flex w-max cursor-pointer items-center gap-1 px-1 leading-none`}
+        >
+          {({ checked }) => (
+            <>
+              {checked ? (
+                <MdRadioButtonChecked className={radioClasses(checked)} />
+              ) : (
+                <MdRadioButtonUnchecked className={radioClasses(checked)} />
+              )}
+              {!!option.value && <RatingBar rating={option.value} />}
+              <small className="text-sm font-normal group-hover:underline">
+                {option.label}
+              </small>
+            </>
+          )}
+        </RadioGroup.Option>
+      ))}
+    </RadioGroup>
   )
 }
