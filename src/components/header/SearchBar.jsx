@@ -3,14 +3,9 @@ import { useState } from "react"
 import BurgerMenu from "./BurgerMenu"
 import { motion } from "framer-motion"
 
-const SearchBar = ({
-  name,
-  id,
-  containerClass,
-  className,
-  style,
-  inputProps,
-}) => {
+const SearchBar = (props) => {
+  const { name, id, containerClass, className, style, inputProps, ...rest } =
+    props
   const [focus, setFocus] = useState(false)
   const [input, setInput] = useState("")
 
@@ -19,7 +14,7 @@ const SearchBar = ({
   return (
     <>
       <motion.div
-        layoutId="search-bar"
+        {...rest}
         className="relative flex h-10 flex-wrap justify-between lg:h-12"
       >
         <div className="flex w-10 items-center lg:hidden">

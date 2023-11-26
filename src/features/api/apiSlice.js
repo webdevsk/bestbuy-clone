@@ -26,7 +26,7 @@ const apiSlice = createApi({
         getProducts: builder.query({
 
             query: (params = { limit: 0 }) => ({
-                url: `https://dummyjson.com/products`,
+                url: `https://dummyjsn.com/products`,
                 params
             }),
 

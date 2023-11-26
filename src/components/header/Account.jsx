@@ -7,10 +7,11 @@ import {
   IoIosLogIn,
   IoIosLogOut,
 } from "react-icons/io"
+import { useStickyHeaderContext } from "../../hooks/useStickyHeaderContext"
 
 export const Account = () => {
   const { user, isAuthenticated, isLoading } = useAuth0()
-  // console.log(user)
+  const isSticking = useStickyHeaderContext()
   return (
     <Popover className="relative">
       <HigherOrderFloat offset={16} shift={{ crossAxis: true }}>
@@ -40,7 +41,7 @@ export const Account = () => {
                 />
               </svg>
               <Typography
-                className="group-[.floating]/header:hidden lg:group-[.floating]/header:block"
+                className={isSticking ? "hidden lg:block" : ""}
                 variant="h6"
               >
                 Account
@@ -55,7 +56,9 @@ export const Account = () => {
               />
               <Typography
                 variant="h6"
-                className="max-w-[7rem] overflow-hidden text-ellipsis whitespace-nowrap group-[.floating]/header:hidden lg:group-[.floating]/header:block"
+                className={`max-w-[7rem] overflow-hidden text-ellipsis whitespace-nowrap ${
+                  isSticking ? "hidden lg:block " : ""
+                }`}
               >
                 {user.name ?? user.nickname}
               </Typography>

@@ -7,6 +7,7 @@ import { useGetCartItemsQuery } from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Dialog } from "@headlessui/react"
+import { useStickyHeaderContext } from "../../hooks/useStickyHeaderContext"
 
 const backdropVariants = {
   visible: { opacity: 1 },
@@ -24,6 +25,7 @@ const drawerVariants = {
 }
 
 export const HeaderToolBar = () => {
+  const isSticking = useStickyHeaderContext()
   const { isAuthenticated, user } = useAuth0()
   const [isOpen, setIsOpen] = useState(false)
   const {
@@ -36,7 +38,11 @@ export const HeaderToolBar = () => {
   return (
     <>
       <div className="ms-auto">
-        <div className="flex flex-wrap gap-4 group-[.floating]/header:gap-2 lg:group-[.floating]/header:gap-4">
+        <div
+          className={`flex flex-wrap gap-4 ${
+            isSticking ? "gap-2 lg:gap-4" : ""
+          }`}
+        >
           <Account />
           <Button
             variant="text"
@@ -65,9 +71,7 @@ export const HeaderToolBar = () => {
               {cartData.quantity}
             </BadgeCounter>
 
-            <h6 className="group-[.floating]/header:hidden lg:group-[.floating]/header:block">
-              Cart
-            </h6>
+            <h6 className={isSticking ? "hidden lg:block" : ""}>Cart</h6>
           </Button>
         </div>
       </div>

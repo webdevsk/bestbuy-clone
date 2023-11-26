@@ -22,6 +22,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion"
+import StickyHeaderContext from "../../contexts/StickyHeaderContext"
 
 const Header = () => {
   const [isSticking, setIsSticking] = useState(false)
@@ -85,73 +86,79 @@ const Header = () => {
   return (
     <MainMenuContext.Provider value={mainMenu}>
       <HeaderMenuContext.Provider value={headerMenu}>
-        <div id="header" ref={headerRef} className="group/header relative z-50">
-          <section className="mb-0 bg-theme text-white lg:pb-2 lg:pt-4">
-            <div className="flex flex-col">
-              <TopMiniMenuDesktop />
-              {/* placeholder */}
-              <div className="relative h-16">
-                <motion.div
-                  ref={stickyHeaderRef}
-                  style={{
-                    position: isSticking ? "fixed" : "absolute",
-                    top: 0,
-                    y: isSticking ? stickyHeaderSpringY : 0,
-                  }}
-                  className={`inset-x-0 z-[9999] grid h-16 place-items-center shadow-lg transition-shadow ${
-                    isSticking
-                      ? "bg-theme shadow-black/30 duration-1000"
-                      : "shadow-transparent duration-0"
-                  }`}
-                >
-                  <div className="container flex flex-wrap items-center gap-x-4">
-                    <Desktop>
-                      <SiteLogo />
-                    </Desktop>
-                    <Mobile>
-                      <AnimatePresence>
-                        {!isSticking && <SiteLogo />}
-                        {isSticking && (
-                          <div className="w-1 grow">
-                            <SearchBar />
-                          </div>
-                        )}
-                      </AnimatePresence>
-                    </Mobile>
-                    <Desktop>
-                      <div className="w-full lg:w-96">
-                        <SearchBar />
-                      </div>
-                    </Desktop>
+        <StickyHeaderContext.Provider value={isSticking}>
+          <div
+            id="header"
+            ref={headerRef}
+            className="group/header relative z-50"
+          >
+            <section className="mb-0 bg-theme text-white lg:pb-2 lg:pt-4">
+              <div className="flex flex-col">
+                <TopMiniMenuDesktop />
+                {/* placeholder */}
+                <div className="relative h-16">
+                  <motion.div
+                    ref={stickyHeaderRef}
+                    style={{
+                      position: isSticking ? "fixed" : "absolute",
+                      top: 0,
+                      y: isSticking ? stickyHeaderSpringY : 0,
+                    }}
+                    className={`inset-x-0 z-[9999] grid h-16 place-items-center shadow-lg transition-shadow ${
+                      isSticking
+                        ? "bg-theme shadow-black/30 duration-1000"
+                        : "shadow-transparent duration-0"
+                    }`}
+                  >
+                    <div className="container flex flex-wrap items-center gap-x-4">
+                      <Desktop>
+                        <SiteLogo />
+                      </Desktop>
+                      <Mobile>
+                        <AnimatePresence>
+                          {!isSticking && <SiteLogo />}
+                          {isSticking && (
+                            <div className="w-1 grow">
+                              <SearchBar layoutId="search-bar" />
+                            </div>
+                          )}
+                        </AnimatePresence>
+                      </Mobile>
+                      <Desktop>
+                        <div className="w-full lg:w-96">
+                          <SearchBar />
+                        </div>
+                      </Desktop>
 
-                    <HeaderToolBar />
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </section>
-          <a href="#pinned-product" className="skip">
-            Skip to main content
-          </a>
-          <section className="mb-0 bg-[#003da6] py-2 text-white">
-            <div className="container">
-              <Mobile>
-                <AnimatePresence>
-                  {!isSticking ? (
-                    <div className="w-full lg:w-96">
-                      <SearchBar />
+                      <HeaderToolBar />
                     </div>
-                  ) : (
-                    <div className="h-10"></div>
-                  )}
-                </AnimatePresence>
-              </Mobile>
-              <Desktop>
-                <MainMenuDesktop />
-              </Desktop>
-            </div>
-          </section>
-        </div>
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+            <a href="#pinned-product" className="skip">
+              Skip to main content
+            </a>
+            <section className="mb-0 bg-[#003da6] py-2 text-white">
+              <div className="container">
+                <Mobile>
+                  <AnimatePresence>
+                    {!isSticking ? (
+                      <div className="w-full lg:w-96">
+                        <SearchBar layoutId="search-bar" />
+                      </div>
+                    ) : (
+                      <div className="h-10"></div>
+                    )}
+                  </AnimatePresence>
+                </Mobile>
+                <Desktop>
+                  <MainMenuDesktop />
+                </Desktop>
+              </div>
+            </section>
+          </div>
+        </StickyHeaderContext.Provider>
       </HeaderMenuContext.Provider>
     </MainMenuContext.Provider>
   )
