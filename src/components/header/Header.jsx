@@ -14,57 +14,43 @@ import {
   selectProductCategories,
 } from "../../features/api/apiSlice"
 import { useMediaQuery } from "react-responsive"
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from "framer-motion"
 
 const Header = () => {
-  const headerRef = useRef(null)
-  const stickyHeaderRef = useRef(null)
   const [isSticking, setIsSticking] = useState(false)
-
   const isDesktop = useMediaQuery({ minWidth: 960 })
 
-  useEffect(() => {
-    // Amount of pixels after the floating should start
-    const distance = headerRef.current.getBoundingClientRect().height
+  const headerRef = useRef(null)
+  const stickyHeaderRef = useRef(null)
+  const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 0
+  const stickyHeaderHeight =
+    stickyHeaderRef.current?.getBoundingClientRect().height ?? 0
 
-    const handleScroll = () => {
-      const height = stickyHeaderRef.current.getBoundingClientRect().height
-      //if header is visible
-      const isFloating = distance < scrollY
+  const { scrollY } = useScroll()
 
-      //Calculation:
-      // Initially hide itself completely. As in translateY: -100% or bottom: 100%
-      // headerOffset is the amount scrolled minus the main header height. So initially it is 0 after scrolling past header container
-      // Keep increasing translateY as the scrollY-distance value increases. Stops at translateY: 0%. Now the sticky header is completely visible
-      const headerOffset = scrollY - distance
-      const offset = -height + headerOffset
+  const scrollPastHeader = useTransform(() =>
+    Math.max(scrollY.get() - headerHeight, 0),
+  )
 
-      setIsSticking(isFloating)
-      headerRef.current.classList.toggle("floating", isFloating)
-      stickyHeaderRef.current.style.position = isFloating ? "fixed" : "absolute"
-      stickyHeaderRef.current.style.top = `${
-        isFloating && offset < 0 ? offset : 0
-      }px`
-
-      // huge impact on performance
-      // document.documentElement.style.setProperty(
-      //   "--sticky-header-visible",
-      //   (!isFloating
-      //     ? 0
-      //     : headerOffset > height
-      //     ? height
-      //     : scrollY - distance) + "px",
-      // )
-
-      document.documentElement.classList.toggle("sticking", isFloating)
-      document.documentElement.style.setProperty(
-        "--sticky-header-height",
-        (isFloating ? height : 0) + "px",
-      )
-    }
-
-    addEventListener("scroll", handleScroll)
-    return () => removeEventListener("scroll", handleScroll)
-  }, [stickyHeaderRef, headerRef, isDesktop])
+  const stickyHeaderY = useTransform(
+    scrollPastHeader,
+    [0, stickyHeaderHeight],
+    [-stickyHeaderHeight, 0],
+  )
+  const stickyHeaderSpringY = useSpring(stickyHeaderY, {
+    mass: 0.3,
+  })
+  useMotionValueEvent(scrollPastHeader, "change", (latest) => {
+    setIsSticking(latest > 0)
+  })
 
   const mainMenu = [
     {
@@ -106,9 +92,14 @@ const Header = () => {
               <TopMiniMenuDesktop />
               {/* placeholder */}
               <div className="relative h-16">
-                <div
+                <motion.div
                   ref={stickyHeaderRef}
-                  className={`absolute inset-x-0 z-[9999] grid h-16 place-items-center shadow-lg transition-shadow ${
+                  style={{
+                    position: isSticking ? "fixed" : "absolute",
+                    top: 0,
+                    y: isSticking ? stickyHeaderSpringY : 0,
+                  }}
+                  className={`inset-x-0 z-[9999] grid h-16 place-items-center shadow-lg transition-shadow ${
                     isSticking
                       ? "bg-theme shadow-black/30 duration-1000"
                       : "shadow-transparent duration-0"
@@ -134,7 +125,7 @@ const Header = () => {
 
                     <HeaderToolBar />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </section>
