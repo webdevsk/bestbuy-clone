@@ -190,7 +190,7 @@ const RatingModule = (props) => {
   return (
     <RadioGroup
       name="rated"
-      alue={rating}
+      value={rating}
       onChange={setRating}
       className={`flex flex-col gap-2 ${className ?? ""}`}
       {...rest}
@@ -227,6 +227,5 @@ const HiOrderMdKeyboardArrowDown = (props) => (
     className={`${
       props.active ? "rotate-180" : ""
     } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-    {...props}
   />
 )
