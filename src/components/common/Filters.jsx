@@ -35,17 +35,18 @@ const Filters = memo(() => {
       [key]: key in openObj ? !openObj[key] : true,
     }))
 
+  const filterTypes = [
+    {
+      label: "Category",
+      value: "category",
+    },
+  ]
+
   return (
     <>
       <Accordion
         open={isOpen("category")}
-        icon={
-          <MdKeyboardArrowDown
-            className={`${
-              isOpen("category") && "rotate-180"
-            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-          />
-        }
+        icon={<HiOrderMdKeyboardArrowDown active={isOpen("category")} />}
       >
         <AccordionHeader
           className="group border-none text-body hover:text-theme"
@@ -66,13 +67,7 @@ const Filters = memo(() => {
 
       <Accordion
         open={isOpen("brands")}
-        icon={
-          <MdKeyboardArrowDown
-            className={`${
-              isOpen("brands") && "rotate-180"
-            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-          />
-        }
+        icon={<HiOrderMdKeyboardArrowDown active={isOpen("brands")} />}
       >
         <AccordionHeader
           className="group border-none text-body hover:text-theme"
@@ -93,13 +88,7 @@ const Filters = memo(() => {
 
       <Accordion
         open={isOpen("price")}
-        icon={
-          <MdKeyboardArrowDown
-            className={`${
-              isOpen("price") && "rotate-180"
-            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-          />
-        }
+        icon={<HiOrderMdKeyboardArrowDown active={isOpen("price")} />}
       >
         <AccordionHeader
           className="group border-none text-body hover:text-theme"
@@ -114,13 +103,7 @@ const Filters = memo(() => {
 
       <Accordion
         open={isOpen("rating")}
-        icon={
-          <MdKeyboardArrowDown
-            className={`${
-              isOpen("rating") && "rotate-180"
-            } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-          />
-        }
+        icon={<HiOrderMdKeyboardArrowDown active={isOpen("rating")} />}
       >
         <AccordionHeader
           className="group border-none text-body hover:text-theme"
@@ -249,3 +232,12 @@ const RatingModule = (props) => {
     </RadioGroup>
   )
 }
+
+const HiOrderMdKeyboardArrowDown = (props) => (
+  <MdKeyboardArrowDown
+    className={`${
+      props.active ? "rotate-180" : ""
+    } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
+    {...props}
+  />
+)
