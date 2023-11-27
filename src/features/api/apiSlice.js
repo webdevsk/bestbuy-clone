@@ -98,8 +98,8 @@ const apiSlice = createApi({
                 body
             }),
             onQueryStarted: optUpdateCart((args, draft) => {
-                draft.products = draft.products.filter(prod => !(args.itemIds.some(id => id === prod.id)))
-                draft.quantity -= args.itemIds.length
+                draft.products = args.deleteAll ? [] : draft.products.filter(prod => !(args.itemIds.some(id => id === prod.id)))
+                draft.quantity = args.deleteAll ? 0 : draft.quantity - args.itemIds.length
             })
         }),
     })

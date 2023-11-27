@@ -9,22 +9,14 @@ import {
   useUpdateCartItemMutation,
 } from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
-import {
-  IoCheckmarkCircleSharp,
-  IoCloseSharp,
-  IoTrashSharp,
-} from "react-icons/io5"
+import { IoCheckmarkCircleSharp, IoTrashSharp } from "react-icons/io5"
 import { Switch } from "@headlessui/react"
 
 const Cart = memo(({ isOpen, setIsOpen }) => {
   const [showSelection, setShowSelection] = useState(false)
-  // mark and delete to be implemented later
   const [selected, setSelected] = useState([])
-
-  const locale = "en-US"
-  const currency = "USD"
+  const [deleteCartItems] = useDeleteCartItemsMutation()
   const { isAuthenticated, user } = useAuth0()
-
   const {
     isLoading,
     isError,
@@ -36,28 +28,25 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
   } = useGetCartItemsQuery(user?.email, {
     skip: !isAuthenticated || !user,
   })
-  // Drawer from MaterialTailwind renders even when state is false
-  // add !isOpen to the skip condition if you want to delay fetch until the drawer is actually open
 
-  const [deleteCartItems] = useDeleteCartItemsMutation()
+  const locale = "en-US"
+  const currency = "USD"
 
-  const handleDelete = async ({ currentTarget: t }) => {
-    const value = t.value ? parseInt(t.value) : null
+  async function handleDelete({ currentTarget: t }) {
+    setSelected([])
     const itemIds = []
-    if (t.name === "deleteOne") itemIds.push(t.value)
+    if (t.name === "deleteOne" && !!t.value) itemIds.push(parseInt(t.value))
+    if (t.name === "deleteMany") itemIds.push(...selected)
+    if (t.name !== "deleteAll" && !itemIds.length) return
+    if (t.name === "deleteAll" && !cartData.products.length) return
     try {
       await deleteCartItems({
         email: user.email,
-        itemIds:
-          t.name === "deleteOne"
-            ? [value]
-            : t.name === "deleteMany"
-            ? selected
-            : [],
+        itemIds: itemIds,
         deleteAll: t.name === "deleteAll",
       }).unwrap()
     } catch (error) {
-      console.error("Error deleting cart items.", error)
+      console.error(error)
     }
   }
 
@@ -195,8 +184,8 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                       <IoCheckmarkCircleSharp
                         className={`clip-rounded rounded-full bg-white text-xl ring-2 ring-gray-400 ${
                           selected.includes(item.id)
-                            ? "text-error"
-                            : "text-transparent hover:opacity-50"
+                            ? "text-error ring-error"
+                            : "text-transparent hover:ring-error"
                         }`}
                       />
                     </Switch>
@@ -248,11 +237,18 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
         {showSelection && (
           <div className="flex gap-2">
             <Button
+              title="Remove selected items from Cart"
+              name="deleteMany"
+              disabled={!selected.length}
+              onClick={handleDelete}
               className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
             >
               <h6>Remove Selected</h6>
             </Button>
             <Button
+              title="Remove all items from Cart"
+              name="deleteAll"
+              onClick={handleDelete}
               className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
             >
               <h6>Remove All</h6>

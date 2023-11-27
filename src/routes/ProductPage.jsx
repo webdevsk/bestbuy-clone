@@ -12,7 +12,6 @@ const ProductPage = () => {
       images: [],
     },
   } = useGetProductQuery(id)
-  console.log(product)
 
   return (
     <>
