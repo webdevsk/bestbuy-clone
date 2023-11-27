@@ -35,92 +35,81 @@ const Filters = memo(() => {
       [key]: key in openObj ? !openObj[key] : true,
     }))
 
-  const filterTypes = [
-    {
-      label: "Category",
-      value: "category",
-    },
-  ]
-
   return (
     <>
-      <Accordion
-        open={isOpen("category")}
-        icon={<HiOrderMdKeyboardArrowDown active={isOpen("category")} />}
+      <HiOrderAccordion
+        value="category"
+        isOpen={isOpen}
+        handleOpenObj={handleOpenObj}
       >
-        <AccordionHeader
-          className="group border-none text-body hover:text-theme"
-          onClick={() => handleOpenObj("category")}
-        >
-          <h6>Category</h6>
-        </AccordionHeader>
-        <AccordionBody className="capitalize text-body">
-          <ul className="flex flex-col gap-2">
-            {categories?.map((category, i) => (
-              <Link to={"/" + category} key={i}>
-                <p className="hover:underline">{category}</p>
-              </Link>
-            ))}
-          </ul>
-        </AccordionBody>
-      </Accordion>
+        <ul className="flex flex-col gap-2">
+          {categories?.map((category, i) => (
+            <Link to={"/" + category} key={i}>
+              <p className="hover:underline">{category}</p>
+            </Link>
+          ))}
+        </ul>
+      </HiOrderAccordion>
 
-      <Accordion
-        open={isOpen("brands")}
-        icon={<HiOrderMdKeyboardArrowDown active={isOpen("brands")} />}
+      <HiOrderAccordion
+        value="brands"
+        isOpen={isOpen}
+        handleOpenObj={handleOpenObj}
       >
-        <AccordionHeader
-          className="group border-none text-body hover:text-theme"
-          onClick={() => handleOpenObj("brands")}
-        >
-          <h6>Brands</h6>
-        </AccordionHeader>
-        <AccordionBody className=" text-body">
-          <ul className="flex flex-col gap-2">
-            {brands?.map((brand, i) => (
-              <Link to={"/" + brand} key={i}>
-                <p className="hover:underline">{brand}</p>
-              </Link>
-            ))}
-          </ul>
-        </AccordionBody>
-      </Accordion>
+        <ul className="flex flex-col gap-2">
+          {brands?.map((brand, i) => (
+            <Link to={"/" + brand} key={i}>
+              <p className="hover:underline">{brand}</p>
+            </Link>
+          ))}
+        </ul>
+      </HiOrderAccordion>
 
-      <Accordion
-        open={isOpen("price")}
-        icon={<HiOrderMdKeyboardArrowDown active={isOpen("price")} />}
+      <HiOrderAccordion
+        value="price"
+        isOpen={isOpen}
+        handleOpenObj={handleOpenObj}
       >
-        <AccordionHeader
-          className="group border-none text-body hover:text-theme"
-          onClick={() => handleOpenObj("price")}
-        >
-          <h6>Price</h6>
-        </AccordionHeader>
-        <AccordionBody className="text-body">
-          <PriceModule />
-        </AccordionBody>
-      </Accordion>
+        <PriceModule />
+      </HiOrderAccordion>
 
-      <Accordion
-        open={isOpen("rating")}
-        icon={<HiOrderMdKeyboardArrowDown active={isOpen("rating")} />}
+      <HiOrderAccordion
+        value="rating"
+        isOpen={isOpen}
+        handleOpenObj={handleOpenObj}
       >
-        <AccordionHeader
-          className="group border-none text-body hover:text-theme"
-          onClick={() => handleOpenObj("rating")}
-        >
-          <h6>Customer Rating</h6>
-        </AccordionHeader>
-        <AccordionBody className="text-body">
-          <RatingModule className="p-2 pr-0" />
-        </AccordionBody>
-      </Accordion>
+        <RatingModule className="p-2 pr-0" />
+      </HiOrderAccordion>
     </>
   )
 })
 
 Filters.displayName = "Filters"
 export default Filters
+
+const HiOrderAccordion = ({
+  children,
+  label,
+  value,
+  isOpen,
+  handleOpenObj,
+  ...rest
+}) => (
+  <Accordion
+    open={isOpen(value)}
+    icon={<HiOrderMdKeyboardArrowDown active={isOpen(value)} />}
+  >
+    <AccordionHeader
+      className="group border-none text-body hover:text-theme"
+      onClick={() => handleOpenObj(value)}
+    >
+      <h6 className={label ? "" : "capitalize"}>{label ?? value}</h6>
+    </AccordionHeader>
+    <AccordionBody {...rest} className="text-body">
+      {children}
+    </AccordionBody>
+  </Accordion>
+)
 
 const PriceModule = () => {
   const [input, setInput] = useState({
