@@ -1,3 +1,4 @@
+import LocaleCurrency from "../components/common/LocaleCurrency"
 import RatingBar from "../components/common/RatingBar"
 import { useGetProductQuery } from "../features/api/apiSlice"
 import { useParams } from "react-router-dom"
@@ -51,7 +52,7 @@ const ProductPage = () => {
                 SAVE{" "}
                 <span className="currency">{product.discountPercentage}</span>
               </h6>
-              <h1>{product.price}</h1>
+              <LocaleCurrency as="h1">{product.price}</LocaleCurrency>
             </div>
           </div>
 

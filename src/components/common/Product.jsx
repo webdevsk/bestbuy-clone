@@ -12,6 +12,7 @@ import { Link } from "react-router-dom"
 import { useAddToCartMutation } from "../../features/api/apiSlice"
 import RatingBar from "./RatingBar"
 import { toast } from "react-toastify"
+import LocaleCurrency from "./LocaleCurrency"
 //Contexts
 const ProductContext = createContext(null)
 const useProductContext = () => useContext(ProductContext)
@@ -93,35 +94,24 @@ Product.Rating = memo(ProductRating)
 // Product Price component
 const ProductPrice = (props) => {
   const product = useProductContext()
-
-  const { locale = "en-US", currency = "USD" } = props
-
-  const format = useCallback(
-    (args) =>
-      new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: currency,
-      }).format(args),
-    [locale, currency],
-  )
-
   return (
     <div className="flex flex-col justify-between">
       {props.withDiscount && product?.discountPercentage > 0 && (
-        <h6 className="currency line-through">
-          {format(product?.price / (1 - product?.discountPercentage / 100))}
-        </h6>
+        <LocaleCurrency as="h6" className="currency line-through">
+          {product?.price / (1 - product?.discountPercentage / 100)}
+        </LocaleCurrency>
       )}
 
-      <h4
+      <LocaleCurrency
+        as="h4"
         className={`currency ${
           product?.discountPercentage > 0 &&
           props.withDiscount &&
           "text-red-900"
         }`}
       >
-        {format(product?.price)}
-      </h4>
+        {product?.price}
+      </LocaleCurrency>
     </div>
   )
 }

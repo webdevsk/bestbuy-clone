@@ -11,6 +11,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react"
 import { IoCheckmarkCircleSharp, IoTrashSharp } from "react-icons/io5"
 import { Switch } from "@headlessui/react"
+import LocaleCurrency from "../common/LocaleCurrency"
 
 const Cart = memo(({ isOpen, setIsOpen }) => {
   const [showSelection, setShowSelection] = useState(false)
@@ -29,9 +30,6 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
     skip: !isAuthenticated || !user,
   })
 
-  const locale = "en-US"
-  const currency = "USD"
-
   async function handleDelete({ currentTarget: t }) {
     setSelected([])
     const itemIds = []
@@ -49,15 +47,6 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
       console.error(error)
     }
   }
-
-  const format = useCallback(
-    (args) =>
-      new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: currency,
-      }).format(args),
-    [locale, currency],
-  )
 
   // Calculating total price clientside
   const totalPrice = useMemo(() => {
@@ -82,7 +71,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
   return (
     <>
       <div
-        className={`sticky top-0 z-[1] flex items-center  border-b p-4 pb-4 shadow ${
+        className={`sticky top-0 z-[1] flex items-center border-b p-4 pb-4 shadow transition-colors ${
           showSelection ? "bg-red-50" : "bg-white"
         }`}
       >
@@ -182,17 +171,17 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                     >
                       <span className="sr-only">Mark item</span>
                       <IoCheckmarkCircleSharp
-                        className={`clip-rounded rounded-full bg-white text-xl ring-2 ring-gray-400 ${
+                        className={`clip-rounded rounded-full bg-white text-xl ring-2 ${
                           selected.includes(item.id)
                             ? "text-error ring-error"
-                            : "text-transparent hover:ring-error"
+                            : "text-transparent ring-gray-400 hover:ring-error"
                         }`}
                       />
                     </Switch>
                   )}
                 </div>
                 <div className="flex items-center justify-between gap-1">
-                  <p className="">{format(item.price)}</p>
+                  <LocaleCurrency as="p">{item.price}</LocaleCurrency>
 
                   <div className="flex items-center">
                     <CartItemMutator
@@ -203,13 +192,14 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                   </div>
 
                   <div className="">
-                    <h4
+                    <LocaleCurrency
+                      as="h4"
                       className={
                         selected.includes(item.id) ? "line-through" : ""
                       }
                     >
-                      {format(item.price * (item.quantity ?? 1))}
-                    </h4>
+                      {item.price * (item.quantity ?? 1)}
+                    </LocaleCurrency>
                   </div>
                 </div>
               </div>
@@ -218,13 +208,13 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
         ))}
       </div>
       <div
-        className={`sticky bottom-0 z-[1] mt-auto border-t  p-4 shadow ${
+        className={`sticky bottom-0 z-[1] mt-auto border-t p-4  shadow transition-colors ${
           showSelection ? "bg-red-50" : "bg-white"
         }`}
       >
         <div className="mb-2 flex items-center justify-between gap-2">
           <h4>Total</h4>
-          <h3>{format(totalPrice ?? 0)}</h3>
+          <LocaleCurrency as="h3">{totalPrice ?? 0}</LocaleCurrency>
         </div>
         {!showSelection && (
           <Button

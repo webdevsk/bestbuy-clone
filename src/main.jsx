@@ -18,6 +18,14 @@ import apiSlice from "./features/api/apiSlice"
 
 register()
 
+// Set locale  and currency
+const locale = "en-US"
+const currency = "USD"
+export const localeCurrencyFormatter = new Intl.NumberFormat(locale, {
+  style: "currency",
+  currency: currency,
+})
+
 // Get all products
 store.dispatch(apiSlice.endpoints.getProducts.initiate())
 store.dispatch(apiSlice.endpoints.getCategories.initiate())
