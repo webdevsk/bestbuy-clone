@@ -9,7 +9,11 @@ import {
   useUpdateCartItemMutation,
 } from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
-import { IoCheckmarkCircleSharp, IoCloseSharp } from "react-icons/io5"
+import {
+  IoCheckmarkCircleSharp,
+  IoCloseSharp,
+  IoTrashSharp,
+} from "react-icons/io5"
 import { Switch } from "@headlessui/react"
 
 const Cart = memo(({ isOpen, setIsOpen }) => {
@@ -100,7 +104,10 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
           </BadgeCounter>
         </div>
 
-        <button className="me-4 ms-auto text-red-700" onClick={handleShow}>
+        <button
+          className="me-4 ms-auto text-red-700 hover:underline"
+          onClick={handleShow}
+        >
           <small>{!showSelection ? "Batch Selection" : "Cancel"}</small>
         </button>
         <button
@@ -159,16 +166,19 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                 />
               </Link>
               <div className="flex w-1 grow flex-col gap-2">
-                <div className="flex w-full">
-                  <h6 className="leading-normal">{item.title}</h6>
+                <div className="flex w-full items-start">
+                  <h6 className="leading-snug">{item.title}</h6>
                   {!showSelection && (
                     <button
-                      className="ms-auto grid h-6 w-6 place-items-center rounded-full border-2 bg-transparent transition-colors hover:bg-white"
+                      className="ms-auto"
                       name="deleteOne"
+                      title="Remove item from Cart"
                       onClick={handleDelete}
                       value={item.id}
                     >
-                      <IoCloseSharp />
+                      <IoTrashSharp
+                        className={`rounded-full bg-white text-xl text-error`}
+                      />
                     </button>
                   )}
                   {showSelection && (
@@ -178,15 +188,15 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                       }
                       checked={selected.includes(item.id)}
                       onChange={(checked) => handleSelection(checked, item.id)}
-                      name={"Mark Item"}
-                      className={`ms-auto grid h-6 w-6 place-items-center rounded-full border-2 bg-white text-xl text-error`}
+                      name={"Mark Item for deletion"}
+                      className={`ms-auto`}
                     >
                       <span className="sr-only">Mark item</span>
                       <IoCheckmarkCircleSharp
-                        className={`fill-current transition-opacity ${
+                        className={`clip-rounded rounded-full bg-white text-xl ring-2 ring-gray-400 ${
                           selected.includes(item.id)
-                            ? "opacity-100"
-                            : "opacity-0 hover:opacity-50"
+                            ? "text-error"
+                            : "text-transparent hover:opacity-50"
                         }`}
                       />
                     </Switch>
@@ -204,7 +214,13 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                   </div>
 
                   <div className="">
-                    <h4>{format(item.price * (item.quantity ?? 1))}</h4>
+                    <h4
+                      className={
+                        selected.includes(item.id) ? "line-through" : ""
+                      }
+                    >
+                      {format(item.price * (item.quantity ?? 1))}
+                    </h4>
                   </div>
                 </div>
               </div>

@@ -137,6 +137,10 @@ svg {
   overflow: visible;
 }
 
+svg.clip-round {
+  clip-path: circle(50%);
+}
+
 /* Accessibility skip button */
 .skip {
   position: absolute;
