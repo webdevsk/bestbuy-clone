@@ -76,6 +76,14 @@
       min-height: 100dvh;
     }
   }
+  .h-screen {
+    height: 90vh;
+  }
+  @supports (height: 100dvh) {
+    .h-screen {
+      height: 100dvh;
+    }
+  }
 }
 
 ::selection {

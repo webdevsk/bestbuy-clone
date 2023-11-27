@@ -9,10 +9,13 @@ import {
   useUpdateCartItemMutation,
 } from "../../features/api/apiSlice"
 import { useAuth0 } from "@auth0/auth0-react"
+import { IoCheckmarkCircleSharp, IoCloseSharp } from "react-icons/io5"
+import { Switch } from "@headlessui/react"
 
-const Cart = memo(({ isOpen, closeDrawer }) => {
+const Cart = memo(({ isOpen, setIsOpen }) => {
+  const [showSelection, setShowSelection] = useState(false)
   // mark and delete to be implemented later
-  const [selectedIds, setSelectedIds] = useState([])
+  const [selected, setSelected] = useState([])
 
   const locale = "en-US"
   const currency = "USD"
@@ -45,7 +48,7 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
           t.name === "deleteOne"
             ? [value]
             : t.name === "deleteMany"
-            ? selectedIds
+            ? selected
             : [],
         deleteAll: t.name === "deleteAll",
       }).unwrap()
@@ -71,14 +74,39 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
     )
   }, [cartData.products])
 
+  function handleShow() {
+    setShowSelection((state) => !state)
+    // resetting the list
+    setSelected((state) => (showSelection ? [] : state))
+  }
+
+  function handleSelection(checked, itemId) {
+    checked
+      ? setSelected((selected) => [...selected, itemId])
+      : setSelected((selected) => selected.filter((id) => itemId !== id))
+  }
+
   return (
     <>
-      <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl border-b bg-white p-4 pb-4 shadow">
+      <div
+        className={`sticky top-0 z-[1] flex items-center  border-b p-4 pb-4 shadow ${
+          showSelection ? "bg-red-50" : "bg-white"
+        }`}
+      >
         <div className="flex items-center">
-          <h3>Cart</h3>
-          <BadgeCounter>{cartData.quantity ?? 0}</BadgeCounter>
+          <h3>{showSelection ? "Selected" : "Cart"}</h3>
+          <BadgeCounter className={showSelection && "bg-error text-white"}>
+            {showSelection ? selected.length : cartData.quantity ?? 0}
+          </BadgeCounter>
         </div>
-        <button onClick={closeDrawer} className="rounded-sm hover:bg-gray-100">
+
+        <button className="me-4 ms-auto text-red-700" onClick={handleShow}>
+          <small>{!showSelection ? "Batch Selection" : "Cancel"}</small>
+        </button>
+        <button
+          onClick={() => setIsOpen(false)}
+          className="rounded-sm hover:bg-gray-100"
+        >
           <IoIosClose className="h-6 w-6" />
         </button>
       </div>
@@ -111,29 +139,58 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
         {cartData.products?.map((item) => (
           <div
             key={item.id}
-            className={`rounded-md bg-gray-50 p-2 ${
+            className={`rounded-md p-2 ${
               isFetching ? "animate-pulse opacity-70" : ""
+            } ${
+              showSelection && selected.includes(item.id)
+                ? "bg-gray-300 shadow-inner [&_img]:blur-sm"
+                : "bg-gray-50"
             }`}
           >
             <div className="flex flex-wrap gap-2">
-              <Link to={`/product/${item.label}`} className="block w-20">
+              <Link
+                to={`/product/${item.id}`}
+                className="block w-20"
+                onClick={() => setIsOpen(false)}
+              >
                 <img
                   className="aspect-video h-full w-full object-contain"
-                  src={item.images.at(-1)}
+                  src={item.images?.at(-1)}
                 />
               </Link>
               <div className="flex w-1 grow flex-col gap-2">
-                <div className="flex w-full items-center">
-                  <h6 className="">{item.title}</h6>
-
-                  <button
-                    className="ms-auto rounded-sm p-1 transition-colors hover:bg-gray-200"
-                    name="deleteOne"
-                    onClick={handleDelete}
-                    value={item.id}
-                  >
-                    <IoIosClose className="scale-150" />
-                  </button>
+                <div className="flex w-full">
+                  <h6 className="leading-normal">{item.title}</h6>
+                  {!showSelection && (
+                    <button
+                      className="ms-auto grid h-6 w-6 place-items-center rounded-full border-2 bg-transparent transition-colors hover:bg-white"
+                      name="deleteOne"
+                      onClick={handleDelete}
+                      value={item.id}
+                    >
+                      <IoCloseSharp />
+                    </button>
+                  )}
+                  {showSelection && (
+                    <Switch
+                      title={
+                        selected.includes(item.id) ? "Unmark item" : "Mark item"
+                      }
+                      checked={selected.includes(item.id)}
+                      onChange={(checked) => handleSelection(checked, item.id)}
+                      name={"Mark Item"}
+                      className={`ms-auto grid h-6 w-6 place-items-center rounded-full border-2 bg-white text-xl text-error`}
+                    >
+                      <span className="sr-only">Mark item</span>
+                      <IoCheckmarkCircleSharp
+                        className={`fill-current transition-opacity ${
+                          selected.includes(item.id)
+                            ? "opacity-100"
+                            : "opacity-0 hover:opacity-50"
+                        }`}
+                      />
+                    </Switch>
+                  )}
                 </div>
                 <div className="flex items-center justify-between gap-1">
                   <p className="">{format(item.price)}</p>
@@ -155,16 +212,37 @@ const Cart = memo(({ isOpen, closeDrawer }) => {
           </div>
         ))}
       </div>
-      <div className="sticky bottom-0 z-[1] mt-auto border-t bg-white p-4 shadow">
+      <div
+        className={`sticky bottom-0 z-[1] mt-auto border-t  p-4 shadow ${
+          showSelection ? "bg-red-50" : "bg-white"
+        }`}
+      >
         <div className="mb-2 flex items-center justify-between gap-2">
           <h4>Total</h4>
           <h3>{format(totalPrice ?? 0)}</h3>
         </div>
-        <Button
-          className={`w-full bg-accent text-black shadow-sm transition hover:shadow-sm hover:contrast-125`}
-        >
-          <h6>Checkout</h6>
-        </Button>
+        {!showSelection && (
+          <Button
+            className={`w-full bg-accent text-body shadow-sm transition hover:shadow-sm hover:contrast-125`}
+          >
+            <h6>Checkout</h6>
+          </Button>
+        )}
+
+        {showSelection && (
+          <div className="flex gap-2">
+            <Button
+              className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
+            >
+              <h6>Remove Selected</h6>
+            </Button>
+            <Button
+              className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
+            >
+              <h6>Remove All</h6>
+            </Button>
+          </div>
+        )}
       </div>
     </>
   )

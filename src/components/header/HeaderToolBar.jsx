@@ -102,7 +102,7 @@ export const HeaderToolBar = () => {
               exit="hidden"
               className="fixed right-0 top-0 z-[9999] flex h-screen w-[28rem] max-w-[100dvw] flex-col overflow-y-auto bg-white text-body"
             >
-              <Cart isOpen={isOpen} closeDrawer={() => setIsOpen(false)} />
+              <Cart isOpen={isOpen} setIsOpen={setIsOpen} />
             </Dialog.Panel>
           </Dialog>
         )}

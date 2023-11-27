@@ -45,7 +45,7 @@ const Filters = memo(() => {
         <ul className="flex flex-col gap-2">
           {categories?.map((category, i) => (
             <Link to={"/" + category} key={i}>
-              <p className="hover:underline">{category}</p>
+              <p className="capitalize hover:underline">{category}</p>
             </Link>
           ))}
         </ul>
