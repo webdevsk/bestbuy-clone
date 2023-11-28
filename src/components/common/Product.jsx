@@ -1,13 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { Button } from "@material-tailwind/react"
-import {
-  createContext,
-  forwardRef,
-  memo,
-  useCallback,
-  useContext,
-  useState,
-} from "react"
+import { createContext, forwardRef, memo, useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { useAddToCartMutation } from "../../features/api/apiSlice"
 import RatingBar from "./RatingBar"

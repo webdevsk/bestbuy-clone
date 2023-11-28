@@ -1,7 +1,7 @@
 import { Button } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
-import { memo, useCallback, useMemo, useState } from "react"
+import { memo, useMemo, useState } from "react"
 import BadgeCounter from "../common/BadgeCounter"
 import {
   useDeleteCartItemsMutation,
@@ -14,7 +14,7 @@ import { Switch } from "@headlessui/react"
 import LocaleCurrency from "../common/LocaleCurrency"
 
 const Cart = memo(({ isOpen, setIsOpen }) => {
-  const [showSelection, setShowSelection] = useState(false)
+  const [batchMode, setBatchMode] = useState(false)
   const [selected, setSelected] = useState([])
   const [deleteCartItems] = useDeleteCartItemsMutation()
   const { isAuthenticated, user } = useAuth0()
@@ -32,6 +32,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
 
   async function handleDelete({ currentTarget: t }) {
     setSelected([])
+    setBatchMode(false)
     const itemIds = []
     if (t.name === "deleteOne" && !!t.value) itemIds.push(parseInt(t.value))
     if (t.name === "deleteMany") itemIds.push(...selected)
@@ -57,9 +58,9 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
   }, [cartData.products])
 
   function handleShow() {
-    setShowSelection((state) => !state)
+    setBatchMode((state) => !state)
     // resetting the list
-    setSelected((state) => (showSelection ? [] : state))
+    setSelected((state) => (batchMode ? [] : state))
   }
 
   function handleSelection(checked, itemId) {
@@ -72,13 +73,13 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
     <>
       <div
         className={`sticky top-0 z-[1] flex items-center border-b p-4 pb-4 shadow transition-colors ${
-          showSelection ? "bg-red-50" : "bg-white"
+          batchMode ? "bg-red-50" : "bg-white"
         }`}
       >
         <div className="flex items-center">
-          <h3>{showSelection ? "Selected" : "Cart"}</h3>
-          <BadgeCounter className={showSelection && "bg-error text-white"}>
-            {showSelection ? selected.length : cartData.quantity ?? 0}
+          <h3>{batchMode ? "Selected" : "Cart"}</h3>
+          <BadgeCounter className={batchMode && "bg-error text-white"}>
+            {batchMode ? selected.length : cartData.quantity ?? 0}
           </BadgeCounter>
         </div>
 
@@ -86,7 +87,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
           className="me-4 ms-auto text-red-700 hover:underline"
           onClick={handleShow}
         >
-          <small>{!showSelection ? "Batch Selection" : "Cancel"}</small>
+          <small>{!batchMode ? "Batch Selection" : "Cancel"}</small>
         </button>
         <button
           onClick={() => setIsOpen(false)}
@@ -127,7 +128,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
             className={`rounded-md p-2 ${
               isFetching ? "animate-pulse opacity-70" : ""
             } ${
-              showSelection && selected.includes(item.id)
+              batchMode && selected.includes(item.id)
                 ? "bg-gray-300 shadow-inner [&_img]:blur-sm"
                 : "bg-gray-50"
             }`}
@@ -146,7 +147,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
               <div className="flex w-1 grow flex-col gap-2">
                 <div className="flex w-full items-start">
                   <h6 className="leading-snug">{item.title}</h6>
-                  {!showSelection && (
+                  {!batchMode && (
                     <button
                       className="ms-auto"
                       name="deleteOne"
@@ -155,11 +156,11 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                       value={item.id}
                     >
                       <IoTrashSharp
-                        className={`rounded-full bg-white text-xl text-error`}
+                        className={`rounded-full bg-white text-lg text-error`}
                       />
                     </button>
                   )}
-                  {showSelection && (
+                  {batchMode && (
                     <Switch
                       title={
                         selected.includes(item.id) ? "Unmark item" : "Mark item"
@@ -171,7 +172,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                     >
                       <span className="sr-only">Mark item</span>
                       <IoCheckmarkCircleSharp
-                        className={`clip-rounded rounded-full bg-white text-xl ring-2 ${
+                        className={`clip-rounded rounded-full bg-white text-lg ring-2 ${
                           selected.includes(item.id)
                             ? "text-error ring-error"
                             : "text-transparent ring-gray-400 hover:ring-error"
@@ -209,14 +210,14 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
       </div>
       <div
         className={`sticky bottom-0 z-[1] mt-auto border-t p-4  shadow transition-colors ${
-          showSelection ? "bg-red-50" : "bg-white"
+          batchMode ? "bg-red-50" : "bg-white"
         }`}
       >
         <div className="mb-2 flex items-center justify-between gap-2">
           <h4>Total</h4>
           <LocaleCurrency as="h3">{totalPrice ?? 0}</LocaleCurrency>
         </div>
-        {!showSelection && (
+        {!batchMode && (
           <Button
             className={`w-full bg-accent text-body shadow-sm transition hover:shadow-sm hover:contrast-125`}
           >
@@ -224,7 +225,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
           </Button>
         )}
 
-        {showSelection && (
+        {batchMode && (
           <div className="flex gap-2">
             <Button
               title="Remove selected items from Cart"
@@ -294,7 +295,7 @@ const CartItemMutator = ({ email, itemId, quantity }) => {
       <button
         disabled={quantity === 1}
         name="decrement"
-        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
+        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-30"
         onClick={handleQuantity}
       >
         <IoIosRemove className="text-xl" />
@@ -303,7 +304,7 @@ const CartItemMutator = ({ email, itemId, quantity }) => {
       <button
         disabled={quantity === 10}
         name="increment"
-        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-50"
+        className="bg-gray-200 transition-colors hover:bg-gray-300 disabled:opacity-30"
         onClick={handleQuantity}
       >
         <IoIosAdd className="text-xl" />
