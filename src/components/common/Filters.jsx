@@ -6,7 +6,7 @@ import {
 } from "@material-tailwind/react"
 import { memo, useState } from "react"
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
 import useLocalStorage from "../../hooks/useLocalStorage"
@@ -19,6 +19,7 @@ import { RadioGroup } from "@headlessui/react"
 import { ratingFilters } from "../../assets/filtersDB"
 
 const Filters = memo(() => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
     category: true,
     // brands: true,
@@ -42,11 +43,26 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col items-start gap-1">
           {categories?.map((category, i) => (
-            <Link to={"/" + category} key={i}>
-              <p className="capitalize hover:underline">{category}</p>
-            </Link>
+            <button
+              aria-current={
+                searchParams.has("category") &&
+                searchParams.get("category") === category
+              }
+              className="group block"
+              onClick={() =>
+                setSearchParams((params) => {
+                  params.set("category", category)
+                  return params
+                })
+              }
+              key={i}
+            >
+              <p className="capitalize hover:underline group-aria-[current=true]:font-semibold">
+                {category}
+              </p>
+            </button>
           ))}
         </ul>
       </HiOrderAccordion>
@@ -56,11 +72,22 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col items-start gap-1">
           {brands?.map((brand, i) => (
-            <Link to={"/" + brand} key={i}>
+            <button
+              aria-current={
+                searchParams.has("brand") && searchParams.get("brand") === brand
+              }
+              key={i}
+              onClick={() =>
+                setSearchParams((params) => {
+                  params.set("brand", brand)
+                  return params
+                })
+              }
+            >
               <p className="hover:underline">{brand}</p>
-            </Link>
+            </button>
           ))}
         </ul>
       </HiOrderAccordion>
@@ -103,7 +130,7 @@ const HiOrderAccordion = ({
       className="group border-none text-body hover:text-theme"
       onClick={() => handleOpenObj(value)}
     >
-      <h6 className={label ? "" : "capitalize"}>{label ?? value}</h6>
+      <h5 className={label ? "" : "capitalize"}>{label ?? value}</h5>
     </AccordionHeader>
     <AccordionBody {...rest} className="text-body">
       {children}

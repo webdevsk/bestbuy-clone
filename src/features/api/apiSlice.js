@@ -25,8 +25,8 @@ const apiSlice = createApi({
     endpoints: builder => ({
         getProducts: builder.query({
 
-            query: (params) => ({
-                url: `https://dummyjson.com/products`,
+            query: (params = {}) => ({
+                url: `https://dummyjson.com/products${"category" in params ? "/category/" + params.category : ""}`,
                 params
             }),
 
@@ -34,8 +34,8 @@ const apiSlice = createApi({
                 const { products, ...rest } = response
                 return productsAdapter.setAll({ ...initialState, ...rest }, products)
             },
-
             keepUnusedDataFor: 600
+
         }),
 
         getProduct: builder.query({
@@ -161,5 +161,6 @@ export const {
     useUpdateCartItemMutation,
     useDeleteCartItemsMutation
 } = apiSlice
-
 export default apiSlice
+
+export const useGetProductsQueryState = apiSlice.endpoints.getProducts.useQueryState
