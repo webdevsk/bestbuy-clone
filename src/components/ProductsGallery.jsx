@@ -13,6 +13,8 @@ import {
   selectAllProducts,
   useGetProductsQuery,
 } from "../features/api/apiSlice"
+import { AnimatePresence, motion } from "framer-motion"
+import { Dialog } from "@headlessui/react"
 // import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
 
 const ProductsGallery = () => {
@@ -93,7 +95,22 @@ const ProductsGallery = () => {
 export default ProductsGallery
 
 const FilterForMobile = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
+
+  const backdropVariants = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0, transition: { delay: 0.3 } },
+  }
+  const drawerVariants = {
+    visible: {
+      y: "0%",
+      transition: { delay: 0.3, duration: 0.3 },
+    },
+    hidden: {
+      y: "100%",
+      transition: { duration: 0.2 },
+    },
+  }
 
   return (
     <>
@@ -104,46 +121,58 @@ const FilterForMobile = () => {
         <IoOptionsOutline className="h-5 w-5" />
         <h6>Filters</h6>
       </button>
-      <Drawer
-        placement="bottom"
-        open={isOpen}
-        size={500}
-        dismiss={{ outsidePress: true }}
-        overlay={false}
-        overlayProps={{ className: "bg-black/30 inset-0 fixed" }}
-        onClose={() => setIsOpen(false)}
-        className="flex flex-col rounded-t-xl border pt-4"
-      >
-        <div className="flex h-full flex-col divide-y overflow-x-hidden overflow-y-scroll [&>*]:px-4">
-          <div className="sticky top-0 z-[1] flex items-center justify-between rounded-t-xl bg-white pb-4">
-            <h4>Filters</h4>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="rounded-sm hover:bg-gray-100"
-            >
-              <IoIosClose className="h-6 w-6" />
-            </button>
-          </div>
-          <Filters />
-          <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
-            <Button
-              size="lg"
-              className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
-            >
-              <h6>Apply</h6>
-            </Button>
-          </div>
-        </div>
+
+      <AnimatePresence>
         {isOpen && (
-          <FloatingPortal>
-            <FloatingOverlay
-              lockScroll
+          <Dialog
+            static
+            as={motion.div}
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+          >
+            <Dialog.Backdrop
+              as={motion.div}
+              aria-hidden="true"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-20 bg-black/30"
-            ></FloatingOverlay>
-          </FloatingPortal>
+              className="fixed inset-0 z-50 bg-black/30"
+            />
+
+            <Dialog.Panel
+              as={motion.div}
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="fixed bottom-0 left-0 z-[9999] flex max-h-[75dvh] w-full flex-col px-4"
+            >
+              <div className="flex flex-col divide-y overflow-scroll overflow-x-hidden rounded-t-xl bg-white [&>*]:px-4">
+                <div className="sticky top-0 z-[1] flex items-center justify-between  border-b bg-white py-4">
+                  <h4>Filters</h4>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-sm hover:bg-gray-100"
+                  >
+                    <IoIosClose className="h-6 w-6" />
+                  </button>
+                </div>
+                <Filters />
+                <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
+                  <Button
+                    size="lg"
+                    className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+                  >
+                    <h6>Apply</h6>
+                  </Button>
+                </div>
+              </div>
+            </Dialog.Panel>
+          </Dialog>
         )}
-      </Drawer>
+      </AnimatePresence>
     </>
   )
 }
