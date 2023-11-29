@@ -2,7 +2,7 @@ export const ratingFilters = [
   {
     id: "show-all",
     label: "Show All",
-    value: null,
+    value: undefined,
   },
   {
     id: "5-stars",
