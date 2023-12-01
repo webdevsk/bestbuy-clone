@@ -2,11 +2,10 @@ import {
   Accordion,
   AccordionBody,
   AccordionHeader,
-  Button,
 } from "@material-tailwind/react"
-import { memo, useEffect, useState } from "react"
+import { memo, useState } from "react"
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
-import { Link, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
 import useLocalStorage from "../../hooks/useLocalStorage"
@@ -139,9 +138,17 @@ const HiOrderAccordion = ({
 )
 
 const PriceModule = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [defaultMin, defaultMax] = searchParams.has("price")
+    ? searchParams
+        .get("price")
+        .split("to")
+        .map((value) => (isNaN(parseFloat(value)) ? "" : parseFloat(value)))
+    : ["", ""]
+
   const [input, setInput] = useState({
-    min: "",
-    max: "",
+    min: defaultMin,
+    max: defaultMax,
   })
 
   //input object values must be converted to Number inside dispatch actions in REDUX
@@ -162,7 +169,14 @@ const PriceModule = () => {
   // Disable Apply button if both values are empty or when min value is equal or greater than max value
   const isDisabled =
     (input.min === "" && input.max === "") ||
-    parseInt(input.min) >= parseInt(input.max)
+    parseFloat(input.min) >= parseFloat(input.max)
+
+  function handlePriceFilter() {
+    setSearchParams((params) => {
+      params.set("price", input.min + "to" + input.max)
+      return params
+    })
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-2 px-2">
@@ -192,13 +206,13 @@ const PriceModule = () => {
         ></input>
       </div>
 
-      <Button
-        size="lg"
+      <button
         disabled={isDisabled}
-        className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+        onClick={handlePriceFilter}
+        className="mt-2 w-full rounded-sm bg-theme px-2 py-4 text-center text-white antialiased transition hover:shadow-md hover:contrast-125 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
       >
         <h6>Apply Price Range</h6>
-      </Button>
+      </button>
     </div>
   )
 }
@@ -206,10 +220,18 @@ const PriceModule = () => {
 const RatingModule = (props) => {
   const { className, ...rest } = props
   // const [rating, setRating] = useState(ratingFilters[0].value)
-  const [searchParams, setSearchParams] = useSearchParams(
-    `rating=${ratingFilters[0].value}`,
-  )
-  console.log(searchParams)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  function handleChange(value) {
+    setSearchParams((params) => {
+      if (value === "undefined") {
+        params.delete("rating")
+      } else {
+        params.set("rating", value)
+      }
+      return params
+    })
+  }
 
   const radioClasses = (checked) =>
     `${
@@ -224,16 +246,7 @@ const RatingModule = (props) => {
       value={
         searchParams.has("rating") ? searchParams.get("rating") : "undefined"
       }
-      onChange={(value) =>
-        setSearchParams((params) => {
-          if (value === "undefined") {
-            params.delete("rating")
-          } else {
-            params.set("rating", value)
-          }
-          return params
-        })
-      }
+      onChange={handleChange}
       className={`flex flex-col gap-2 ${className ?? ""}`}
       {...rest}
     >

@@ -1,3 +1,7 @@
+// min only: 5
+// max only: to5
+// both: 4to5
+// clear: "undefined"
 export const ratingFilters = [
   {
     id: "show-all",
@@ -26,7 +30,7 @@ export const ratingFilters = [
   {
     id: "below-3",
     label: "Below 3 stars",
-    value: "1-2.99",
+    value: "1to2.99",
     stars: 0
   },
 ]

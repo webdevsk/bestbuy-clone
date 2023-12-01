@@ -147,14 +147,15 @@ const FilterForMobile = () => {
                   </button>
                 </div>
                 <Filters />
-                <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
+                {/* No need as queries are done on click */}
+                {/* <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
                   <Button
                     size="lg"
                     className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
                   >
                     <h6>Apply</h6>
                   </Button>
-                </div>
+                </div> */}
               </div>
             </Dialog.Panel>
           </Dialog>
