@@ -1,6 +1,5 @@
 import Filters from "./common/Filters"
 //Replace these with async api call functions
-import { Button } from "@material-tailwind/react"
 import Sort from "./common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useState } from "react"
@@ -14,14 +13,24 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 import { Dialog } from "@headlessui/react"
 import { useSearchParams } from "react-router-dom"
+import { ratingFilters } from "../assets/filtersDB"
+import LocaleCurrency from "./common/LocaleCurrency"
 
 const ProductsGallery = () => {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const params = Object.fromEntries(searchParams.entries())
-  const { isError, isLoading, isFetching } = useGetProductsQuery(params)
+  console.log(Object.entries(params))
 
+  const { isError, isLoading, isFetching } = useGetProductsQuery(params)
   const { data = { entities: {} } } = useGetProductsQueryState(params)
   const products = Object.values(data.entities)
+
+  function handleRemoveFilter(key) {
+    setSearchParams((params) => {
+      params.delete(key)
+      return params
+    })
+  }
 
   return (
     <>
@@ -47,30 +56,83 @@ const ProductsGallery = () => {
               </Mobile>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-              {isLoading && <ProductsGalleryPlaceholder />}
+            <div className="">
+              <div className="py-4">
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(params).map(([key, value], i) => (
+                    <>
+                      {i === 0 && (
+                        <small className="ms-2 w-full py-1 leading-none">
+                          Active filters:
+                        </small>
+                      )}
+                      <div
+                        key={key}
+                        data-filter-key={key}
+                        data-filter-value={value}
+                        className="flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-1 py-1 leading-none"
+                      >
+                        <small className="ms-1 select-none leading-normal">
+                          <span className="capitalize">{key}</span>
+                          <span>: </span>
+                          <span>
+                            {key === "rating"
+                              ? ratingFilters.find(
+                                  (filter) => filter.value === value,
+                                ).label
+                              : key === "price"
+                              ? value.split("to").map((x, i) => (
+                                  <>
+                                    {!!x && i === 0 && <span> from </span>}
+                                    {!!x && i === 1 && <span> upto </span>}
+                                    {!!x && (
+                                      <LocaleCurrency as="span" key={x}>
+                                        {parseFloat(x)}
+                                      </LocaleCurrency>
+                                    )}
+                                  </>
+                                ))
+                              : value}
+                          </span>
+                        </small>
+                        <button>
+                          <IoIosClose
+                            className="rounded-full border border-transparent text-xl transition-colors hover:border-gray-400 hover:bg-gray-300"
+                            onClick={() => handleRemoveFilter(key)}
+                          />
+                        </button>
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </div>
+
               {isError && <ProductsGalleryError />}
               {!isLoading && !products.length && (
                 <NoProductsError isFetching={isFetching} />
               )}
 
-              {products.map((product) => (
-                <Product
-                  key={product.id}
-                  product={product}
-                  className={`flex ${
-                    isFetching ? "opacity-70" : ""
-                  } flex-col gap-2 rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100 xl:gap-4`}
-                >
-                  <Product.Image />
-                  <Product.Description>
-                    <Product.Label />
-                    <Product.Rating />
-                    <Product.Price withDiscount />
-                    <Product.Button />
-                  </Product.Description>
-                </Product>
-              ))}
+              <div className="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                {isLoading && <ProductsGalleryPlaceholder />}
+
+                {products.map((product) => (
+                  <Product
+                    key={product.id}
+                    product={product}
+                    className={`flex ${
+                      isFetching ? "opacity-70" : ""
+                    } flex-col gap-2 rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100 xl:gap-4`}
+                  >
+                    <Product.Image />
+                    <Product.Description>
+                      <Product.Label />
+                      <Product.Rating />
+                      <Product.Price withDiscount />
+                      <Product.Button />
+                    </Product.Description>
+                  </Product>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -186,7 +248,7 @@ function ProductsGalleryPlaceholder() {
 
 function ProductsGalleryError() {
   return (
-    <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-red-500">
+    <h5 className="py-8 text-center text-lg font-semibold italic text-red-500">
       Server error. Failed to load data.
     </h5>
   )
@@ -195,11 +257,11 @@ function ProductsGalleryError() {
 function NoProductsError({ isFetching }) {
   return (
     <>
-      <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-gray-400">
+      <h5 className="py-8 text-center text-lg font-semibold italic text-gray-400">
         No products available by the provided criteria.
       </h5>
       {isFetching && (
-        <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-gray-400">
+        <h5 className="py-8 text-center text-lg font-semibold italic text-gray-400">
           Refreshing List...
         </h5>
       )}
