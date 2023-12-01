@@ -113,7 +113,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
         </div>
       )}
 
-      {isSuccess && !cartData.products.length && (
+      {!cartData.products.length && (
         <div className="my-auto text-center">
           <p className="text-2xl font-bold text-gray-400">
             Cart is Empty ＞︿＜

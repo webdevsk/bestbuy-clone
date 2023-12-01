@@ -26,7 +26,7 @@ const apiSlice = createApi({
         getProducts: builder.query({
 
             query: (params = {}) => ({
-                url: `https://dummyjson.com/products${"category" in params ? "/category/" + params.category : ""}`,
+                url: `/getProducts`,
                 params
             }),
 

@@ -50,6 +50,9 @@ const ProductsGallery = () => {
             <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
               {isLoading && <ProductsGalleryPlaceholder />}
               {isError && <ProductsGalleryError />}
+              {!isLoading && !products.length && (
+                <NoProductsError isFetching={isFetching} />
+              )}
 
               {products.map((product) => (
                 <Product
@@ -162,7 +165,7 @@ const FilterForMobile = () => {
 }
 
 function ProductsGalleryPlaceholder() {
-  Array.from({ length: 10 }).map((_, i) => (
+  return Array.from({ length: 10 }).map((_, i) => (
     <div
       key={i}
       className={`flex animate-pulse flex-col gap-1 rounded-lg bg-gray-50 p-4 transition-colors [animation-delay:calc(500ms*var(--delay-by))] hover:bg-gray-100`}
@@ -185,5 +188,20 @@ function ProductsGalleryError() {
     <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-red-500">
       Server error. Failed to load data.
     </h5>
+  )
+}
+
+function NoProductsError({ isFetching }) {
+  return (
+    <>
+      <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-gray-400">
+        No products available by the provided criteria.
+      </h5>
+      {isFetching && (
+        <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-gray-400">
+          Refreshing List...
+        </h5>
+      )}
+    </>
   )
 }

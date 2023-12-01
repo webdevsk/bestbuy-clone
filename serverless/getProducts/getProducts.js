@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
-export default async (event, context) => {
+export default async (event) => {
     const url = new URL(event.url)
     let { limit = "30", skip = "0", category, brand, rating } = Object.fromEntries(url.searchParams)
     console.log("getProducts", url.searchParams.toString())
     try {
         limit = parseInt(limit)
         skip = parseInt(skip)
-        const [gte, lte] = rating.split("-").map(value => parseFloat(value) ?? undefined)
+        const [gte, lte] = !!rating ? rating.split("-").map(value => parseFloat(value) ?? undefined) : [undefined, undefined]
 
         const products = await prisma.product.findMany({
             where: {

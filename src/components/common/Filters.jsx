@@ -4,7 +4,7 @@ import {
   AccordionHeader,
   Button,
 } from "@material-tailwind/react"
-import { memo, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
 import { Link, useSearchParams } from "react-router-dom"
 import RatingBar from "./RatingBar"
@@ -205,7 +205,11 @@ const PriceModule = () => {
 
 const RatingModule = (props) => {
   const { className, ...rest } = props
-  const [rating, setRating] = useState(ratingFilters[0].value)
+  // const [rating, setRating] = useState(ratingFilters[0].value)
+  const [searchParams, setSearchParams] = useSearchParams(
+    `rating=${ratingFilters[0].value}`,
+  )
+  console.log(searchParams)
 
   const radioClasses = (checked) =>
     `${
@@ -217,8 +221,19 @@ const RatingModule = (props) => {
   return (
     <RadioGroup
       name="rated"
-      value={rating}
-      onChange={setRating}
+      value={
+        searchParams.has("rating") ? searchParams.get("rating") : "undefined"
+      }
+      onChange={(value) =>
+        setSearchParams((params) => {
+          if (value === "undefined") {
+            params.delete("rating")
+          } else {
+            params.set("rating", value)
+          }
+          return params
+        })
+      }
       className={`flex flex-col gap-2 ${className ?? ""}`}
       {...rest}
     >
@@ -237,7 +252,7 @@ const RatingModule = (props) => {
               ) : (
                 <MdRadioButtonUnchecked className={radioClasses(checked)} />
               )}
-              {!!option.value && <RatingBar rating={option.value} />}
+              {!!option.stars && <RatingBar rating={option.stars} />}
               <small className="text-sm font-normal group-hover:underline">
                 {option.label}
               </small>
