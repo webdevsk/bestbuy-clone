@@ -20,7 +20,7 @@ const Product = memo((props) => {
         <div className="absolute inset-0 z-0">
           <Link
             className="block h-full w-full"
-            to={`/product/${product.id}`}
+            to={`/product/${product.productKey}`}
           ></Link>
         </div>
       </div>

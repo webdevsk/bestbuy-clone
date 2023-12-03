@@ -39,7 +39,7 @@ const apiSlice = createApi({
         }),
 
         getProduct: builder.query({
-            query: (id) => `https://dummyjson.com/products/${id}`,
+            query: (productKey) => `/getProduct/${productKey}`,
             // providesTags: (id) => 
         }),
 
