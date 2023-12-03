@@ -108,7 +108,7 @@ const ProductsGallery = () => {
               </div>
 
               {isError && <ProductsGalleryError />}
-              {!isLoading && !products.length && (
+              {!isError && !isLoading && !products.length && (
                 <NoProductsError isFetching={isFetching} />
               )}
 

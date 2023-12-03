@@ -124,7 +124,7 @@ const ProductButton = forwardRef((props, ref) => {
     try {
       await addToCart({
         email: user.email,
-        itemId: product.id,
+        productKey: product.productKey,
       }).unwrap()
     } catch (error) {
       console.log(error)

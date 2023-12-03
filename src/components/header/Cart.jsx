@@ -33,15 +33,15 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
   async function handleDelete({ currentTarget: t }) {
     setSelected([])
     setBatchMode(false)
-    const itemIds = []
-    if (t.name === "deleteOne" && !!t.value) itemIds.push(parseInt(t.value))
-    if (t.name === "deleteMany") itemIds.push(...selected)
-    if (t.name !== "deleteAll" && !itemIds.length) return
+    const productKeys = []
+    if (t.name === "deleteOne" && !!t.value) productKeys.push(t.value)
+    if (t.name === "deleteMany") productKeys.push(...selected)
+    if (t.name !== "deleteAll" && !productKeys.length) return
     if (t.name === "deleteAll" && !cartData.products.length) return
     try {
       await deleteCartItems({
         email: user.email,
-        itemIds: itemIds,
+        productKeys,
         deleteAll: t.name === "deleteAll",
       }).unwrap()
     } catch (error) {
@@ -63,10 +63,10 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
     setSelected((state) => (batchMode ? [] : state))
   }
 
-  function handleSelection(checked, itemId) {
+  function handleSelection(checked, productKey) {
     checked
-      ? setSelected((selected) => [...selected, itemId])
-      : setSelected((selected) => selected.filter((id) => itemId !== id))
+      ? setSelected((selected) => [...selected, productKey])
+      : setSelected((selected) => selected.filter((key) => productKey !== key))
   }
 
   return (
@@ -113,7 +113,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
         </div>
       )}
 
-      {!cartData.products.length && (
+      {!isFetching && !isError && !cartData.products.length && (
         <div className="my-auto text-center">
           <p className="text-2xl font-bold text-gray-400">
             Cart is Empty ＞︿＜
@@ -128,14 +128,14 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
             className={`rounded-md p-2 ${
               isFetching ? "animate-pulse opacity-70" : ""
             } ${
-              batchMode && selected.includes(item.id)
+              batchMode && selected.includes(item.productKey)
                 ? "bg-gray-300 shadow-inner [&_img]:blur-sm"
                 : "bg-gray-50"
             }`}
           >
             <div className="flex flex-wrap gap-2">
               <Link
-                to={`/product/${item.id}`}
+                to={`/product/${item.productKey}`}
                 className="block w-20"
                 onClick={() => setIsOpen(false)}
               >
@@ -153,7 +153,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                       name="deleteOne"
                       title="Remove item from Cart"
                       onClick={handleDelete}
-                      value={item.id}
+                      value={item.productKey}
                     >
                       <IoTrashSharp
                         className={`rounded-full bg-white text-lg text-error`}
@@ -163,17 +163,21 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                   {batchMode && (
                     <Switch
                       title={
-                        selected.includes(item.id) ? "Unmark item" : "Mark item"
+                        selected.includes(item.productKey)
+                          ? "Unmark item"
+                          : "Mark item"
                       }
-                      checked={selected.includes(item.id)}
-                      onChange={(checked) => handleSelection(checked, item.id)}
+                      checked={selected.includes(item.productKey)}
+                      onChange={(checked) =>
+                        handleSelection(checked, item.productKey)
+                      }
                       name={"Mark Item for deletion"}
                       className={`ms-auto`}
                     >
                       <span className="sr-only">Mark item</span>
                       <IoCheckmarkCircleSharp
                         className={`clip-rounded rounded-full bg-white text-lg ring-2 ${
-                          selected.includes(item.id)
+                          selected.includes(item.productKey)
                             ? "text-error ring-error"
                             : "text-transparent ring-gray-400 hover:ring-error"
                         }`}
@@ -188,7 +192,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                     <CartItemMutator
                       quantity={item.quantity}
                       email={user.email}
-                      itemId={item.id}
+                      productKey={item.productKey}
                     />
                   </div>
 
@@ -196,7 +200,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
                     <LocaleCurrency
                       as="h4"
                       className={
-                        selected.includes(item.id) ? "line-through" : ""
+                        selected.includes(item.productKey) ? "line-through" : ""
                       }
                     >
                       {item.price * (item.quantity ?? 1)}
@@ -254,7 +258,7 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
 Cart.displayName = "Cart"
 export default Cart
 
-const CartItemMutator = ({ email, itemId, quantity }) => {
+const CartItemMutator = ({ email, productKey, quantity }) => {
   const [updateQuantity] = useUpdateCartItemMutation()
 
   const minAllowed = 1
@@ -274,7 +278,7 @@ const CartItemMutator = ({ email, itemId, quantity }) => {
     try {
       await updateQuantity({
         email,
-        itemId,
+        productKey,
         quantity:
           t.name === "increment"
             ? ++quantity

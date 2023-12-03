@@ -9,9 +9,21 @@ export default async (event) => {
         limit = parseInt(limit)
         skip = parseInt(skip)
         // gte: greater than or equal to / lte: less than or equal to
-        const [ratingGte, ratingLte] = !rating ? [undefined, undefined] : rating.split("to").map(value => isNaN(parseFloat(value)) ? undefined : parseFloat(value))
+        const [ratingGte, ratingLte] = !rating
+            ? [undefined, undefined]
+            : rating.split("to").map(value =>
+                isNaN(parseFloat(value))
+                    ? undefined
+                    : parseFloat(value)
+            )
 
-        const [priceGte, priceLte] = !price ? [undefined, undefined] : price.split("to").map(value => isNaN(parseFloat(value)) ? undefined : parseFloat(value))
+        const [priceGte, priceLte] = !price
+            ? [undefined, undefined]
+            : price.split("to").map(value =>
+                isNaN(parseFloat(value))
+                    ? undefined
+                    : parseFloat(value)
+            )
 
         const products = await prisma.product.findMany({
             where: {
@@ -23,7 +35,6 @@ export default async (event) => {
             take: limit,
             skip
         })
-        console.log("Products length: " + products.length)
         return Response.json({ products, skip, limit })
     } catch (error) {
         console.error(error)
