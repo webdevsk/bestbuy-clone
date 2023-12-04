@@ -67,8 +67,6 @@ async function getFullProductEntities(productKeys) {
                 }
             }
         })
-
-        console.log(products)
         return products
     } catch (error) {
         console.error(error)

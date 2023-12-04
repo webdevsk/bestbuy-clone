@@ -16,6 +16,7 @@ import {
 } from "../../features/api/apiSlice"
 import { RadioGroup } from "@headlessui/react"
 import { ratingFilters } from "../../assets/filtersDB"
+import FilterBubble from "./FilterBubble"
 
 const Filters = memo(() => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -104,7 +105,7 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <RatingModule className="p-2 pr-0" />
+        <RatingModule />
       </HiOrderAccordion>
     </>
   )
@@ -131,7 +132,8 @@ const HiOrderAccordion = ({
     >
       <h5 className={label ? "" : "capitalize"}>{label ?? value}</h5>
     </AccordionHeader>
-    <AccordionBody {...rest} className="text-body">
+    <AccordionBody {...rest} className="ps-2 text-body">
+      <FilterBubble className="mb-3 w-max" noLabel label={value} />
       {children}
     </AccordionBody>
   </Accordion>
@@ -179,7 +181,7 @@ const PriceModule = () => {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 px-2">
+    <div className="flex flex-wrap items-center gap-2">
       <div className="w-1 grow">
         <p>Min</p>
         <input
@@ -256,7 +258,7 @@ const RatingModule = (props) => {
           key={option.id}
           value={option.value}
           className={`group
-        inline-flex w-max cursor-pointer items-center gap-1 px-1 leading-none`}
+        inline-flex w-max cursor-pointer items-center gap-1 leading-none`}
         >
           {({ checked }) => (
             <>

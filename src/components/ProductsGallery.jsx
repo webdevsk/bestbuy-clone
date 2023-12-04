@@ -13,24 +13,15 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 import { Dialog } from "@headlessui/react"
 import { useSearchParams } from "react-router-dom"
-import { ratingFilters } from "../assets/filtersDB"
-import LocaleCurrency from "./common/LocaleCurrency"
+import FilterBubble from "./common/FilterBubble"
 
 const ProductsGallery = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const params = Object.fromEntries(searchParams.entries())
-  console.log(Object.entries(params))
 
   const { isError, isLoading, isFetching } = useGetProductsQuery(params)
   const { data = { entities: {} } } = useGetProductsQueryState(params)
   const products = Object.values(data.entities)
-
-  function handleRemoveFilter(key) {
-    setSearchParams((params) => {
-      params.delete(key)
-      return params
-    })
-  }
 
   return (
     <>
@@ -56,63 +47,15 @@ const ProductsGallery = () => {
               </Mobile>
             </div>
 
-            <div className="">
-              <div className="py-4">
-                <div className="flex flex-wrap gap-1">
-                  {Object.entries(params).map(([key, value], i) => (
-                    <>
-                      {i === 0 && (
-                        <small className="ms-2 w-full py-1 leading-none">
-                          Active filters:
-                        </small>
-                      )}
-                      <div
-                        key={key}
-                        data-filter-key={key}
-                        data-filter-value={value}
-                        className="flex items-center gap-1 rounded-full border border-gray-300 bg-gray-50 px-1 py-1 leading-none"
-                      >
-                        <small className="ms-1 select-none leading-normal">
-                          <span className="capitalize">{key}</span>
-                          <span>: </span>
-                          <span>
-                            {key === "rating"
-                              ? ratingFilters.find(
-                                  (filter) => filter.value === value,
-                                ).label
-                              : key === "price"
-                              ? value.split("to").map((x, i) => (
-                                  <>
-                                    {!!x && i === 0 && <span> from </span>}
-                                    {!!x && i === 1 && <span> upto </span>}
-                                    {!!x && (
-                                      <LocaleCurrency as="span" key={x}>
-                                        {parseFloat(x)}
-                                      </LocaleCurrency>
-                                    )}
-                                  </>
-                                ))
-                              : value}
-                          </span>
-                        </small>
-                        <button>
-                          <IoIosClose
-                            className="rounded-full border border-transparent text-xl transition-colors hover:border-gray-400 hover:bg-gray-300"
-                            onClick={() => handleRemoveFilter(key)}
-                          />
-                        </button>
-                      </div>
-                    </>
-                  ))}
-                </div>
-              </div>
+            <div>
+              <FilterBubble className="flex flex-wrap gap-1 border-b py-4" />
 
               {isError && <ProductsGalleryError />}
               {!isError && !isLoading && !products.length && (
                 <NoProductsError isFetching={isFetching} />
               )}
 
-              <div className="grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+              <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
                 {isLoading && <ProductsGalleryPlaceholder />}
 
                 {products.map((product) => (
@@ -199,15 +142,19 @@ const FilterForMobile = () => {
               className="fixed bottom-0 left-0 z-[9999] flex max-h-[75dvh] w-full flex-col px-4"
             >
               <div className="flex flex-col divide-y overflow-scroll overflow-x-hidden rounded-t-xl bg-white [&>*]:px-4">
-                <div className="sticky top-0 z-[1] flex items-center justify-between  border-b bg-white py-4">
-                  <h4>Filters</h4>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-sm hover:bg-gray-100"
-                  >
-                    <IoIosClose className="h-6 w-6" />
-                  </button>
+                <div className="sticky top-0 z-[1] bg-white py-3">
+                  <div className="flex flex-wrap items-center justify-between">
+                    <h4>Filters</h4>
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="rounded-sm hover:bg-gray-100"
+                    >
+                      <IoIosClose className="h-6 w-6" />
+                    </button>
+                  </div>
+                  <FilterBubble className="mt-2 flex w-full flex-wrap gap-1" />
                 </div>
+
                 <Filters />
                 {/* No need as queries are done on click */}
                 {/* <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
