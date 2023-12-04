@@ -1,12 +1,6 @@
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  Button,
-} from "@material-tailwind/react"
 import { memo, useState } from "react"
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
-import { Link } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import RatingBar from "./RatingBar"
 import { MdKeyboardArrowDown } from "react-icons/md"
 import useLocalStorage from "../../hooks/useLocalStorage"
@@ -15,10 +9,13 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/api/apiSlice"
-import { RadioGroup } from "@headlessui/react"
+import { Disclosure, RadioGroup } from "@headlessui/react"
 import { ratingFilters } from "../../assets/filtersDB"
+import FilterBubble from "./FilterBubble"
+import { AnimatePresence, motion } from "framer-motion"
 
 const Filters = memo(() => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [openObj, setOpenObj] = useLocalStorage("openFilters", {
     category: true,
     // brands: true,
@@ -42,25 +39,56 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col items-start gap-1">
           {categories?.map((category, i) => (
-            <Link to={"/" + category} key={i}>
-              <p className="capitalize hover:underline">{category}</p>
-            </Link>
+            <button
+              type="button"
+              label={category}
+              aria-current={
+                searchParams.has("category") &&
+                searchParams.get("category") === category
+              }
+              className="group text-start"
+              onClick={() =>
+                setSearchParams((params) => {
+                  params.set("category", category)
+                  return params
+                })
+              }
+              key={i}
+            >
+              <p className="capitalize hover:underline group-aria-[current=true]:font-semibold">
+                {category.replace("-", " ")}
+              </p>
+            </button>
           ))}
         </ul>
       </HiOrderAccordion>
 
       <HiOrderAccordion
-        value="brands"
+        value="brand"
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col items-start gap-1">
           {brands?.map((brand, i) => (
-            <Link to={"/" + brand} key={i}>
+            <button
+              type="button"
+              label={brand}
+              aria-current={
+                searchParams.has("brand") && searchParams.get("brand") === brand
+              }
+              className="group text-start"
+              key={i}
+              onClick={() =>
+                setSearchParams((params) => {
+                  params.set("brand", brand)
+                  return params
+                })
+              }
+            >
               <p className="hover:underline">{brand}</p>
-            </Link>
+            </button>
           ))}
         </ul>
       </HiOrderAccordion>
@@ -78,7 +106,7 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <RatingModule className="p-2 pr-0" />
+        <RatingModule />
       </HiOrderAccordion>
     </>
   )
@@ -95,26 +123,53 @@ const HiOrderAccordion = ({
   handleOpenObj,
   ...rest
 }) => (
-  <Accordion
-    open={isOpen(value)}
-    icon={<HiOrderMdKeyboardArrowDown active={isOpen(value)} />}
-  >
-    <AccordionHeader
-      className="group border-none text-body hover:text-theme"
+  <Disclosure>
+    <Disclosure.Button
+      className="group flex w-full items-center justify-between p-2 text-body hover:text-theme"
       onClick={() => handleOpenObj(value)}
     >
-      <h6 className={label ? "" : "capitalize"}>{label ?? value}</h6>
-    </AccordionHeader>
-    <AccordionBody {...rest} className="text-body">
-      {children}
-    </AccordionBody>
-  </Accordion>
+      <h5 className={label ? "" : "capitalize"}>{label ?? value}</h5>
+      <MdKeyboardArrowDown
+        className={`${
+          isOpen(value) ? "rotate-180" : ""
+        } h-5 w-5 transition xl:h-8 xl:w-8`}
+      />
+    </Disclosure.Button>
+    <AnimatePresence>
+      {isOpen(value) && (
+        <Disclosure.Panel
+          as={motion.div}
+          static
+          variants={{}}
+          initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+          animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+          exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
+          transition={{ type: "tween" }}
+          style={{ originY: 0 }}
+          open={isOpen(value)}
+          {...rest}
+          className="py-2 ps-2 text-body"
+        >
+          <FilterBubble className="mb-3 w-max" noLabel label={value} />
+          {children}
+        </Disclosure.Panel>
+      )}
+    </AnimatePresence>
+  </Disclosure>
 )
 
 const PriceModule = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [defaultMin, defaultMax] = searchParams.has("price")
+    ? searchParams
+        .get("price")
+        .split("to")
+        .map((value) => (isNaN(parseFloat(value)) ? "" : parseFloat(value)))
+    : ["", ""]
+
   const [input, setInput] = useState({
-    min: "",
-    max: "",
+    min: defaultMin,
+    max: defaultMax,
   })
 
   //input object values must be converted to Number inside dispatch actions in REDUX
@@ -135,10 +190,17 @@ const PriceModule = () => {
   // Disable Apply button if both values are empty or when min value is equal or greater than max value
   const isDisabled =
     (input.min === "" && input.max === "") ||
-    parseInt(input.min) >= parseInt(input.max)
+    parseFloat(input.min) >= parseFloat(input.max)
+
+  function handlePriceFilter() {
+    setSearchParams((params) => {
+      params.set("price", input.min + "to" + input.max)
+      return params
+    })
+  }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 px-2">
+    <div className="flex flex-wrap items-center gap-2">
       <div className="w-1 grow">
         <p>Min</p>
         <input
@@ -165,20 +227,32 @@ const PriceModule = () => {
         ></input>
       </div>
 
-      <Button
-        size="lg"
+      <button
         disabled={isDisabled}
-        className="mt-2 w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
+        onClick={handlePriceFilter}
+        className="mt-2 w-full rounded-sm bg-theme px-2 py-4 text-center text-white antialiased transition hover:shadow-md hover:contrast-125 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
       >
         <h6>Apply Price Range</h6>
-      </Button>
+      </button>
     </div>
   )
 }
 
 const RatingModule = (props) => {
   const { className, ...rest } = props
-  const [rating, setRating] = useState(ratingFilters[0].value)
+  // const [rating, setRating] = useState(ratingFilters[0].value)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  function handleChange(value) {
+    setSearchParams((params) => {
+      if (value === "undefined") {
+        params.delete("rating")
+      } else {
+        params.set("rating", value)
+      }
+      return params
+    })
+  }
 
   const radioClasses = (checked) =>
     `${
@@ -190,8 +264,10 @@ const RatingModule = (props) => {
   return (
     <RadioGroup
       name="rated"
-      value={rating}
-      onChange={setRating}
+      value={
+        searchParams.has("rating") ? searchParams.get("rating") : "undefined"
+      }
+      onChange={handleChange}
       className={`flex flex-col gap-2 ${className ?? ""}`}
       {...rest}
     >
@@ -201,7 +277,7 @@ const RatingModule = (props) => {
           key={option.id}
           value={option.value}
           className={`group
-        inline-flex w-max cursor-pointer items-center gap-1 px-1 leading-none`}
+        inline-flex w-max cursor-pointer items-center gap-1 leading-none`}
         >
           {({ checked }) => (
             <>
@@ -210,7 +286,7 @@ const RatingModule = (props) => {
               ) : (
                 <MdRadioButtonUnchecked className={radioClasses(checked)} />
               )}
-              {!!option.value && <RatingBar rating={option.value} />}
+              {!!option.stars && <RatingBar rating={option.stars} />}
               <small className="text-sm font-normal group-hover:underline">
                 {option.label}
               </small>
@@ -221,11 +297,3 @@ const RatingModule = (props) => {
     </RadioGroup>
   )
 }
-
-const HiOrderMdKeyboardArrowDown = (props) => (
-  <MdKeyboardArrowDown
-    className={`${
-      props.active ? "rotate-180" : ""
-    } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-  />
-)

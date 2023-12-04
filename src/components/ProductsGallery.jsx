@@ -1,25 +1,27 @@
 import Filters from "./common/Filters"
 //Replace these with async api call functions
-import { Button, Drawer } from "@material-tailwind/react"
 import Sort from "./common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useState } from "react"
 import Product from "./common/Product"
-import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { IoIosClose } from "react-icons/io"
 import { Desktop, Mobile } from "./common/ReactResponsive"
-import { useSelector } from "react-redux"
 import {
-  selectAllProducts,
   useGetProductsQuery,
+  useGetProductsQueryState,
 } from "../features/api/apiSlice"
 import { AnimatePresence, motion } from "framer-motion"
 import { Dialog } from "@headlessui/react"
-// import { selectAllProducts, useGetProductsQuery } from "../api/apiSlice"
+import { useSearchParams } from "react-router-dom"
+import FilterBubble from "./common/FilterBubble"
 
 const ProductsGallery = () => {
-  const { isError, isLoading, isSuccess } = useGetProductsQuery()
-  const products = useSelector((state) => selectAllProducts(state))
+  const [searchParams] = useSearchParams()
+  const params = Object.fromEntries(searchParams.entries())
+
+  const { isError, isLoading, isFetching } = useGetProductsQuery(params)
+  const { data = { entities: {} } } = useGetProductsQueryState(params)
+  const products = Object.values(data.entities)
 
   return (
     <>
@@ -45,35 +47,24 @@ const ProductsGallery = () => {
               </Mobile>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
-              {isLoading &&
-                Array.from({ length: 10 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`flex animate-pulse flex-col gap-1 rounded-lg bg-gray-50 p-4 transition-colors [animation-delay:calc(500ms*var(--delay-by))] hover:bg-gray-100`}
-                    style={{
-                      "--delay-by": i,
-                    }}
-                  >
-                    <div className="aspect-square w-full bg-gray-200"></div>
-                    <div className="mt-auto h-4 w-1/2 rounded-xl bg-gray-400"></div>
-                    <div className=" h-4 w-1/3 rounded-xl bg-gray-300"></div>
-                    <div className=" h-4 w-1/4 rounded-xl bg-gray-300"></div>
-                    <div className=" h-5 w-1/3 rounded-xl bg-gray-400"></div>
-                    <div className="mt-auto h-12 w-full rounded-sm bg-gray-300"></div>
-                  </div>
-                ))}
-              {isError && (
-                <h5 className="col-span-full py-8 text-center text-lg font-semibold italic text-red-500">
-                  Server error. Failed to load data.
-                </h5>
+            <div>
+              <FilterBubble className="flex flex-wrap gap-1 border-b py-4" />
+
+              {isError && <ProductsGalleryError />}
+              {!isError && !isLoading && !products.length && (
+                <NoProductsError isFetching={isFetching} />
               )}
-              {isSuccess &&
-                products.map((product) => (
+
+              <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-4">
+                {isLoading && <ProductsGalleryPlaceholder />}
+
+                {products.map((product) => (
                   <Product
                     key={product.id}
                     product={product}
-                    className="flex flex-col gap-2 rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100 xl:gap-4"
+                    className={`flex ${
+                      isFetching ? "opacity-70" : ""
+                    } flex-col gap-2 rounded-lg bg-gray-50 p-4 transition-colors hover:bg-gray-100 xl:gap-4`}
                   >
                     <Product.Image />
                     <Product.Description>
@@ -84,6 +75,7 @@ const ProductsGallery = () => {
                     </Product.Description>
                   </Product>
                 ))}
+              </div>
             </div>
           </div>
         </div>
@@ -95,7 +87,7 @@ const ProductsGallery = () => {
 export default ProductsGallery
 
 const FilterForMobile = () => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const backdropVariants = {
     visible: { opacity: 1 },
@@ -147,32 +139,81 @@ const FilterForMobile = () => {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="fixed bottom-0 left-0 z-[9999] flex max-h-[75dvh] w-full flex-col px-4"
+              className="fixed bottom-0 z-[99] flex h-[60vh] w-full"
             >
-              <div className="flex flex-col divide-y overflow-scroll overflow-x-hidden rounded-t-xl bg-white [&>*]:px-4">
-                <div className="sticky top-0 z-[1] flex items-center justify-between  border-b bg-white py-4">
-                  <h4>Filters</h4>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-sm hover:bg-gray-100"
-                  >
-                    <IoIosClose className="h-6 w-6" />
-                  </button>
-                </div>
-                <Filters />
-                <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
+              <div className="mx-auto w-[95dvw] rounded-t-lg bg-white">
+                <div className="flex h-full flex-col overflow-scroll overflow-x-hidden rounded-t-xl pb-4 [&>*]:px-4">
+                  <div className="sticky top-0 z-[1] border-b-2 bg-white py-3">
+                    <div className="flex flex-wrap items-center justify-between">
+                      <h4>Filters</h4>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="rounded-sm hover:bg-gray-100"
+                      >
+                        <IoIosClose className="h-6 w-6" />
+                      </button>
+                    </div>
+                    <FilterBubble className="mt-2 flex w-full flex-wrap gap-1" />
+                  </div>
+
+                  <Filters />
+                  {/* No need as queries are done on click */}
+                  {/* <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
                   <Button
                     size="lg"
                     className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
                   >
                     <h6>Apply</h6>
                   </Button>
+                </div> */}
                 </div>
               </div>
             </Dialog.Panel>
           </Dialog>
         )}
       </AnimatePresence>
+    </>
+  )
+}
+
+function ProductsGalleryPlaceholder() {
+  return Array.from({ length: 10 }).map((_, i) => (
+    <div
+      key={i}
+      className={`flex animate-pulse flex-col gap-1 rounded-lg bg-gray-50 p-4 transition-colors [animation-delay:calc(500ms*var(--delay-by))] hover:bg-gray-100`}
+      style={{
+        "--delay-by": i,
+      }}
+    >
+      <div className="aspect-square w-full bg-gray-200"></div>
+      <div className="mt-auto h-4 w-1/2 rounded-xl bg-gray-400"></div>
+      <div className=" h-4 w-1/3 rounded-xl bg-gray-300"></div>
+      <div className=" h-4 w-1/4 rounded-xl bg-gray-300"></div>
+      <div className=" h-5 w-1/3 rounded-xl bg-gray-400"></div>
+      <div className="mt-auto h-12 w-full rounded-sm bg-gray-300"></div>
+    </div>
+  ))
+}
+
+function ProductsGalleryError() {
+  return (
+    <h5 className="py-8 text-center text-lg font-semibold italic text-red-500">
+      Server error. Failed to load data.
+    </h5>
+  )
+}
+
+function NoProductsError({ isFetching }) {
+  return (
+    <>
+      <h5 className="py-8 text-center text-lg font-semibold italic text-gray-400">
+        No products available by the provided criteria.
+      </h5>
+      {isFetching && (
+        <h5 className="py-8 text-center text-lg font-semibold italic text-gray-400">
+          Refreshing List...
+        </h5>
+      )}
     </>
   )
 }

@@ -25,8 +25,8 @@ const apiSlice = createApi({
     endpoints: builder => ({
         getProducts: builder.query({
 
-            query: (params) => ({
-                url: `https://dummyjson.com/products`,
+            query: (params = {}) => ({
+                url: `/getProducts`,
                 params
             }),
 
@@ -34,12 +34,12 @@ const apiSlice = createApi({
                 const { products, ...rest } = response
                 return productsAdapter.setAll({ ...initialState, ...rest }, products)
             },
-
             keepUnusedDataFor: 600
+
         }),
 
         getProduct: builder.query({
-            query: (id) => `https://dummyjson.com/products/${id}`,
+            query: (productKey) => `/getProduct/${productKey}`,
             // providesTags: (id) => 
         }),
 
@@ -50,8 +50,7 @@ const apiSlice = createApi({
         getCartItems: builder.query({
             query: (email) => ({
                 url: `/getCartItems`,
-                method: "POST",
-                body: { email }
+                params: { email }
             }),
             providesTags: ['Cart']
         }),
@@ -86,7 +85,7 @@ const apiSlice = createApi({
                 body
             }),
             onQueryStarted: optUpdateCart((args, draft) => {
-                const product = draft.products.find(prod => prod.id === args.itemId)
+                const product = draft.products.find(prod => prod.productKey === args.productKey)
                 if (product) product.quantity = args.quantity
             })
         }),
@@ -98,8 +97,8 @@ const apiSlice = createApi({
                 body
             }),
             onQueryStarted: optUpdateCart((args, draft) => {
-                draft.products = args.deleteAll ? [] : draft.products.filter(prod => !(args.itemIds.some(id => id === prod.id)))
-                draft.quantity = args.deleteAll ? 0 : draft.quantity - args.itemIds.length
+                draft.products = args.deleteAll ? [] : draft.products.filter(prod => !(args.productKeys.some(key => key === prod.productKey)))
+                draft.quantity = args.deleteAll ? 0 : draft.quantity - args.productKeys.length
             })
         }),
     })
@@ -161,5 +160,6 @@ export const {
     useUpdateCartItemMutation,
     useDeleteCartItemsMutation
 } = apiSlice
-
 export default apiSlice
+
+export const useGetProductsQueryState = apiSlice.endpoints.getProducts.useQueryState

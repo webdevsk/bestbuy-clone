@@ -69,7 +69,7 @@
 
 @layer utilities {
   .min-h-screen {
-    min-height: 100vh;
+    min-height: 80vh;
   }
   @supports (min-height: 100dvh) {
     .min-h-screen {
@@ -77,7 +77,7 @@
     }
   }
   .h-screen {
-    height: 90vh;
+    height: 80vh;
   }
   @supports (height: 100dvh) {
     .h-screen {
@@ -167,6 +167,7 @@ svg.clip-round {
 
   --toastify-toast-min-height: 3rem;
   --toastify-font-family: theme(fontFamily.sans);
+  --toastify-z-index: 9999;
 
   /* //Used only for colored theme */
   --toastify-text-color-info: theme(colors.white);

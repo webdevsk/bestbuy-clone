@@ -4,7 +4,7 @@ import { useGetProductQuery } from "../features/api/apiSlice"
 import { useParams } from "react-router-dom"
 
 const ProductPage = () => {
-  const { id } = useParams()
+  const { productKey } = useParams()
   const {
     isLoading,
     isSuccess,
@@ -12,8 +12,8 @@ const ProductPage = () => {
     data: product = {
       images: [],
     },
-  } = useGetProductQuery(id)
-
+  } = useGetProductQuery(productKey)
+  console.log(useGetProductQuery(productKey))
   return (
     <>
       <section className="container py-6">

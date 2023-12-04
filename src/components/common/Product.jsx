@@ -20,7 +20,7 @@ const Product = memo((props) => {
         <div className="absolute inset-0 z-0">
           <Link
             className="block h-full w-full"
-            to={`/product/${product.id}`}
+            to={`/product/${product.productKey}`}
           ></Link>
         </div>
       </div>
@@ -124,7 +124,7 @@ const ProductButton = forwardRef((props, ref) => {
     try {
       await addToCart({
         email: user.email,
-        itemId: product.id,
+        productKey: product.productKey,
       }).unwrap()
     } catch (error) {
       console.log(error)
