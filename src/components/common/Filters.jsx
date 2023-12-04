@@ -58,7 +58,7 @@ const Filters = memo(() => {
               key={i}
             >
               <p className="capitalize hover:underline group-aria-[current=true]:font-semibold">
-                {category}
+                {category.replace("-", " ")}
               </p>
             </button>
           ))}
@@ -66,7 +66,7 @@ const Filters = memo(() => {
       </HiOrderAccordion>
 
       <HiOrderAccordion
-        value="brands"
+        value="brand"
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >

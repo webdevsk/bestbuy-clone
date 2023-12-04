@@ -44,6 +44,14 @@ const FilterBubble = ({
             noLabel={noLabel}
           />
         ))}
+        <button
+          type="button"
+          title="Clear All"
+          onClick={() => setSearchParams("")}
+          className="rounded-full border bg-red-50 px-3 py-1 leading-none text-error transition-colors hover:bg-red-100"
+        >
+          <small>Clear All</small>
+        </button>
       </Tag>
     )
 }
