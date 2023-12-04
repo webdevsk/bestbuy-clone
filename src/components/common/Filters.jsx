@@ -1,8 +1,3 @@
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-} from "@material-tailwind/react"
 import { memo, useState } from "react"
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md"
 import { useSearchParams } from "react-router-dom"
@@ -14,9 +9,10 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/api/apiSlice"
-import { RadioGroup } from "@headlessui/react"
+import { Disclosure, RadioGroup } from "@headlessui/react"
 import { ratingFilters } from "../../assets/filtersDB"
 import FilterBubble from "./FilterBubble"
+import { AnimatePresence, motion } from "framer-motion"
 
 const Filters = memo(() => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -127,21 +123,39 @@ const HiOrderAccordion = ({
   handleOpenObj,
   ...rest
 }) => (
-  <Accordion
-    open={isOpen(value)}
-    icon={<HiOrderMdKeyboardArrowDown active={isOpen(value)} />}
-  >
-    <AccordionHeader
-      className="group border-none text-body hover:text-theme"
+  <Disclosure>
+    <Disclosure.Button
+      className="group flex w-full items-center justify-between p-2 text-body hover:text-theme"
       onClick={() => handleOpenObj(value)}
     >
       <h5 className={label ? "" : "capitalize"}>{label ?? value}</h5>
-    </AccordionHeader>
-    <AccordionBody {...rest} className="ps-2 text-body">
-      <FilterBubble className="mb-3 w-max" noLabel label={value} />
-      {children}
-    </AccordionBody>
-  </Accordion>
+      <MdKeyboardArrowDown
+        className={`${
+          isOpen(value) ? "rotate-180" : ""
+        } h-5 w-5 transition xl:h-8 xl:w-8`}
+      />
+    </Disclosure.Button>
+    <AnimatePresence>
+      {isOpen(value) && (
+        <Disclosure.Panel
+          as={motion.div}
+          static
+          variants={{}}
+          initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+          animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+          exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
+          transition={{ type: "tween" }}
+          style={{ originY: 0 }}
+          open={isOpen(value)}
+          {...rest}
+          className="py-2 ps-2 text-body"
+        >
+          <FilterBubble className="mb-3 w-max" noLabel label={value} />
+          {children}
+        </Disclosure.Panel>
+      )}
+    </AnimatePresence>
+  </Disclosure>
 )
 
 const PriceModule = () => {
@@ -283,11 +297,3 @@ const RatingModule = (props) => {
     </RadioGroup>
   )
 }
-
-const HiOrderMdKeyboardArrowDown = (props) => (
-  <MdKeyboardArrowDown
-    className={`${
-      props.active ? "rotate-180" : ""
-    } h-5 w-5 text-gray-800 transition xl:h-8 xl:w-8`}
-  />
-)

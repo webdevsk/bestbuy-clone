@@ -139,25 +139,26 @@ const FilterForMobile = () => {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="fixed bottom-0 left-0 z-[9999] flex max-h-[75dvh] w-full flex-col px-4"
+              className="fixed bottom-0 z-[99] flex h-[60vh] w-full"
             >
-              <div className="flex flex-col divide-y overflow-scroll overflow-x-hidden rounded-t-xl bg-white [&>*]:px-4">
-                <div className="sticky top-0 z-[1] bg-white py-3">
-                  <div className="flex flex-wrap items-center justify-between">
-                    <h4>Filters</h4>
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className="rounded-sm hover:bg-gray-100"
-                    >
-                      <IoIosClose className="h-6 w-6" />
-                    </button>
+              <div className="mx-auto w-[95dvw] rounded-t-lg bg-white">
+                <div className="flex h-full flex-col overflow-scroll overflow-x-hidden rounded-t-xl pb-4 [&>*]:px-4">
+                  <div className="sticky top-0 z-[1] border-b-2 bg-white py-3">
+                    <div className="flex flex-wrap items-center justify-between">
+                      <h4>Filters</h4>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="rounded-sm hover:bg-gray-100"
+                      >
+                        <IoIosClose className="h-6 w-6" />
+                      </button>
+                    </div>
+                    <FilterBubble className="mt-2 flex w-full flex-wrap gap-1" />
                   </div>
-                  <FilterBubble className="mt-2 flex w-full flex-wrap gap-1" />
-                </div>
 
-                <Filters />
-                {/* No need as queries are done on click */}
-                {/* <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
+                  <Filters />
+                  {/* No need as queries are done on click */}
+                  {/* <div className="sticky bottom-0 z-[1] mt-auto bg-white px-4 py-4">
                   <Button
                     size="lg"
                     className="w-full bg-theme px-2 text-center disabled:pointer-events-auto disabled:cursor-not-allowed disabled:bg-blue-gray-200 disabled:text-body disabled:opacity-100"
@@ -165,6 +166,7 @@ const FilterForMobile = () => {
                     <h6>Apply</h6>
                   </Button>
                 </div> */}
+                </div>
               </div>
             </Dialog.Panel>
           </Dialog>
