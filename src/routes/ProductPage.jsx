@@ -13,7 +13,7 @@ const ProductPage = () => {
       images: [],
     },
   } = useGetProductQuery(productKey)
-
+  console.log(useGetProductQuery(productKey))
   return (
     <>
       <section className="container py-6">

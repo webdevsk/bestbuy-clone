@@ -95,7 +95,7 @@ const BurgerMenuList = () => {
       <ul>
         {headerMenu?.map((menu) => (
           <li key={menu.id}>
-            <Link to="#" className="block p-3">
+            <Link to={menu.link} className="block p-3">
               <p className="text-base">{menu.label}</p>
             </Link>
           </li>

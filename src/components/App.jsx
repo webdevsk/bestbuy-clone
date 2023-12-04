@@ -6,6 +6,7 @@ import { setAuthToken } from "../features/auth/authSlice"
 import Header from "./header/Header"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { ScrollRestoration } from "react-router-dom"
 
 const App = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0()
@@ -34,6 +35,14 @@ const App = () => {
         draggable
         pauseOnHover
         theme="colored"
+      />
+      <ScrollRestoration
+        getKey={(location, matches) => {
+          const whiteList = ["/", "/shop"]
+          return whiteList.includes(location.pathname)
+            ? location.pathname
+            : location.key
+        }}
       />
     </>
   )

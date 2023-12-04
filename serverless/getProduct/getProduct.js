@@ -6,7 +6,7 @@ export default async (event, context) => {
     console.log(url.pathname)
     // If the last one is empty string we get the one before it
     // We get empty string when pathname ends with an extra "/"
-    const productKey = url.pathname.split("/").at(-1) || url.pathname.split("/").at(-2)
+    const productKey = decodeURIComponent(url.pathname).split("/").at(-1) || url.pathname.split("/").at(-2)
     console.log("getProduct/" + productKey)
     try {
         const result = await prisma.product.findUnique({

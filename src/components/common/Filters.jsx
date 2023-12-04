@@ -43,14 +43,16 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col items-start gap-1 text-start">
+        <ul className="flex flex-col items-start gap-1">
           {categories?.map((category, i) => (
             <button
+              type="button"
+              label={category}
               aria-current={
                 searchParams.has("category") &&
                 searchParams.get("category") === category
               }
-              className="group block"
+              className="group text-start"
               onClick={() =>
                 setSearchParams((params) => {
                   params.set("category", category)
@@ -75,9 +77,12 @@ const Filters = memo(() => {
         <ul className="flex flex-col items-start gap-1">
           {brands?.map((brand, i) => (
             <button
+              type="button"
+              label={brand}
               aria-current={
                 searchParams.has("brand") && searchParams.get("brand") === brand
               }
+              className="group text-start"
               key={i}
               onClick={() =>
                 setSearchParams((params) => {

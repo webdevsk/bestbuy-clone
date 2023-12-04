@@ -167,6 +167,7 @@ svg.clip-round {
 
   --toastify-toast-min-height: 3rem;
   --toastify-font-family: theme(fontFamily.sans);
+  --toastify-z-index: 9999;
 
   /* //Used only for colored theme */
   --toastify-text-color-info: theme(colors.white);
