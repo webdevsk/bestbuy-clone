@@ -43,7 +43,7 @@ const Filters = memo(() => {
         isOpen={isOpen}
         handleOpenObj={handleOpenObj}
       >
-        <ul className="flex flex-col items-start gap-1">
+        <ul className="flex flex-col items-start gap-1 text-start">
           {categories?.map((category, i) => (
             <button
               aria-current={

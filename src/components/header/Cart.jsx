@@ -1,4 +1,3 @@
-import { Button } from "@material-tailwind/react"
 import { IoIosAdd, IoIosClose, IoIosRemove } from "react-icons/io"
 import { Link } from "react-router-dom"
 import { memo, useMemo, useState } from "react"
@@ -21,7 +20,6 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
   const {
     isLoading,
     isError,
-    isSuccess,
     isFetching,
     data: cartData = {
       products: [],
@@ -113,103 +111,38 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
         </div>
       )}
 
-      {!isFetching && !isError && !cartData.products.length && (
+      {isAuthenticated &&
+        !isFetching &&
+        !isError &&
+        !cartData.products.length && (
+          <div className="my-auto text-center">
+            <p className="text-2xl font-bold text-gray-400">
+              Cart is Empty ＞︿＜
+            </p>
+          </div>
+        )}
+
+      {!isAuthenticated && (
         <div className="my-auto text-center">
           <p className="text-2xl font-bold text-gray-400">
-            Cart is Empty ＞︿＜
+            Please login to view your Cart
           </p>
         </div>
       )}
 
       <div className="flex flex-col gap-2 p-4">
         {cartData.products?.map((item) => (
-          <div
+          <CartProduct
             key={item.id}
-            className={`rounded-md p-2 ${
-              isFetching ? "animate-pulse opacity-70" : ""
-            } ${
-              batchMode && selected.includes(item.productKey)
-                ? "bg-gray-300 shadow-inner [&_img]:blur-sm"
-                : "bg-gray-50"
-            }`}
-          >
-            <div className="flex flex-wrap gap-2">
-              <Link
-                to={`/product/${item.productKey}`}
-                className="block w-20"
-                onClick={() => setIsOpen(false)}
-              >
-                <img
-                  className="aspect-video h-full w-full object-contain"
-                  src={item.images?.at(-1)}
-                />
-              </Link>
-              <div className="flex w-1 grow flex-col gap-2">
-                <div className="flex w-full items-start">
-                  <h6 className="leading-snug">{item.title}</h6>
-                  {!batchMode && (
-                    <button
-                      className="ms-auto"
-                      name="deleteOne"
-                      title="Remove item from Cart"
-                      onClick={handleDelete}
-                      value={item.productKey}
-                    >
-                      <IoTrashSharp
-                        className={`rounded-full bg-white text-lg text-error`}
-                      />
-                    </button>
-                  )}
-                  {batchMode && (
-                    <Switch
-                      title={
-                        selected.includes(item.productKey)
-                          ? "Unmark item"
-                          : "Mark item"
-                      }
-                      checked={selected.includes(item.productKey)}
-                      onChange={(checked) =>
-                        handleSelection(checked, item.productKey)
-                      }
-                      name={"Mark Item for deletion"}
-                      className={`ms-auto`}
-                    >
-                      <span className="sr-only">Mark item</span>
-                      <IoCheckmarkCircleSharp
-                        className={`clip-rounded rounded-full bg-white text-lg ring-2 ${
-                          selected.includes(item.productKey)
-                            ? "text-error ring-error"
-                            : "text-transparent ring-gray-400 hover:ring-error"
-                        }`}
-                      />
-                    </Switch>
-                  )}
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <LocaleCurrency as="p">{item.price}</LocaleCurrency>
-
-                  <div className="flex items-center">
-                    <CartItemMutator
-                      quantity={item.quantity}
-                      email={user.email}
-                      productKey={item.productKey}
-                    />
-                  </div>
-
-                  <div className="">
-                    <LocaleCurrency
-                      as="h4"
-                      className={
-                        selected.includes(item.productKey) ? "line-through" : ""
-                      }
-                    >
-                      {item.price * (item.quantity ?? 1)}
-                    </LocaleCurrency>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            isFetching={isFetching}
+            item={item}
+            batchMode={batchMode}
+            selected={selected}
+            setIsOpen={setIsOpen}
+            handleDelete={handleDelete}
+            handleSelection={handleSelection}
+            user={user}
+          />
         ))}
       </div>
       <div
@@ -222,32 +155,32 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
           <LocaleCurrency as="h3">{totalPrice ?? 0}</LocaleCurrency>
         </div>
         {!batchMode && (
-          <Button
-            className={`w-full bg-accent text-body shadow-sm transition hover:shadow-sm hover:contrast-125`}
+          <button
+            className={`w-full rounded-sm bg-accent p-3 text-body antialiased shadow-sm transition hover:shadow-sm hover:contrast-125`}
           >
             <h6>Checkout</h6>
-          </Button>
+          </button>
         )}
 
         {batchMode && (
           <div className="flex gap-2">
-            <Button
+            <button
               title="Remove selected items from Cart"
               name="deleteMany"
               disabled={!selected.length}
               onClick={handleDelete}
-              className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
+              className={`w-full rounded-sm bg-error p-3 text-white antialiased shadow-sm transition hover:shadow-sm hover:contrast-125`}
             >
               <h6>Remove Selected</h6>
-            </Button>
-            <Button
+            </button>
+            <button
               title="Remove all items from Cart"
               name="deleteAll"
               onClick={handleDelete}
               className={`w-full bg-error text-white shadow-sm transition hover:shadow-sm hover:contrast-125`}
             >
               <h6>Remove All</h6>
-            </Button>
+            </button>
           </div>
         )}
       </div>
@@ -257,6 +190,110 @@ const Cart = memo(({ isOpen, setIsOpen }) => {
 
 Cart.displayName = "Cart"
 export default Cart
+
+const CartProduct = memo(
+  ({
+    isFetching,
+    item,
+    batchMode,
+    selected,
+    setIsOpen,
+    handleDelete,
+    handleSelection,
+    user,
+  }) => {
+    return (
+      <div
+        className={`rounded-md p-2 ${
+          isFetching ? "animate-pulse opacity-70" : ""
+        } ${
+          batchMode && selected.includes(item.productKey)
+            ? "bg-gray-300 shadow-inner [&_img]:blur-sm"
+            : "bg-gray-50"
+        }`}
+      >
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to={`/product/${item.productKey}`}
+            className="block w-20"
+            onClick={() => setIsOpen(false)}
+          >
+            <img
+              className="aspect-video h-full w-full object-contain"
+              src={item.images?.at(-1)}
+            />
+          </Link>
+          <div className="flex w-1 grow flex-col gap-2">
+            <div className="flex w-full items-start">
+              <h6 className="leading-snug">{item.title}</h6>
+              {!batchMode && (
+                <button
+                  className="ms-auto"
+                  name="deleteOne"
+                  title="Remove item from Cart"
+                  onClick={handleDelete}
+                  value={item.productKey}
+                >
+                  <IoTrashSharp
+                    className={`rounded-full bg-white text-lg text-error`}
+                  />
+                </button>
+              )}
+              {batchMode && (
+                <Switch
+                  title={
+                    selected.includes(item.productKey)
+                      ? "Unmark item"
+                      : "Mark item"
+                  }
+                  checked={selected.includes(item.productKey)}
+                  onChange={(checked) =>
+                    handleSelection(checked, item.productKey)
+                  }
+                  name={"Mark Item for deletion"}
+                  className={`ms-auto`}
+                >
+                  <span className="sr-only">Mark item</span>
+                  <IoCheckmarkCircleSharp
+                    className={`clip-rounded rounded-full bg-white text-lg ring-2 ${
+                      selected.includes(item.productKey)
+                        ? "text-error ring-error"
+                        : "text-transparent ring-gray-400 hover:ring-error"
+                    }`}
+                  />
+                </Switch>
+              )}
+            </div>
+            <div className="flex items-center justify-between gap-1">
+              <LocaleCurrency as="p">{item.price}</LocaleCurrency>
+
+              <div className="flex items-center">
+                <CartItemMutator
+                  quantity={item.quantity}
+                  email={user.email}
+                  productKey={item.productKey}
+                />
+              </div>
+
+              <div className="">
+                <LocaleCurrency
+                  as="h4"
+                  className={
+                    selected.includes(item.productKey) ? "line-through" : ""
+                  }
+                >
+                  {item.price * (item.quantity ?? 1)}
+                </LocaleCurrency>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+)
+
+CartProduct.displayName = "CartProduct"
 
 const CartItemMutator = ({ email, productKey, quantity }) => {
   const [updateQuantity] = useUpdateCartItemMutation()
