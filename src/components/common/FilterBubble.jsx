@@ -1,6 +1,6 @@
 import { IoIosClose } from "react-icons/io"
 import { useSearchParams } from "react-router-dom"
-import { ratingFilters } from "../../assets/filtersDB"
+import { ratingFilters, sortOptions } from "../../assets/filtersDB"
 import LocaleCurrency from "./LocaleCurrency"
 
 const FilterBubble = ({
@@ -82,7 +82,8 @@ const Bubble = ({
         )}
         <span>
           {label === "rating"
-            ? ratingFilters.find((filter) => filter.value === value)?.label
+            ? ratingFilters?.find((filter) => filter.value === value).label ??
+              value
             : label === "price"
             ? value.split("to").map((x, i) => (
                 <>
@@ -95,6 +96,9 @@ const Bubble = ({
                   )}
                 </>
               ))
+            : label === "sortby"
+            ? sortOptions?.find((option) => option.value === value).label ??
+              value
             : value}
         </span>
       </small>

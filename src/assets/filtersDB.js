@@ -34,3 +34,22 @@ export const ratingFilters = [
     stars: 0
   },
 ]
+
+export const sortOptions = [
+  {
+    label: "Best Match",
+    value: "best-match",
+  },
+  {
+    label: "Price Low-High",
+    value: "price-low-to-high",
+  },
+  {
+    label: "Price High-Low",
+    value: "price-high-to-low",
+  },
+  {
+    label: "Highest Rated",
+    value: "rating-high-to-low",
+  },
+]
