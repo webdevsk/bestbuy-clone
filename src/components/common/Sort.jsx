@@ -8,11 +8,11 @@ import { sortOptions } from "../../assets/filtersDB"
 const Sort = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentSortType = searchParams.get("sortby") ?? "best-match"
-  console.log(currentSortType)
 
   const handleSort = (value) =>
     setSearchParams((params) => {
-      params.set("sortby", value)
+      if (value === "best-match") params.delete("sortby")
+      if (value !== "best-match") params.set("sortby", value)
       return params
     })
 
