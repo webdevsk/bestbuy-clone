@@ -1,14 +1,27 @@
 import { useState } from "react"
 import BurgerMenu from "./BurgerMenu"
 import { motion } from "framer-motion"
+import { Combobox } from "@headlessui/react"
+import { useGetProductsQuery } from "../../features/api/apiSlice"
+import { Link } from "react-router-dom"
+import LocaleCurrency from "./../common/LocaleCurrency"
 
 const SearchBar = (props) => {
   const { name, id, containerClass, className, style, inputProps, ...rest } =
     props
-  const [focus, setFocus] = useState(false)
-  const [input, setInput] = useState("")
+  const params = { limit: 10 }
 
-  const active = !focus ? false : input === "" ? false : true
+  const { data = {}, refetch } = useGetProductsQuery(params, {
+    skip: true,
+  })
+  const { products = [] } = data
+
+  const [focus, setFocus] = useState(false)
+  const [query, setQuery] = useState("")
+  console.log(query)
+  const [selected, setSelected] = useState(products[0])
+
+  const active = !focus ? false : query === "" ? false : true
 
   return (
     <>
@@ -27,16 +40,19 @@ const SearchBar = (props) => {
               : "w-[calc(100%_-_2.5rem)]"
           } absolute left-10 top-0 z-10 h-full  transition-all duration-300 lg:left-0 lg:w-full`}
         >
-          <div
+          <Combobox
+            as="div"
+            value={selected}
+            onChange={setSelected}
             id="inputContainer"
             className={`${containerClass} relative flex h-full w-full flex-wrap gap-0 rounded-sm bg-white`}
           >
-            <input
+            <Combobox.Input
               {...inputProps}
-              onChange={(e) => setInput(e.currentTarget.value)}
+              onChange={(e) => setQuery(e.currentTarget.value)}
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
-              value={input}
+              value={query}
               placeholder="Search BestBuy"
               type="text"
               name={name}
@@ -44,6 +60,36 @@ const SearchBar = (props) => {
               className={`${className} generic w-1 grow bg-transparent px-4 pe-0 text-body placeholder-gray-700 focus:ring-0 focus-visible:outline-none`}
               style={style}
             />
+
+            <Combobox.Options
+              className={`absolute top-full z-10 mt-1 max-h-96 w-full overflow-auto rounded-sm bg-white py-1 text-body shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm`}
+            >
+              <div className="flex flex-col justify-start gap-2 p-2">
+                {products.map((product) => (
+                  <Combobox.Option
+                    key={product.productKey}
+                    value={product.productKey}
+                  >
+                    <Link
+                      to={`/product/${product.productKey}`}
+                      className="flex gap-2 rounded-sm bg-gray-50 p-2"
+                    >
+                      <div className="aspect-video w-16">
+                        <img
+                          src={product.images?.at(-1)}
+                          alt={product.title}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                      <div className="w-1 grow">
+                        <h6>{product.title}</h6>
+                        <LocaleCurrency>{product.price}</LocaleCurrency>
+                      </div>
+                    </Link>
+                  </Combobox.Option>
+                ))}
+              </div>
+            </Combobox.Options>
 
             <div
               className={`${
@@ -53,7 +99,7 @@ const SearchBar = (props) => {
               <button
                 onMouseDown={(e) => {
                   e.preventDefault()
-                  setInput("")
+                  setQuery("")
                 }}
                 tabIndex={-1}
               >
@@ -94,7 +140,7 @@ const SearchBar = (props) => {
                 />
               </svg>
             </button>
-          </div>
+          </Combobox>
         </div>
         <button
           className="lg-hidden grid w-16 items-center justify-end"

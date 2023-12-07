@@ -1,5 +1,4 @@
 import Filters from "./common/Filters"
-//Replace these with async api call functions
 import Sort from "./common/Sort"
 import { IoOptionsOutline } from "react-icons/io5"
 import { useState } from "react"
@@ -20,8 +19,8 @@ const ProductsGallery = () => {
   const params = Object.fromEntries(searchParams.entries())
 
   const { isError, isLoading, isFetching } = useGetProductsQuery(params)
-  const { data = { entities: {} } } = useGetProductsQueryState(params)
-  const products = Object.values(data.entities)
+  const { data = {} } = useGetProductsQueryState(params)
+  const { products = [] } = data
 
   return (
     <>

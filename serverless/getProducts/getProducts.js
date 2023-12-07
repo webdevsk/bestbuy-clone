@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 
 export default async (event) => {
     const url = new URL(event.url)
-    let { limit = "30", skip = "0", category, brand, rating, price, sortby } = Object.fromEntries(url.searchParams)
+    let { limit = "30", skip = "0", category, brand, rating, price, sortby, q } = Object.fromEntries(url.searchParams)
     console.log("getProducts", url.searchParams.toString())
     limit = parseInt(limit)
     skip = parseInt(skip)
@@ -42,6 +42,7 @@ export default async (event) => {
     try {
         const products = await prisma.product.findMany({
             where: {
+                title: { contains: q, mode: "insensitive" },
                 brand,
                 category,
                 rating: { gte: ratingGte, lte: ratingLte },

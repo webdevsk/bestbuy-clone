@@ -2,9 +2,6 @@ import { createEntityAdapter, createSelector } from "@reduxjs/toolkit"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { toast } from "react-toastify"
 
-const productsAdapter = createEntityAdapter()
-const initialState = productsAdapter.getInitialState()
-
 const apiSlice = createApi({
     reducerPath: "api",
     tagTypes: ['Cart'],
@@ -29,11 +26,6 @@ const apiSlice = createApi({
                 url: `/getProducts`,
                 params
             }),
-
-            transformResponse: response => {
-                const { products, ...rest } = response
-                return productsAdapter.setAll({ ...initialState, ...rest }, products)
-            },
             keepUnusedDataFor: 600
 
         }),
@@ -121,36 +113,6 @@ function optUpdateCart(callback) {
     }
 }
 
-export const selectProductCategories = createSelector(
-    apiSlice.endpoints.getCategories.select(),
-    categoriesResult => categoriesResult.data ?? []
-)
-
-export const selectProductsResult = apiSlice.endpoints.getProducts.select()
-const selectProductsData = createSelector(
-    selectProductsResult, productsResult => productsResult.data ?? initialState
-)
-
-export const {
-    selectAll: selectAllProducts,
-    selectById: selectProductById,
-    selectEntities: selectProductEntities,
-    selectIds: selectProductIds,
-    selectTotal: selectProductsTotal
-} = productsAdapter.getSelectors(state => selectProductsData(state))
-
-export const selectProductBrands = createSelector(
-    selectAllProducts,
-    products => [...new Set(products.map(item => item.brand))]
-)
-
-export const selectExclusiveProducts = createSelector(
-    selectAllProducts,
-    products => products.filter(product =>
-        product.discountPercentage >= 10 && ["smartphones", "laptops"].some(cat => product.category === cat)
-    )
-)
-
 export const {
     useGetProductsQuery,
     useGetProductQuery,
@@ -160,6 +122,30 @@ export const {
     useUpdateCartItemMutation,
     useDeleteCartItemsMutation
 } = apiSlice
+
+export const selectProductCategories = createSelector(
+    apiSlice.endpoints.getCategories.select(),
+    categoriesResult => categoriesResult.data ?? []
+)
+
 export default apiSlice
+
+const selectProducts = createSelector(
+    apiSlice.endpoints.getProducts.select(),
+    result => result.data?.products ?? []
+)
+
+export const selectProductBrands = createSelector(
+    selectProducts,
+    products => [...new Set(products.map(item => item.brand) ?? [])]
+)
+
+export const selectExclusiveProducts = createSelector(
+    selectProducts,
+    products => products.filter(product =>
+        product.discountPercentage >= 10 && ["smartphones", "laptops"].some(cat => product.category === cat)
+    ) ?? []
+)
+
 
 export const useGetProductsQueryState = apiSlice.endpoints.getProducts.useQueryState

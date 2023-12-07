@@ -116,14 +116,17 @@ const Header = () => {
                           {!isSticking && <SiteLogo />}
                           {isSticking && (
                             <div className="w-1 grow">
-                              <SearchBar layoutId="search-bar" />
+                              <SearchBar
+                                layoutId="search-bar"
+                                key="search-bar"
+                              />
                             </div>
                           )}
                         </AnimatePresence>
                       </Mobile>
                       <Desktop>
                         <div className="w-full lg:w-96">
-                          <SearchBar />
+                          <SearchBar key="search-bar" />
                         </div>
                       </Desktop>
 
