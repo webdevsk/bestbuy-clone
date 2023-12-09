@@ -25,9 +25,11 @@ const SearchBar = (props) => {
 
   return (
     <>
-      <motion.div
+      <div
         {...rest}
-        className="relative flex h-10 flex-wrap justify-between lg:h-12"
+        className={`relative flex h-10 flex-wrap justify-between lg:h-12 ${
+          props.className || ""
+        }`}
       >
         <div className="flex w-10 items-center lg:hidden">
           {/* Burger menu */}
@@ -148,7 +150,7 @@ const SearchBar = (props) => {
         >
           <h6>Cancel</h6>
         </button>
-      </motion.div>
+      </div>
     </>
   )
 }

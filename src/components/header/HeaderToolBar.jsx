@@ -24,7 +24,7 @@ const drawerVariants = {
   },
 }
 
-export const HeaderToolBar = () => {
+export const HeaderToolBar = ({ className }) => {
   const isSticking = useStickyHeaderContext()
   const { isAuthenticated, user } = useAuth0()
   const [isOpen, setIsOpen] = useState(false)
@@ -37,7 +37,7 @@ export const HeaderToolBar = () => {
   })
   return (
     <>
-      <div className="ms-auto">
+      <div className={className}>
         <div
           className={`flex flex-wrap gap-4 ${
             isSticking ? "gap-2 lg:gap-4" : ""

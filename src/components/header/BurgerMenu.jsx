@@ -6,9 +6,9 @@ import { useMainMenuContext } from "../../hooks/useMainMenuContext"
 import { useHeaderMenuContext } from "../../hooks/useHeaderMenuContext"
 import { HigherOrderFloat, HigherOrderPanel } from "../common/HigherOrderFloat"
 
-const BurgerMenu = () => {
+const BurgerMenu = ({ className }) => {
   return (
-    <Popover className="relative grid place-items-center">
+    <Popover className={`relative  grid place-items-center ${className}}`}>
       <HigherOrderFloat placement="bottom" strategy="fixed">
         <Popover.Button className="relative [--_stroke-height:0.2em] [--_stroke-width:1.5em] focus-visible:outline-none">
           <BurgerMenuBtn />

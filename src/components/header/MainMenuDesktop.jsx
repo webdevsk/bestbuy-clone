@@ -4,10 +4,10 @@ import { HiChevronDown } from "react-icons/hi"
 import { useMainMenuContext } from "../../hooks/useMainMenuContext"
 import { HigherOrderFloat, HigherOrderPanel } from "../common/HigherOrderFloat"
 
-export const MainMenuDesktop = () => {
+export const MainMenuDesktop = ({ className }) => {
   const mainMenu = useMainMenuContext()
   return (
-    <Popover.Group as="ul" className="flex flex-wrap gap-2 py-2">
+    <Popover.Group as="ul" className={className}>
       {mainMenu?.map((menu) => (
         <Popover className="relative" key={menu.id}>
           <HigherOrderFloat placement="bottom-start">
