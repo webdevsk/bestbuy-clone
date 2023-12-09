@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import MainMenuContext from "../../contexts/MainMenuContext"
 import HeaderMenuContext from "../../contexts/HeaderMenuContext"
 import { Desktop, Mobile } from "../common/ReactResponsive"
@@ -27,27 +27,50 @@ const Header = () => {
   const { scrollY } = useScroll()
 
   const headerRef = useRef(null)
-  const stickyHeaderRef = useRef(null)
-  const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 0
-  const stickyHeaderHeight =
-    stickyHeaderRef.current?.getBoundingClientRect().height ?? 0
+  const fillerRef = useRef(null)
+  const headerOgHeight = useRef(0)
+  // We can't get the height of the shrunken header until
+  // isSticky is true AND it re-renders with the changed layout.
+  // So theres a bit of a delay between isSticky getting true
+  // (position sticking) and the shrunken height getting populated
+  // If we use the initial value of 0, it will cause a sudden
+  // drop in tranlateY. going from -0 to -100 (shrunken height)
+  // So its better to use a maximum possible shrunken height here
+  // to reduce the drop distance. Just use Desktop shrunken mode size
+  const headerShrunkenHeight = useRef(72) //72 will be -72px initially in translateY
 
+  useEffect(() => {
+    // Set filler height after DOM loaded
+    const headerHeight = headerRef.current.getBoundingClientRect().height
+    headerOgHeight.current = headerHeight
+    fillerRef.current.style.height = headerHeight + "px"
+  }, [headerRef, fillerRef])
+
+  // calculating how much we've scrolled past the og header
   const scrollPastHeader = useTransform(() =>
-    Math.max(scrollY.get() - headerHeight, 0),
+    Math.max(scrollY.get() - headerOgHeight.current, 0),
   )
+
+  useMotionValueEvent(scrollPastHeader, "change", (latest) => {
+    // set sticking state if we've scrolled past the og header
+    setIsSticking(latest > 0)
+  })
+
+  useEffect(() => {
+    if (!isSticking) return
+    // getting shrunken header height
+    headerShrunkenHeight.current =
+      headerRef.current?.getBoundingClientRect().height ?? 0
+  }, [isSticking])
 
   const stickyHeaderY = useTransform(
     scrollPastHeader,
-    [0, stickyHeaderHeight],
-    [-stickyHeaderHeight, 0],
+    [0, headerShrunkenHeight.current],
+    [-headerShrunkenHeight.current, 0],
   )
 
   const stickyHeaderSpringY = useSpring(stickyHeaderY, {
     mass: 0.3,
-  })
-  useMotionValueEvent(scrollPastHeader, "change", (latest) => {
-    // setIsSticking(latest > 0)
-    setIsSticking(0)
   })
 
   const mainMenu = [
@@ -161,15 +184,20 @@ const Header = () => {
             </section>
           </div> */}
           {/* <div className="mb-12"></div> */}
-
-          <div
+          <div ref={fillerRef} className="filler"></div>
+          <motion.div
             id="header"
             ref={headerRef}
-            className={`relative grid grid-cols-[1fr_repeat(12,_minmax(max-content,_1fr))_1fr] gap-x-2 bg-theme text-white ${
+            className={`relative z-50 grid grid-cols-[1fr_repeat(12,_minmax(max-content,_1fr))_1fr] gap-x-2 bg-theme text-white ${
               isSticking
                 ? "grid-rows-[repeat(1,_min-content)]"
                 : "grid-rows-[repeat(3,_min-content)]"
             }`}
+            style={{
+              position: isSticking ? "fixed" : "absolute",
+              top: 0,
+              y: isSticking ? stickyHeaderSpringY : 0,
+            }}
           >
             <section
               className={`container col-[2/-2] col-start-2 row-span-full mb-0 grid grid-cols-[subgrid] grid-rows-[subgrid] items-center xl:gap-x-4 `}
@@ -220,7 +248,7 @@ const Header = () => {
             <a href="#pinned-product" className="skip">
               Skip to main content
             </a>
-          </div>
+          </motion.div>
         </StickyHeaderContext.Provider>
       </HeaderMenuContext.Provider>
     </MainMenuContext.Provider>

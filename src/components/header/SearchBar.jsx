@@ -18,7 +18,7 @@ const SearchBar = (props) => {
 
   const [focus, setFocus] = useState(false)
   const [query, setQuery] = useState("")
-  console.log(query)
+  // console.log(query)
   const [selected, setSelected] = useState(products[0])
 
   const active = !focus ? false : query === "" ? false : true
