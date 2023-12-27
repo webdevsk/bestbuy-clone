@@ -76,7 +76,7 @@ const Header = () => {
                 }`}
               ></div>
               <HeaderMenu
-                className={`col-[2/14] row-span-1 flex-wrap justify-end gap-3 py-3 ${
+                className={`col-[2/-1] row-span-1 flex-wrap justify-end gap-3 py-3 ${
                   isSticking ? "hidden" : "hidden lg:flex"
                 }`}
               />
@@ -92,16 +92,16 @@ const Header = () => {
               <SearchBar
                 className={`my-2 ${
                   isSticking
-                    ? "col-[1/10] row-[3/4] lg:col-[2/6] lg:row-[1/2]"
-                    : "col-[1/-1] row-[3/4] lg:col-[2/6] lg:row-[2/3]"
+                    ? "col-[1/-3] row-[3/4] lg:col-[2/7] lg:row-[1/2]"
+                    : "col-[1/-1] row-[3/4] lg:col-[2/7] lg:row-[2/3]"
                 }`}
               />
 
               <HeaderToolBar
-                className={`ms-auto ${
+                className={`${
                   isSticking
-                    ? "col-[10/-1] row-[3/4] lg:row-[1/2] xl:col-[3/-1]"
-                    : "col-[3/-1] row-[2/3] lg:col-[9/-1]"
+                    ? "col-[-3/-1] row-[3/4] lg:row-[1/2] xl:col-[-3/-1]"
+                    : "col-[-3/-1] row-[2/3] lg:col-[-3/-1]"
                 }`}
               />
 
