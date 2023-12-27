@@ -73,7 +73,7 @@ const useStickyHeader = ({
 
   const stickyHeaderSpringY = useSpring(stickyHeaderY, springConfig)
 
-  const rerender = () => {
+  function rerender() {
     // To reanimate appearance | Causing stickyHeaderY getting negative initial value
     scrollPastHeader.set(0)
     // To recalculate headerOgHeight
@@ -81,9 +81,15 @@ const useStickyHeader = ({
   }
 
   // Window resize event listener
+  const windowWidth = useRef(innerWidth)
   useEffect(() => {
-    addEventListener("resize", rerender)
-    return () => removeEventListener("resize", rerender)
+    function redo() {
+      if (innerWidth === windowWidth.current) return
+      windowWidth.current = innerWidth
+      rerender()
+    }
+    addEventListener("resize", redo)
+    return () => removeEventListener("resize", redo)
   }, [])
 
   const headerStyles = {
