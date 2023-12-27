@@ -12,6 +12,7 @@ import {
 } from "../../features/api/apiSlice"
 import {
   motion,
+  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useSpring,
@@ -44,34 +45,34 @@ const Header = () => {
   const headerShrunkenHeight = useRef(72) //72 will be -72px initially in translateY
 
   useEffect(() => {
-    const setup = () => {
-      setIsSticking(false)
+    if (isSticking) {
+      headerShrunkenHeight.current =
+        headerRef.current?.getBoundingClientRect().height
+    } else {
       // Set filler height
       const headerHeight = headerRef.current.getBoundingClientRect().height
       headerOgHeight.current = headerHeight
       fillerRef.current.style.height = headerHeight + "px"
     }
-    setup()
-    addEventListener("resize", setup)
-    return () => removeEventListener("resize", setup)
-  }, [headerRef, fillerRef])
+  }, [headerRef, fillerRef, isSticking])
 
-  // calculating how much we've scrolled past the og header
-  // using min max to avoid unnecessary re-renders
-  // re-renders only when scrollPastHeader is between 0 and headerOgHeight
-  const scrollPastHeader = useTransform(() =>
-    Math.max(
-      Math.min(scrollY.get() - headerOgHeight.current, headerOgHeight.current),
-      0,
-    ),
-  )
-
-  useEffect(() => {
-    if (!isSticking) return
-    // getting shrunken header height
-    headerShrunkenHeight.current =
-      headerRef.current?.getBoundingClientRect().height ?? 0
-  }, [isSticking])
+  const scrollPastHeader = useMotionValue(0)
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    // calculating how much we've scrolled past the og header
+    // using min max to avoid unnecessary re-renders
+    // re-renders only when scrollPastHeader is between 0 and headerOgHeight
+    scrollPastHeader.set(
+      Math.max(
+        Math.min(
+          latest - headerOgHeight.current,
+          headerOgHeight.current + margin,
+        ),
+        0,
+      ),
+    )
+    // set sticking state if we've scrolled past the og header
+    setIsSticking(scrollPastHeader.get() > 0)
+  })
 
   const stickyHeaderY = useTransform(
     scrollPastHeader,
@@ -79,14 +80,20 @@ const Header = () => {
     [-(headerShrunkenHeight.current + margin), 0],
   )
 
-  useMotionValueEvent(scrollPastHeader, "change", (latest) => {
-    // set sticking state if we've scrolled past the og header
-    setIsSticking(latest > 0)
-  })
-
   const stickyHeaderSpringY = useSpring(stickyHeaderY, {
     mass: 0.3,
   })
+
+  useEffect(() => {
+    const reset = () => {
+      // To reanimate appearance | Causing stickyHeaderY getting negative initial value
+      scrollPastHeader.set(0)
+      // To recalculate headerOgHeight
+      setIsSticking(false)
+    }
+    addEventListener("resize", reset)
+    return () => removeEventListener("resize", reset)
+  }, [scrollPastHeader])
 
   const mainMenu = [
     {
