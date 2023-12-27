@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import SearchBar from "./SearchBar"
-import { useEffect, useRef, useState } from "react"
 import MainMenuContext from "../../contexts/MainMenuContext"
 import HeaderMenuContext from "../../contexts/HeaderMenuContext"
 import { HeaderToolBar } from "./HeaderToolBar"
@@ -10,90 +9,17 @@ import {
   selectProductBrands,
   selectProductCategories,
 } from "../../features/api/apiSlice"
-import {
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion"
+import { motion } from "framer-motion"
 import StickyHeaderContext from "../../contexts/StickyHeaderContext"
 import { useHeaderMenuContext } from "../../hooks/useHeaderMenuContext"
+import useStickyHeader from "../../hooks/useStickyHeader"
 
 const Header = () => {
-  const [isSticking, setIsSticking] = useState(false)
-  const { scrollY } = useScroll()
-
-  const headerRef = useRef(null)
-  const fillerRef = useRef(null)
-  const headerOgHeight = useRef(0)
-  // Delaying the appearance of sticky header by 64px
-  // Giving the page enough time to change layout and getting
-  // the shrunken header height
-  const margin = 64
-
-  // We can't get the height of the shrunken header until
-  // isSticky is true AND it re-renders with the changed layout.
-  // So theres a bit of a delay between isSticky getting true
-  // (position sticking) and the shrunken height getting populated
-  // If we use the initial value of 0, it will cause a sudden
-  // drop in tranlateY. going from -0 to -100 (shrunken height)
-  // So its better to use a maximum possible shrunken height here
-  // to reduce the drop distance. Just use Desktop shrunken mode size
-  // It doesnt have to be accurate. Just a near value would do
-  const headerShrunkenHeight = useRef(72) //72 will be -72px initially in translateY
-
-  useEffect(() => {
-    if (isSticking) {
-      headerShrunkenHeight.current =
-        headerRef.current?.getBoundingClientRect().height
-    } else {
-      // Set filler height
-      const headerHeight = headerRef.current.getBoundingClientRect().height
-      headerOgHeight.current = headerHeight
-      fillerRef.current.style.height = headerHeight + "px"
-    }
-  }, [headerRef, fillerRef, isSticking])
-
-  const scrollPastHeader = useMotionValue(0)
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    // calculating how much we've scrolled past the og header
-    // using min max to avoid unnecessary re-renders
-    // re-renders only when scrollPastHeader is between 0 and headerOgHeight
-    scrollPastHeader.set(
-      Math.max(
-        Math.min(
-          latest - headerOgHeight.current,
-          headerOgHeight.current + margin,
-        ),
-        0,
-      ),
-    )
-    // set sticking state if we've scrolled past the og header
-    setIsSticking(scrollPastHeader.get() > 0)
-  })
-
-  const stickyHeaderY = useTransform(
-    scrollPastHeader,
-    [0, headerShrunkenHeight.current + margin],
-    [-(headerShrunkenHeight.current + margin), 0],
-  )
-
-  const stickyHeaderSpringY = useSpring(stickyHeaderY, {
-    mass: 0.3,
-  })
-
-  useEffect(() => {
-    const reset = () => {
-      // To reanimate appearance | Causing stickyHeaderY getting negative initial value
-      scrollPastHeader.set(0)
-      // To recalculate headerOgHeight
-      setIsSticking(false)
-    }
-    addEventListener("resize", reset)
-    return () => removeEventListener("resize", reset)
-  }, [scrollPastHeader])
+  const { isSticking, rerender, headerRef, fillerRef, headerStyles } =
+    useStickyHeader({
+      approxShrunkenHeight: 72,
+      margin: 64,
+    })
 
   const mainMenu = [
     {
@@ -134,19 +60,15 @@ const Header = () => {
           <motion.section
             id="header"
             ref={headerRef}
-            className={`relative z-50 grid w-full grid-cols-[1fr_repeat(12,_minmax(max-content,_1fr))_1fr] gap-x-2 bg-theme text-white ${
-              isSticking
-                ? "grid-rows-[repeat(1,_min-content)]"
-                : "grid-rows-[repeat(3,_min-content)]"
+            className={`relative z-50 grid w-full grid-cols-[1fr_auto_1fr] text-white shadow-lg ${
+              !isSticking
+                ? "grid-rows-[repeat(3,_min-content)] bg-theme shadow-transparent"
+                : "grid-rows-[repeat(1,_min-content)] bg-[#003da6] shadow-black/30"
             }`}
-            style={{
-              position: isSticking ? "fixed" : "absolute",
-              top: 0,
-              y: isSticking ? stickyHeaderSpringY : 0,
-            }}
+            style={headerStyles}
           >
             <div
-              className={`container col-[2/-2] row-span-full mb-0 grid grid-cols-[subgrid] grid-rows-[subgrid] items-center px-0 lg:gap-x-4 `}
+              className={`container col-span-full row-span-full mb-0 grid grid-cols-[repeat(12,_minmax(max-content,_1fr))] grid-rows-[subgrid] items-center gap-x-2 lg:gap-x-4 `}
             >
               <div
                 className={`absolute inset-0 col-[1/-1] row-[-2/-1] bg-[#003da6] ${
@@ -154,7 +76,7 @@ const Header = () => {
                 }`}
               ></div>
               <HeaderMenu
-                className={`col-[2/14] row-span-1 flex-wrap justify-end gap-3 py-2 ${
+                className={`col-[2/14] row-span-1 flex-wrap justify-end gap-3 py-3 ${
                   isSticking ? "hidden" : "hidden lg:flex"
                 }`}
               />
@@ -184,7 +106,7 @@ const Header = () => {
               />
 
               <MainMenuDesktop
-                className={`col-[1/-1] row-[3/4] flex-wrap gap-2 py-2 ${
+                className={`col-[1/-1] row-[3/4] flex-wrap gap-2 py-3 ${
                   isSticking ? "hidden" : "hidden lg:flex"
                 }`}
               />
