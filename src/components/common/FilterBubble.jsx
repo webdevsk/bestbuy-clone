@@ -76,7 +76,9 @@ const Bubble = ({
       <small className="ms-1 select-none leading-normal">
         {!noLabel && (
           <>
-            <span className="capitalize">{label}</span>
+            <span className="capitalize">
+              {label === "q" ? "Search" : label}
+            </span>
             <span>: </span>
           </>
         )}
