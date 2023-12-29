@@ -136,7 +136,7 @@ const SearchBar = ({
                   </h5>
                 )}
 
-                {!isFetching && !products.length && (
+                {!isFetching && isSuccess && !products.length && (
                   <h5 className="text-center text-gray-500">
                     No Products Found
                   </h5>

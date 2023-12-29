@@ -2,6 +2,7 @@
     functions = "serverless/"
 [dev]
     targetPort = 3000
+    autoLaunch = false
 [functions]
     directory = "serverless/"
     node_bundler = "esbuild"
