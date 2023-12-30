@@ -13,6 +13,7 @@ import { motion } from "framer-motion"
 import StickyHeaderContext from "../../contexts/StickyHeaderContext"
 import { useHeaderMenuContext } from "../../hooks/useHeaderMenuContext"
 import useStickyHeader from "../../hooks/useStickyHeader"
+import { MdOutlineShoppingBag } from "react-icons/md"
 
 const Header = () => {
   const { isSticking, rerender, headerRef, fillerRef, headerStyles } =
@@ -47,7 +48,7 @@ const Header = () => {
     },
     {
       id: 3,
-      label: "Best Buy Business",
+      label: "Easy Buy Business",
       link: "#",
     },
   ]
@@ -127,10 +128,14 @@ export default Header
 const SiteLogo = ({ className }) => {
   return (
     <Link to="/" className={className}>
-      <img src="/images/logo.png" alt="" width="48" />
-      <div className="">
-        <h3 className="font-serif leading-none lg:leading-none">Best</h3>
-        <h3 className="font-serif leading-none lg:leading-none">Buy</h3>
+      <div className="grid grid-cols-2 place-content-center">
+        <img src="/images/logo.png" alt="" width="40" className="row-span-2" />
+        <div className="font-serif text-xl font-semibold leading-none antialiased">
+          Easy
+        </div>
+        <div className="font-serif text-xl font-semibold leading-none antialiased">
+          Buy
+        </div>
       </div>
     </Link>
   )

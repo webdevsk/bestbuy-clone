@@ -1,24 +1,11 @@
 import { useEffect, useState } from "react"
 import BurgerMenu from "./BurgerMenu"
-import { motion } from "framer-motion"
 import { Combobox } from "@headlessui/react"
 import { useGetProductsQuery } from "../../features/api/apiSlice"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import LocaleCurrency from "./../common/LocaleCurrency"
 import { RiLoader5Line } from "react-icons/ri"
-import { IoAlertCircleOutline } from "react-icons/io5"
 import { MdErrorOutline } from "react-icons/md"
-
-function debounce(callback, delay = 250) {
-  let timeout
-
-  return (...args) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => {
-      callback(...args)
-    }, delay)
-  }
-}
 
 const SearchBar = ({
   name,
@@ -105,7 +92,7 @@ const SearchBar = ({
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
               value={input}
-              placeholder="Search BestBuy"
+              placeholder="Search EasyBuy"
               type="text"
               name={name}
               id={id}

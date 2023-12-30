@@ -23,7 +23,7 @@
     <img src="github_assets/logo.png" alt="Free Shopping Bag Icon by Osram Koestl" width="100" height="100">
   </a>
 
-<h3 align="center">BestBuy Clone</h3>
+<h3 align="center">EasyBuy</h3>
 
   <p align="center">
     A clone of BestBuy using React.
