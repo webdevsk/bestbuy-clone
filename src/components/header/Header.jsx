@@ -76,6 +76,7 @@ const Header = () => {
                   isSticking ? "hidden" : "block"
                 }`}
               ></div>
+
               <HeaderMenu
                 className={`col-[2/-1] row-span-1 flex-wrap justify-end gap-3 py-3 ${
                   isSticking ? "hidden" : "hidden lg:flex"
@@ -83,7 +84,7 @@ const Header = () => {
               />
 
               <SiteLogo
-                className={`-translate-y-1 items-end gap-1 py-3 ${
+                className={`items-end gap-1 py-3 ${
                   isSticking
                     ? "col-[1/2] row-[1/2] hidden lg:flex"
                     : "col-[1/2] row-[2/3] flex"
